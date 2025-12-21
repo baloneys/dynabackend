@@ -105,109 +105,126 @@
     </div>
   </section>
 
+  <!-- DEBUG CONSOLE -->
+  <section style="margin:1rem auto; max-width:700px;">
+    <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
+  </section>
+
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
 
-      const PRESETS_PATH = "./presets/";
-      const PAGE_SIZE = 5;
+    const PRESETS_PATH = "./presets/";
+    const PAGE_SIZE = 5;
 
-      let allPresets = [];
-      let filtered = [];
-      let currentPage = 0;
-      let searchMode = "code";
+    let allPresets = [];
+    let filtered = [];
+    let currentPage = 0;
+    let searchMode = "code";
 
-      const tableBody = document.getElementById("tableBody");
-      const searchInput = document.getElementById("searchInput");
-      const pageIndicator = document.getElementById("pageIndicator");
-      const chips = document.querySelectorAll(".search-bar-chip");
+    const tableBody = document.getElementById("tableBody");
+    const searchInput = document.getElementById("searchInput");
+    const pageIndicator = document.getElementById("pageIndicator");
+    const chips = document.querySelectorAll(".search-bar-chip");
+    const debugConsole = document.getElementById("debugConsole");
 
-      async function loadPresets() {
-        allPresets = [];
-        try {
-          const indexRes = await fetch(PRESETS_PATH + "index.json");
-          const files = await indexRes.json();
+    function logDebug(msg) {
+      if(debugConsole) debugConsole.textContent += msg + "\n";
+    }
 
-          for (const file of files) {
-            const data = await fetch(PRESETS_PATH + file).then(r => r.json());
-            allPresets.push(data);
+    async function loadPresets() {
+      allPresets = [];
+      logDebug("Loading index.json...");
+      try {
+        const indexRes = await fetch(PRESETS_PATH + "index.json");
+        const indexData = await indexRes.json();
+        logDebug(`Found ${indexData.presets.length} presets.`);
+
+        for (const code of indexData.presets) {
+          try {
+            const presetData = await fetch(`${PRESETS_PATH}${code}.json`).then(r => r.json());
+            allPresets.push(presetData);
+            logDebug(`Loaded preset ${code}`);
+          } catch (err) {
+            logDebug(`Failed to load preset ${code}: ${err}`);
           }
-        } catch (err) {
-          console.warn("Failed to load presets", err);
         }
+      } catch (err) {
+        logDebug("Failed to load index.json: " + err);
+      }
 
+      filtered = [...allPresets];
+      currentPage = 0;
+      render();
+    }
+
+    function render() {
+      tableBody.innerHTML = "";
+      const start = currentPage * PAGE_SIZE;
+      const items = filtered.slice(start, start + PAGE_SIZE);
+
+      items.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code>${p.code}</code></td>
+          <td>${p.targetSystem || ""}</td>
+          <td>${p.description || ""}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      pageIndicator.textContent =
+        `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
+    }
+
+    function applySearch() {
+      const q = searchInput.value.trim().toLowerCase();
+
+      if (!q) {
         filtered = [...allPresets];
-        currentPage = 0;
-        render();
-      }
-
-      function render() {
-        tableBody.innerHTML = "";
-        const start = currentPage * PAGE_SIZE;
-        const items = filtered.slice(start, start + PAGE_SIZE);
-
-        items.forEach(p => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td><code>${p.code}</code></td>
-            <td>${p.targetSystem}</td>
-            <td>${p.description}</td>
-          `;
-          tableBody.appendChild(tr);
+      } else {
+        filtered = allPresets.filter(p => {
+          const value = (p[searchMode] || "").toLowerCase();
+          return value === q; // exact match
         });
-
-        pageIndicator.textContent =
-          `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
       }
+      currentPage = 0;
+      render();
+    }
 
-      function applySearch() {
-        const q = searchInput.value.trim().toLowerCase();
+    searchInput.addEventListener("input", applySearch);
 
-        if (!q) {
-          filtered = [...allPresets];
-        } else {
-          filtered = allPresets.filter(p => {
-            const value = (p[searchMode] || "").toLowerCase();
-            return value === q;
-          });
-        }
-        currentPage = 0;
-        render();
-      }
-
-      searchInput.addEventListener("input", applySearch);
-
-      chips.forEach(c => {
-        c.addEventListener("click", () => {
-          chips.forEach(b => b.classList.remove("active"));
-          c.classList.add("active");
-          searchMode = c.dataset.mode;
-          applySearch();
-        });
+    chips.forEach(c => {
+      c.addEventListener("click", () => {
+        chips.forEach(b => b.classList.remove("active"));
+        c.classList.add("active");
+        searchMode = c.dataset.mode;
+        applySearch();
       });
-
-      document.getElementById("prevBtn").addEventListener("click", () => {
-        if (currentPage > 0) {
-          currentPage--;
-          render();
-        }
-      });
-
-      document.getElementById("nextBtn").addEventListener("click", () => {
-        if ((currentPage + 1) * PAGE_SIZE < filtered.length) {
-          currentPage++;
-          render();
-        }
-      });
-
-      document.getElementById("refreshBtn").addEventListener("click", loadPresets);
-      document.getElementById("importBtn").addEventListener("click", () => {});
-      document.getElementById("validateBtn").addEventListener("click", () => {});
-      document.getElementById("gotoSubmissions").addEventListener("click", () => {
-        window.location.href = "submissions.html";
-      });
-
-      loadPresets();
     });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (currentPage > 0) {
+        currentPage--;
+        render();
+      }
+    });
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if ((currentPage + 1) * PAGE_SIZE < filtered.length) {
+        currentPage++;
+        render();
+      }
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", loadPresets);
+    document.getElementById("importBtn").addEventListener("click", () => {});
+    document.getElementById("validateBtn").addEventListener("click", () => {});
+    document.getElementById("gotoSubmissions").addEventListener("click", () => {
+      window.location.href = "submissions.html";
+    });
+
+    loadPresets();
+  });
   </script>
 
 </body>
