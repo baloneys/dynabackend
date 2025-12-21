@@ -2,48 +2,135 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Submissions</title>
+    <title>Submit Preset – VRCDynamicPlayerTags</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="Submit Preset – VRCDynamicPlayerTags" />
+    <meta property="twitter:card" content="summary_large_image" />
 
     <!-- RESET -->
-    <style>
+    <style data-tag="reset-style-sheet">
       html { line-height: 1.15; }
       body { margin: 0; }
-      * { box-sizing: border-box; }
+      * { box-sizing: border-box; border-width: 0; border-style: solid; -webkit-font-smoothing: antialiased; }
+      p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption { margin: 0; padding: 0; }
+      button,input,select,textarea { font-family: inherit; font-size: 100%; line-height: 1.15; margin: 0; }
+      a { color: inherit; text-decoration: inherit; }
+      html { scroll-behavior: smooth; }
     </style>
 
-    <!-- FONTS -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
+    <!-- DEFAULT -->
+    <style data-tag="default-style-sheet">
+      html { font-family: Inter; font-size: 1rem; }
+      body { font-weight: 400; line-height: 1.6; color: var(--color-on-surface); background: var(--color-surface); fill: var(--color-on-surface); }
+    </style>
 
-    <!-- TELEPORT -->
-    <link rel="stylesheet" href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css">
+    <!-- CORE SITE STYLE -->
+    <link rel="stylesheet" href="./style.css" />
 
-    <!-- CORE STYLE (THIS WAS MISSING EFFECTIVELY) -->
-    <link rel="stylesheet" href="/dynabackend/public/style.css">
+    <!-- PAGE STYLE (if needed) -->
+    <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
+
+    <!-- FONTS & OPTIONAL -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
+    <link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.css" />
   </head>
 
   <body>
-    <div class="page-container">
+    <div class="vrc-dynamic-player-tags-container1">
 
+      <!-- NAVIGATION (same as main page) -->
       <navigation-wrapper class="navigation-wrapper">
-        <!-- same nav as other page -->
+        <div class="navigation-container1">
+          <nav class="navigation-wrapper">
+            <div class="navigation-container">
+              <div class="navigation-brand">
+                <a href="vrc-dynamic-player-tags.html">
+                  <div class="navigation-logo-link">
+                    <span class="section-title">VRCDynaTags</span>
+                  </div>
+                </a>
+              </div>
+              <div class="navigation-desktop-center">
+                <span class="navigation-page-title">Submit Preset</span>
+              </div>
+            </div>
+          </nav>
+        </div>
       </navigation-wrapper>
 
-      <main class="content-section">
-        <h1 class="section-title">New Submission</h1>
+      <!-- HEADER SECTION -->
+      <header class="header-section">
+        <div class="header-container">
+          <div class="header-content">
+            <h1 class="header-title hero-title">Submit a Preset</h1>
+          </div>
+        </div>
+      </header>
 
-        <form class="submission-form">
-          <input type="text" placeholder="Prefab Name">
-          <textarea placeholder="Description"></textarea>
-          <textarea placeholder="Tracked Array A"></textarea>
-          <textarea placeholder="Tracked Array B"></textarea>
-        </form>
-      </main>
+      <!-- FORM SECTION -->
+      <section class="dashboard-section">
+        <div class="vrcdynamicplayertags-dashboard-container">
+          <div class="dashboard-table-wrapper">
+            <form id="submissionForm" class="modal-form" style="width:100%; max-width:600px; margin:auto; padding:1rem; gap:1rem; display:flex; flex-direction:column;">
+              <div class="form-group">
+                <label for="prefabName">Prefab Name</label>
+                <input type="text" id="prefabName" name="prefabName" class="input" placeholder="Prefab Name" required />
+              </div>
 
+              <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="input" placeholder="Description" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="array1">Tracked Array 1</label>
+                <textarea id="array1" name="array1" class="input" placeholder="Enter tracked array 1 items (comma separated)" required></textarea>
+              </div>
+
+              <div class="form-group">
+                <label for="array2">Tracked Array 2</label>
+                <textarea id="array2" name="array2" class="input" placeholder="Enter tracked array 2 items (comma separated)" required></textarea>
+              </div>
+
+              <div class="modal-footer" style="margin-top:1rem; text-align:center;">
+                <button type="submit" class="btn btn-primary btn-lg">Submit Preset</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- FOOTER (same as main) -->
       <footer-wrapper class="footer-wrapper">
-        <!-- same footer -->
+        <div class="footer-container1">
+          <footer class="footer-root">
+            <div class="footer-container">
+              <div class="footer-grid">
+                <div class="footer-brand-column">
+                  <!-- footer brand content -->
+                </div>
+                <div class="footer-links-column">
+                  <!-- resources -->
+                </div>
+                <div class="footer-links-column">
+                  <!-- community -->
+                </div>
+              </div>
+              <div class="footer-bottom">
+                <span class="footer-status-text">Systems Operational</span>
+              </div>
+            </div>
+          </footer>
+        </div>
       </footer-wrapper>
 
     </div>
+
+    <script>
+      document.getElementById("submissionForm").addEventListener("submit", function (e) {
+        e.preventDefault();
+        alert("Submission received!");
+      });
+    </script>
   </body>
 </html>
