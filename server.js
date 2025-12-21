@@ -18,8 +18,8 @@ app.use(bodyParser.json());
 
 // GitHub config
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const REPO_OWNER = "YOUR_GITHUB_USERNAME";
-const REPO_NAME = "YOUR_REPO_NAME";
+const REPO_OWNER = "baloneys";
+const REPO_NAME = "dynabackend";
 const BRANCH = "main";
 const BASE_PATH = "presets";
 
