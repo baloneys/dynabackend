@@ -51,6 +51,11 @@
       "code": "928473",
       "targetSystem": "China",
       "description": "China"
+    },
+    {
+      "code": "192240",
+      "targetSystem": "China",
+      "description": "China"
     }
   ]
 }
