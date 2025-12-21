@@ -36,6 +36,11 @@
       "code": "454523",
       "targetSystem": "ModerateWinGuy Spin the Bottle",
       "description": "Moderate win guy's spin the wheel."
+    },
+    {
+      "code": "573090",
+      "targetSystem": "racism",
+      "description": "******"
     }
   ]
 }
