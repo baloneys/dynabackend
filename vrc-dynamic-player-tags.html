@@ -49,7 +49,6 @@
   <section class="search-bar-section">
     <div class="search-bar-container" style="max-width:700px;margin:auto;">
       <div class="search-bar-card" style="padding:1.5rem;">
-
         <div class="search-bar-header">
           <h2 class="section-title">Explore Presets</h2>
           <p class="section-content">Search by exact Code, Target System, or Description.</p>
@@ -67,7 +66,6 @@
             <button type="button" class="search-bar-chip" data-mode="description">Description</button>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -111,157 +109,88 @@
   </section>
 
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
+    document.addEventListener("DOMContentLoaded", () => {
 
-    const PRESETS_PATH = "https://dynabackend-h8jf.onrender.com/presets/"; // backend URL
-    const PAGE_SIZE = 5;
+      const PRESETS_API = "https://dynabackend-h8jf.onrender.com/presets/";
+      const PAGE_SIZE = 5;
 
-    let allPresets = [];
-    let filtered = [];
-    let currentPage = 0;
-    let searchMode = "code";
+      let allPresets = [];
+      let filtered = [];
+      let currentPage = 0;
+      let searchMode = "code";
 
-    const tableBody = document.getElementById("tableBody");
-    const searchInput = document.getElementById("searchInput");
-    const pageIndicator = document.getElementById("pageIndicator");
-    const chips = document.querySelectorAll(".search-bar-chip");
-    const debugConsole = document.getElementById("debugConsole");
+      const tableBody = document.getElementById("tableBody");
+      const searchInput = document.getElementById("searchInput");
+      const pageIndicator = document.getElementById("pageIndicator");
+      const chips = document.querySelectorAll(".search-bar-chip");
+      const debugConsole = document.getElementById("debugConsole");
 
-    function logDebug(msg) {
-      if(debugConsole) debugConsole.textContent += msg + "\n";
-      console.log(msg);
-    }
-
-    async function loadPresets() {
-      allPresets = [];
-      logDebug("Loading index.json...");
-      try {
-        const indexRes = await fetch(PRESETS_PATH + "index.json");
-        const indexData = await indexRes.json();
-        logDebug(`Found ${indexData.presets.length} presets.`);
-
-        for (const code of indexData.presets) {
-          try {
-            const presetData = await fetch(`${PRESETS_PATH}${code}.json`).then(r => r.json());
-            allPresets.push(presetData);
-            logDebug(`Loaded preset ${code}`);
-          } catch (err) {
-            logDebug(`Failed to load preset ${code}: ${err}`);
-          }
-        }
-      } catch (err) {
-        logDebug("Failed to load index.json: " + err);
+      function logDebug(msg) {
+        if(debugConsole) debugConsole.textContent += msg + "\n";
       }
 
-      filtered = [...allPresets];
-      currentPage = 0;
-      render();
-    }
+      async function loadPresets() {
+        allPresets = [];
+        logDebug("Loading index.json from server...");
+        try {
+          const indexRes = await fetch(PRESETS_API + "index.json");
+          const indexData = await indexRes.json();
+          logDebug(`Found ${indexData.presets.length} presets.`);
 
-    function render() {
-      tableBody.innerHTML = "";
-      const start = currentPage * PAGE_SIZE;
-      const items = filtered.slice(start, start + PAGE_SIZE);
-
-      items.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><code>${p.code}</code></td>
-          <td>${p.targetSystem || ""}</td>
-          <td>${p.description || ""}</td>
-        `;
-        tableBody.appendChild(tr);
-      });
-
-      pageIndicator.textContent =
-        `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
-    }
-
-    function applySearch() {
-      const q = searchInput.value.trim().toLowerCase();
-
-      if (!q) {
-        filtered = [...allPresets];
-      } else {
-        filtered = allPresets.filter(p => {
-          const value = (p[searchMode] || "").toLowerCase();
-          return value === q; // exact match
-        });
-      }
-      currentPage = 0;
-      render();
-    }
-
-    searchInput.addEventListener("input", applySearch);
-
-    chips.forEach(c => {
-      c.addEventListener("click", () => {
-        chips.forEach(b => b.classList.remove("active"));
-        c.classList.add("active");
-        searchMode = c.dataset.mode;
-        applySearch();
-      });
-    });
-
-    document.getElementById("prevBtn").addEventListener("click", () => {
-      if (currentPage > 0) {
-        currentPage--;
-        render();
-      }
-    });
-
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      if ((currentPage + 1) * PAGE_SIZE < filtered.length) {
-        currentPage++;
-        render();
-      }
-    });
-
-    document.getElementById("refreshBtn").addEventListener("click", loadPresets);
-
-    document.getElementById("importBtn").addEventListener("click", async () => {
-      const input = document.createElement("input");
-      input.type = "file";
-      input.accept = "application/json";
-      input.onchange = async e => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = async ev => {
-          try {
-            const jsonData = JSON.parse(ev.target.result);
-            const resp = await fetch("https://dynabackend-h8jf.onrender.com/submit", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(jsonData)
-            });
-            const result = await resp.json();
-            if (resp.ok && result.success) {
-              logDebug(`Imported ${file.name}, new code: ${result.code}`);
-              await loadPresets(); // reload table
-            } else {
-              logDebug(`Error importing ${file.name}: ${JSON.stringify(result)}`);
+          for (const code of indexData.presets) {
+            try {
+              const presetData = await fetch(PRESETS_API + code + ".json").then(r => r.json());
+              allPresets.push(presetData);
+              logDebug(`Loaded preset ${code}`);
+            } catch(err) {
+              logDebug(`Failed to load preset ${code}: ${err}`);
             }
-          } catch(err) {
-            logDebug("Failed to parse JSON file: " + err);
           }
-        };
-        reader.readAsText(file);
-      };
-      input.click();
-    });
+        } catch(err) {
+          logDebug("Failed to load index.json: " + err);
+        }
 
-    document.getElementById("validateBtn").addEventListener("click", () => {
-      logDebug(`Validation not implemented yet.`);
-    });
+        filtered = [...allPresets];
+        currentPage = 0;
+        render();
+      }
 
-    document.getElementById("gotoSubmissions").addEventListener("click", () => {
-      window.location.href = "submissions.html";
-    });
+      function render() {
+        tableBody.innerHTML = "";
+        const start = currentPage * PAGE_SIZE;
+        const items = filtered.slice(start, start + PAGE_SIZE);
 
-    loadPresets();
-  });
-  </script>
+        items.forEach(p => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td><code>${p.code}</code></td>
+            <td>${p.targetSystem || ""}</td>
+            <td>${p.description || ""}</td>
+          `;
+          tableBody.appendChild(tr);
+        });
 
-</body>
-</html>
+        pageIndicator.textContent =
+          `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
+      }
+
+      function applySearch() {
+        const q = searchInput.value.trim().toLowerCase();
+
+        if (!q) {
+          filtered = [...allPresets];
+        } else {
+          filtered = allPresets.filter(p => {
+            const value = (p[searchMode] || "").toLowerCase();
+            return value === q; // exact match
+          });
+        }
+        currentPage = 0;
+        render();
+      }
+
+      searchInput.addEventListener("input", applySearch);
+
+      chips.forEach(c => {
+        c.addEventListener("click", () => {
+          chips.forEach(
