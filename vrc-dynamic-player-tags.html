@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VRCDynamicPlayerTags</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <!-- RESET & BASE STYLES -->
+  <!-- RESET & BASE -->
   <style data-tag="reset-style-sheet">
     html { line-height: 1.15; }
     body { margin: 0; }
-    *,
-    *::before,
-    *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    a { color: inherit; text-decoration: none; }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
   </style>
 
   <style data-tag="default-style-sheet">
@@ -21,7 +18,7 @@
     body { line-height: 1.6; background: var(--color-surface); color: var(--color-on-surface); }
   </style>
 
-  <!-- CORE STYLE (MUST LOAD FIRST) -->
+  <!-- CORE STYLE -->
   <link rel="stylesheet" href="./style.css" />
 
   <!-- PAGE STYLE -->
@@ -34,39 +31,48 @@
 
 <body>
 
-  <!-- HEADER + NAV -->
-  <header class="header-section">
+  <!-- HEADER WITH SUBMISSION BUTTON -->
+  <header class="header-section" style="display:flex;justify-content:space-between;align-items:center;">
     <div class="header-container">
       <div class="header-content">
         <h1 class="header-title hero-title">VRCDynamicPlayerTags</h1>
       </div>
     </div>
+    <div style="margin-right:24px;">
+      <button id="gotoSubmissions" class="btn btn-primary btn-lg">
+        New Submission
+      </button>
+    </div>
   </header>
 
   <!-- SEARCH BAR -->
   <section class="search-bar-section">
-    <div class="search-bar-container">
-      <div class="search-bar-card">
+    <div class="search-bar-container" style="max-width:700px;margin:auto;">
+      <div class="search-bar-card" style="padding:1.5rem;">
+
         <div class="search-bar-header">
           <h2 class="section-title">Explore Presets</h2>
-          <p class="section-content">Search presets by Code, Target System, or Description.</p>
+          <p class="section-content">Search by exact Code, Target System, or Description.</p>
         </div>
+
         <div class="search-bar-form-wrapper">
-          <div class="search-bar-input-group">
+          <div class="search-bar-input-group" style="max-width:400px;margin:auto;">
             <input type="text" id="searchInput" class="search-bar-input"
-              placeholder="Exact match search..." />
+              placeholder="Exact match search..." style="font-size:1rem;padding:0.7rem;" />
           </div>
-          <div class="search-bar-filter-chips">
+
+          <div class="search-bar-filter-chips" style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center;">
             <button type="button" class="search-bar-chip active" data-mode="code">Code</button>
             <button type="button" class="search-bar-chip" data-mode="targetSystem">Target System</button>
             <button type="button" class="search-bar-chip" data-mode="description">Description</button>
           </div>
         </div>
+
       </div>
     </div>
   </section>
 
-  <!-- TABLE -->
+  <!-- TABLE (3 COLUMNS) -->
   <section class="dashboard-section">
     <div class="vrcdynamicplayertags-dashboard-container">
       <div class="dashboard-table-wrapper">
@@ -76,8 +82,6 @@
               <th>Code</th>
               <th>Target System</th>
               <th>Description</th>
-              <th>KnownTMPs</th>
-              <th>KnownTriggers</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -86,17 +90,17 @@
     </div>
   </section>
 
-  <!-- ACTION BUTTONS + PAGINATION -->
+  <!-- ACTION BUTTONS & PAGINATION -->
   <section class="cta-actions-section">
     <div class="cta-actions-container"
-      style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; margin-top: 1rem;">
+      style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1rem 0;">
       <button id="refreshBtn" class="action-card">Refresh Code List</button>
       <button id="importBtn" class="action-card">Import JSON</button>
       <button id="validateBtn" class="action-card">Validate Codes</button>
     </div>
-    <div style="text-align:center; margin-top:1rem;">
+    <div style="text-align:center;margin-top:1rem;">
       <button id="prevBtn" class="btn btn-secondary">Prev</button>
-      <span id="pageInfo"></span>
+      <span id="pageIndicator"></span>
       <button id="nextBtn" class="btn btn-secondary">Next</button>
     </div>
   </section>
@@ -109,12 +113,12 @@
 
       let allPresets = [];
       let filtered = [];
-      let page = 0;
+      let currentPage = 0;
       let searchMode = "code";
 
       const tableBody = document.getElementById("tableBody");
       const searchInput = document.getElementById("searchInput");
-      const pageInfo = document.getElementById("pageInfo");
+      const pageIndicator = document.getElementById("pageIndicator");
       const chips = document.querySelectorAll(".search-bar-chip");
 
       async function loadPresets() {
@@ -124,37 +128,40 @@
           const files = await indexRes.json();
 
           for (const file of files) {
-            const preset = await fetch(PRESETS_PATH + file).then(r => r.json());
-            allPresets.push(preset);
+            const data = await fetch(PRESETS_PATH + file).then(r => r.json());
+            allPresets.push(data);
           }
         } catch (err) {
           console.warn("Failed to load presets", err);
         }
+
         filtered = [...allPresets];
-        page = 0;
+        currentPage = 0;
         render();
       }
 
       function render() {
         tableBody.innerHTML = "";
-        const start = page * PAGE_SIZE;
+        const start = currentPage * PAGE_SIZE;
         const items = filtered.slice(start, start + PAGE_SIZE);
+
         items.forEach(p => {
           const tr = document.createElement("tr");
           tr.innerHTML = `
             <td><code>${p.code}</code></td>
             <td>${p.targetSystem}</td>
             <td>${p.description}</td>
-            <td>${(p.KnownTMPs || []).join(", ")}</td>
-            <td>${(p.KnownTriggers || []).join(", ")}</td>
           `;
           tableBody.appendChild(tr);
         });
-        pageInfo.textContent = `Page ${page + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
+
+        pageIndicator.textContent =
+          `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
       }
 
       function applySearch() {
         const q = searchInput.value.trim().toLowerCase();
+
         if (!q) {
           filtered = [...allPresets];
         } else {
@@ -163,7 +170,7 @@
             return value === q;
           });
         }
-        page = 0;
+        currentPage = 0;
         render();
       }
 
@@ -179,15 +186,15 @@
       });
 
       document.getElementById("prevBtn").addEventListener("click", () => {
-        if (page > 0) {
-          page--;
+        if (currentPage > 0) {
+          currentPage--;
           render();
         }
       });
 
       document.getElementById("nextBtn").addEventListener("click", () => {
-        if ((page + 1) * PAGE_SIZE < filtered.length) {
-          page++;
+        if ((currentPage + 1) * PAGE_SIZE < filtered.length) {
+          currentPage++;
           render();
         }
       });
@@ -195,6 +202,9 @@
       document.getElementById("refreshBtn").addEventListener("click", loadPresets);
       document.getElementById("importBtn").addEventListener("click", () => {});
       document.getElementById("validateBtn").addEventListener("click", () => {});
+      document.getElementById("gotoSubmissions").addEventListener("click", () => {
+        window.location.href = "submissions.html";
+      });
 
       loadPresets();
     });
