@@ -86,7 +86,7 @@
         const preset = { code, targetSystem, description, KnownTMPs: knownTMPs, KnownTriggers: knownTriggers };
 
         try {
-          // Save individual JSON file
+          // Save individual JSON file (unchanged)
           await fetch(`/presets/${code}.json`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
@@ -95,7 +95,7 @@
 
           logDebug(`✔ Preset ${code}.json saved.`);
 
-          // Update index.json
+          // Update index.json only (NEW FORMAT)
           const indexRes = await fetch(`/presets/index.json`);
           let indexData = { presets: [] };
 
@@ -105,7 +105,12 @@
             logDebug("Index file not found, creating new one...");
           }
 
-          indexData.presets.push({ code, targetSystem, description });
+          // Append new preset info in new format
+          indexData.presets.push({
+            code,
+            targetSystem,
+            description
+          });
 
           await fetch(`/presets/index.json`, {
             method: "PUT",
@@ -116,7 +121,6 @@
           logDebug(`✔ index.json updated with ${code}`);
 
           alert(`Preset ${code} submitted successfully!`);
-          window.location.href = "vrc-dynamic-player-tags.html";
 
         } catch (err) {
           logDebug(`❌ Submission failed: ${err}`);
