@@ -1,171 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Submit Preset – VRCDynaTags</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Dynamic Player Tag</title>
+<link rel="stylesheet" href="style.css"> <!-- Keep your existing site CSS -->
+<style>
+  body {
+    font-family: var(--font-family-body, Arial, sans-serif);
+    background-color: var(--color-surface, #121212);
+    color: var(--color-on-surface, #fff);
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+  }
 
-  <!-- RESET -->
-  <style data-tag="reset-style-sheet">
-    html { line-height: 1.15; }
-    body { margin: 0; padding: 0; }
-    *, *::before, *::after { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; }
-  </style>
+  .submission-container {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--color-surface-elevated, #1e1e1e);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+  }
 
-  <!-- BASE -->
-  <style data-tag="default-style-sheet">
-    html {
-      font-family: Inter, sans-serif;
-      font-size: 1rem;
-    }
-    body {
-      background: var(--color-surface);
-      color: var(--color-on-surface);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 3rem;
-      min-height: 100vh;
-    }
-  </style>
+  h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: var(--color-primary, #854FEA);
+  }
 
-  <!-- PAGE STYLES -->
-  <link rel="stylesheet" href="./style.css" />
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-  <style>
-    .submission-card {
-      width: 100%;
-      max-width: 700px;
-      background: var(--color-surface-elevated);
-      border: 1px solid var(--color-border);
-      border-radius: var(--border-radius-xl);
-      padding: var(--spacing-3xl);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    }
+  label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+  }
 
-    .submission-card h1 {
-      text-align: center;
-      font-size: var(--font-size-4xl);
-      margin-bottom: var(--spacing-2xl);
-      color: var(--color-primary);
-    }
+  input, textarea {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border, #444);
+    background-color: var(--color-surface, #222);
+    color: var(--color-on-surface, #fff);
+    font-size: 1rem;
+    width: 100%;
+  }
 
-    .form-group {
-      margin-bottom: var(--spacing-xl);
-    }
-    .form-group label {
-      font-weight: 600;
-      margin-bottom: var(--spacing-sm);
-      display: block;
-    }
-    .form-group input,
-    .form-group textarea {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border);
-      border-radius: var(--border-radius-lg);
-      padding: var(--spacing-md);
-      font-size: var(--font-size-md);
-      width: 100%;
-      color: var(--color-on-surface);
-    }
-    .form-group textarea {
-      resize: vertical;
-      min-height: 90px;
-    }
-    .form-group .hint {
-      font-size: var(--font-size-sm);
-      color: var(--color-on-surface-secondary);
-      margin-top: var(--spacing-xs);
-    }
+  textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
 
-    .submit-btn {
-      display: block;
-      margin: var(--spacing-2xl) auto 0;
-      padding: var(--spacing-lg) var(--spacing-2xl);
-      font-size: var(--font-size-lg);
-      font-weight: 700;
-      border: none;
-      border-radius: var(--border-radius-lg);
-      background: var(--color-primary);
-      color: var(--color-on-primary);
-      cursor: pointer;
-      transition: background 0.2s ease;
-    }
-    .submit-btn:hover {
-      background: var(--color-secondary);
-    }
-  </style>
+  small {
+    display: block;
+    margin-top: -0.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-on-surface-secondary, #aaa);
+  }
+
+  button {
+    padding: 0.75rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-primary, #854FEA);
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  button:hover {
+    background-color: var(--color-secondary, #6f3fc5);
+  }
+
+  .confirmation {
+    text-align: center;
+    margin-top: 1rem;
+    font-weight: bold;
+    color: var(--color-success, #4caf50);
+  }
+</style>
 </head>
-
 <body>
 
-  <div class="submission-card">
-    <h1>Submit a Preset</h1>
+<div class="submission-container">
+  <h1>Submit Dynamic Player Tag</h1>
+  <form id="submission-form">
+    <div>
+      <label for="targetSystem">Target System</label>
+      <input type="text" id="targetSystem" name="targetSystem" required>
+      <small>Enter the system this preset targets (e.g., Unity, OSC, VRC SDK)</small>
+    </div>
+    
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" required></textarea>
+      <small>Describe what this preset does</small>
+    </div>
 
-    <form id="submissionForm">
+    <div>
+      <label for="knownTMPs">Known TMPs</label>
+      <textarea id="knownTMPs" name="knownTMPs"></textarea>
+      <small>Enter TMPs this preset uses, separated by commas</small>
+    </div>
 
-      <div class="form-group">
-        <label for="targetSystem">Target System</label>
-        <input type="text" id="targetSystem" name="targetSystem" placeholder="e.g. VRChat Core" required>
-      </div>
+    <div>
+      <label for="knownTriggers">Known Triggers</label>
+      <textarea id="knownTriggers" name="knownTriggers"></textarea>
+      <small>Enter triggers this preset uses, separated by commas</small>
+    </div>
 
-      <div class="form-group">
-        <label for="description">Description</label>
-        <textarea id="description" name="description" placeholder="Describe what this preset does" required></textarea>
-      </div>
+    <button type="submit">Submit</button>
+  </form>
 
-      <div class="form-group">
-        <label for="knownTMPs">Known TMPs</label>
-        <input type="text" id="knownTMPs" name="knownTMPs" placeholder="e.g. NameText, StatusText">
-        <div class="hint">Enter known TextMeshPro object identifiers separated by commas.</div>
-      </div>
+  <div class="confirmation" id="confirmation-message" style="display:none;"></div>
+</div>
 
-      <div class="form-group">
-        <label for="knownTriggers">Known Triggers</label>
-        <input type="text" id="knownTriggers" name="knownTriggers" placeholder="e.g. TriggerA, TriggerB">
-        <div class="hint">Enter trigger identifiers separated by commas.</div>
-      </div>
+<script>
+const form = document.getElementById('submission-form');
+const confirmation = document.getElementById('confirmation-message');
 
-      <button type="submit" class="submit-btn">Submit Preset</button>
-    </form>
-  </div>
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-  <script>
-    const form = document.getElementById('submissionForm');
+  const targetSystem = document.getElementById('targetSystem').value.trim();
+  const description = document.getElementById('description').value.trim();
+  const knownTMPs = document.getElementById('knownTMPs').value.split(',').map(s => s.trim()).filter(s => s);
+  const knownTriggers = document.getElementById('knownTriggers').value.split(',').map(s => s.trim()).filter(s => s);
 
-    form.addEventListener('submit', async function (e) {
-      e.preventDefault();
-
-      const payload = {
-        targetSystem: document.getElementById('targetSystem').value.trim(),
-        description: document.getElementById('description').value.trim(),
-        knownTMPs: document.getElementById('knownTMPs').value.split(',').map(s => s.trim()).filter(Boolean),
-        knownTriggers: document.getElementById('knownTriggers').value.split(',').map(s => s.trim()).filter(Boolean)
-      };
-
-      try {
-        const response = await fetch('https://YOUR_BACKEND_URL/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload),
-        });
-
-        const result = await response.json();
-
-        if (result.success) {
-          alert(`Preset created successfully! Code: ${result.code}`);
-          window.location.href = 'vrc-dynamic-player-tags.html';
-        } else {
-          alert('Submission failed: ' + result.error);
-        }
-      } catch (err) {
-        alert('Submission error: ' + err.message);
-      }
+  try {
+    const res = await fetch('https://dynabackend-h8jf.onrender.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ targetSystem, description, knownTMPs, knownTriggers })
     });
-  </script>
+
+    if (!res.ok) throw new Error(`Submission failed: ${res.statusText}`);
+
+    const data = await res.json();
+    confirmation.textContent = `Submission successful! Generated code: ${data.code}`;
+    confirmation.style.display = 'block';
+
+    // Redirect back after 3 seconds
+    setTimeout(() => window.location.href = 'vrc-dynamic-player-tags.html', 3000);
+  } catch (err) {
+    confirmation.textContent = `Error: ${err.message}`;
+    confirmation.style.color = 'red';
+    confirmation.style.display = 'block';
+  }
+});
+</script>
 
 </body>
 </html>
