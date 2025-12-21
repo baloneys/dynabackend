@@ -1,7 +1,19 @@
 {
   "presets": [
-    "894118",
-    "855157",
-    "988659"
+    {
+      "code": "894118",
+      "targetSystem": "Quantum Toaster",
+      "description": "Perfectly burns toast while simultaneously solving Schrödinger's cat paradox."
+    },
+    {
+      "code": "855157",
+      "targetSystem": "AI Mood Ring",
+      "description": "Changes color based on the existential dread level of your coworkers."
+    },
+    {
+      "code": "912345",
+      "targetSystem": "Teleporting Fridge",
+      "description": "Randomly relocates snacks to unexpected dimensions. Hunger is now an adventure."
+    }
   ]
 }
