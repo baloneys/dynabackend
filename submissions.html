@@ -1,97 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Submissions - VRCDynaTags</title>
-    <meta property="og:title" content="Submissions - VRCDynaTags"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <meta charset="utf-8"/>
-    <link rel="stylesheet" href="./vrc-dynamic-player-tags.css"/>
+    <meta charset="utf-8" />
+    <title>Submissions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- RESET -->
+    <style>
+      html { line-height: 1.15; }
+      body { margin: 0; }
+      * { box-sizing: border-box; }
+    </style>
+
+    <!-- FONTS -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap">
+
+    <!-- TELEPORT -->
+    <link rel="stylesheet" href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css">
+
+    <!-- CORE STYLE (THIS WAS MISSING EFFECTIVELY) -->
+    <link rel="stylesheet" href="/dynabackend/public/style.css">
   </head>
+
   <body>
-    <div class="vrc-dynamic-player-tags-container1">
-      <!-- Header -->
-      <header class="header-section">
-        <div class="header-container">
-          <div class="header-content">
-            <h1 class="header-title hero-title">Submit Preset</h1>
-            <div class="header-actions">
-              <button onclick="window.location.href='vrc-dynamic-player-tags.html'" class="btn btn-primary btn-lg">
-                Back to Dashboard
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <div class="page-container">
 
-      <!-- Submission Form -->
-      <section class="dashboard-section">
-        <div class="vrcdynamicplayertags-dashboard-container">
-          <form id="submissionForm" class="modal-form">
-            <div class="form-group">
-              <label for="prefabName">Prefab Name</label>
-              <input type="text" id="prefabName" name="prefabName" placeholder="Enter prefab name" required/>
-            </div>
-            <div class="form-group">
-              <label for="description">Description</label>
-              <textarea id="description" name="description" placeholder="Enter description" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="array1">Tracked Array 1</label>
-              <textarea id="array1" name="array1" placeholder="Enter values for tracked array 1" required></textarea>
-            </div>
-            <div class="form-group">
-              <label for="array2">Tracked Array 2</label>
-              <textarea id="array2" name="array2" placeholder="Enter values for tracked array 2" required></textarea>
-            </div>
-            <div class="modal-footer">
-              <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-            </div>
-          </form>
-        </div>
-      </section>
+      <navigation-wrapper class="navigation-wrapper">
+        <!-- same nav as other page -->
+      </navigation-wrapper>
 
-      <!-- Optional preview table -->
-      <section class="dashboard-section">
-        <div class="vrcdynamicplayertags-dashboard-container">
-          <h2>Preview Submissions</h2>
-          <table class="vrcdynamicplayertags-dashboard-table" id="previewTable">
-            <thead>
-              <tr>
-                <th>Prefab Name</th>
-                <th>Description</th>
-                <th>Array 1</th>
-                <th>Array 2</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </section>
+      <main class="content-section">
+        <h1 class="section-title">New Submission</h1>
+
+        <form class="submission-form">
+          <input type="text" placeholder="Prefab Name">
+          <textarea placeholder="Description"></textarea>
+          <textarea placeholder="Tracked Array A"></textarea>
+          <textarea placeholder="Tracked Array B"></textarea>
+        </form>
+      </main>
+
+      <footer-wrapper class="footer-wrapper">
+        <!-- same footer -->
+      </footer-wrapper>
+
     </div>
-
-    <script>
-      const form = document.getElementById("submissionForm");
-      const previewBody = document.getElementById("previewTable").querySelector("tbody");
-
-      form.addEventListener("submit", e => {
-        e.preventDefault();
-        const prefab = form.prefabName.value;
-        const desc = form.description.value;
-        const arr1 = form.array1.value;
-        const arr2 = form.array2.value;
-
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${prefab}</td>
-          <td>${desc}</td>
-          <td>${arr1}</td>
-          <td>${arr2}</td>
-        `;
-        previewBody.prepend(row);
-
-        form.reset();
-        alert("Preset submitted!");
-      });
-    </script>
   </body>
 </html>
