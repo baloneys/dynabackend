@@ -2,52 +2,67 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>VRCDynamicPlayerTags Submissions</title>
+  <title>Submit Preset - VRCDynamicPlayerTags</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- RESET & BASE -->
-  <style>
+  <style data-tag="reset-style-sheet">
     html { line-height: 1.15; }
-    body { margin: 0; font-family: Inter, sans-serif; line-height: 1.6; background:#f5f5f5; color:#111; }
-    * { box-sizing: border-box; }
-    input, textarea, button { font-family: inherit; font-size: 1rem; }
-    button { cursor:pointer; }
+    body { margin: 0; }
+    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+    a { text-decoration: none; color: inherit; }
+    input, textarea, button, select { font-family: Inter, sans-serif; }
   </style>
-</head>
-<body>
 
-  <header style="padding:1rem; display:flex; justify-content:space-between; align-items:center; background:#222; color:#fff;">
-    <h1>Submit New Preset</h1>
-    <button id="goBackBtn" style="padding:0.5rem 1rem;">Back</button>
+  <style data-tag="default-style-sheet">
+    html { font-family: Inter, sans-serif; font-size: 1rem; }
+    body { line-height: 1.6; background: var(--color-surface); color: var(--color-on-surface); }
+  </style>
+
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
+
+</head>
+
+<body>
+  <header class="header-section" style="display:flex;justify-content:space-between;align-items:center;">
+    <h1 class="header-title hero-title">Create New Preset</h1>
+    <button id="goBackBtn" class="btn btn-secondary btn-lg">Back</button>
   </header>
 
-  <main style="max-width:600px; margin:2rem auto; background:#fff; padding:2rem; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
-    <div style="margin-bottom:1rem;">
-      <label>Target System:</label><br>
-      <input type="text" id="targetSystem" style="width:100%;padding:0.5rem;" />
+  <section style="max-width:700px;margin:2rem auto;padding:1rem;background:var(--color-surface-elevated);border-radius:8px;box-shadow:0px 4px 10px rgba(0,0,0,0.1);">
+    <div class="form-group">
+      <label for="targetSystem">Target System</label>
+      <input id="targetSystem" type="text" placeholder="e.g. VRChat Core" class="form-control" />
     </div>
 
-    <div style="margin-bottom:1rem;">
-      <label>Description:</label><br>
-      <textarea id="description" rows="3" style="width:100%;padding:0.5rem;"></textarea>
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" rows="3" placeholder="Describe this preset…" class="form-control"></textarea>
     </div>
 
-    <div style="margin-bottom:1rem;">
-      <label>Known TMPs (comma separated):</label><br>
-      <input type="text" id="knownTMPs" style="width:100%;padding:0.5rem;" />
+    <div class="form-group">
+      <label for="knownTMPs">Known TMPs <small>(comma separated)</small></label>
+      <input id="knownTMPs" type="text" placeholder="TMP1, TMP2, …" class="form-control" />
+      <p style="font-size:0.85rem;color:var(--color-on-surface-secondary);">
+        List all TextMeshPro object identifiers this preset modifies.
+      </p>
     </div>
 
-    <div style="margin-bottom:1rem;">
-      <label>Known Triggers (comma separated):</label><br>
-      <input type="text" id="knownTriggers" style="width:100%;padding:0.5rem;" />
+    <div class="form-group">
+      <label for="knownTriggers">Known Triggers <small>(comma separated)</small></label>
+      <input id="knownTriggers" type="text" placeholder="Trigger1, Trigger2, …" class="form-control" />
+      <p style="font-size:0.85rem;color:var(--color-on-surface-secondary);">
+        List all trigger names this preset uses.
+      </p>
     </div>
 
-    <button id="submitBtn" style="padding:0.7rem 1.5rem;">Submit Preset</button>
+    <button id="submitBtn" class="btn btn-primary btn-lg">Create Preset</button>
 
-    <section style="margin-top:1.5rem;">
+    <section style="margin-top:1rem;">
       <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
     </section>
-  </main>
+  </section>
 
   <script>
   document.addEventListener("DOMContentLoaded", () => {
@@ -60,7 +75,7 @@
     const goBackBtn = document.getElementById("goBackBtn");
 
     function logDebug(msg) {
-      if(debugConsole) debugConsole.textContent += msg + "\n";
+      debugConsole.textContent += msg + "\n";
     }
 
     function generateCode() {
@@ -73,16 +88,15 @@
       const knownTMPs = knownTMPsInput.value.split(",").map(s => s.trim()).filter(Boolean);
       const knownTriggers = knownTriggersInput.value.split(",").map(s => s.trim()).filter(Boolean);
 
-      if(!targetSystem || !description) {
-        logDebug("Target System and Description are required.");
+      if (!targetSystem || !description) {
+        logDebug("Error: Target System and Description are required.");
         return;
       }
 
       const code = generateCode();
-      const preset = { code, targetSystem, description, knownTMPs, knownTriggers };
+      const preset = { code, targetSystem, description, KnownTMPs: knownTMPs, KnownTriggers: knownTriggers };
 
-      logDebug(`Submitting preset ${code}...`);
-
+      logDebug(`→ Submitting preset ${code}...`);
       try {
         const res = await fetch("/submit", {
           method: "POST",
@@ -91,24 +105,19 @@
         });
         const result = await res.json();
 
-        if(result.success) {
-          logDebug(`Preset ${result.code} saved successfully!`);
-          targetSystemInput.value = "";
-          descriptionInput.value = "";
-          knownTMPsInput.value = "";
-          knownTriggersInput.value = "";
+        if (res.ok && result.success) {
+          logDebug(`✔ Preset ${result.code} saved!`);
         } else {
-          logDebug(`Error: ${result.error}`);
+          logDebug(`✖ Submission error: ${result.error || JSON.stringify(result)}`);
         }
-      } catch(err) {
-        logDebug("Submission failed: " + err);
+      } catch (err) {
+        logDebug("❌ Submission failed: " + err);
       }
     });
 
     goBackBtn.addEventListener("click", () => {
       window.location.href = "vrc-dynamic-player-tags.html";
     });
-
   });
   </script>
 
