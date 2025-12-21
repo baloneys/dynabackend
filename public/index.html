@@ -41,9 +41,9 @@
       body {
         font-weight: 400;
         line-height: 1.6;
-        color: var(--color-on-surface);
-        background: var(--color-surface);
-        fill: var(--color-on-surface);
+        color: var(--color-on-surface, #000);
+        background: var(--color-surface, #f0f0f0); /* fallback background */
+        fill: var(--color-on-surface, #000);
       }
     </style>
 
@@ -63,9 +63,17 @@
   </head>
 
   <body>
+    <!-- React mount point -->
     <div id="app"></div>
 
     <!-- APP ENTRY -->
-    <script type="module" src="./src/app.js"></script>
+    <script type="module">
+      import { createRoot } from 'https://unpkg.com/react-dom@18/umd/react-dom.production.min.js';
+      import App from './src/app.js';
+
+      const container = document.getElementById('app');
+      const root = createRoot(container);
+      root.render(React.createElement(App));
+    </script>
   </body>
 </html>
