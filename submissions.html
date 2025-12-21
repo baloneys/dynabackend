@@ -1,136 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Submit Preset – VRCDynamicPlayerTags</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="Submit Preset – VRCDynamicPlayerTags" />
-    <meta property="twitter:card" content="summary_large_image" />
+<head>
+  <meta charset="UTF-8">
+  <title>New Submission</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- RESET -->
-    <style data-tag="reset-style-sheet">
-      html { line-height: 1.15; }
-      body { margin: 0; }
-      * { box-sizing: border-box; border-width: 0; border-style: solid; -webkit-font-smoothing: antialiased; }
-      p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption { margin: 0; padding: 0; }
-      button,input,select,textarea { font-family: inherit; font-size: 100%; line-height: 1.15; margin: 0; }
-      a { color: inherit; text-decoration: inherit; }
-      html { scroll-behavior: smooth; }
-    </style>
+  <!-- Base styles -->
+  <style>
+    body { font-family: Inter, sans-serif; margin:0; padding:0; background:#121212; color:#eee; }
+    h1 { text-align:center; margin-top:1rem; }
+    .form-container { max-width:600px; margin:2rem auto; background:#1e1e1e; padding:2rem; border-radius:12px; box-shadow:0 5px 15px rgba(0,0,0,0.5);}
+    label { display:block; margin-top:1rem; font-weight:600; }
+    input[type=text], textarea { width:100%; padding:0.7rem; margin-top:0.3rem; border-radius:6px; border:1px solid #555; background:#2a2a2a; color:#eee; font-size:1rem;}
+    small { display:block; margin-top:0.3rem; color:#aaa; font-size:0.85rem; }
+    button { margin-top:1.5rem; padding:0.8rem 1.2rem; background:#854FEA; color:#fff; font-weight:600; border:none; border-radius:8px; cursor:pointer; }
+    button:hover { background:#9c66ff; }
+    .confirmation { text-align:center; margin-top:1rem; color:#0f0; font-weight:600; }
+  </style>
+</head>
+<body>
 
-    <!-- DEFAULT -->
-    <style data-tag="default-style-sheet">
-      html { font-family: Inter; font-size: 1rem; }
-      body { font-weight: 400; line-height: 1.6; color: var(--color-on-surface); background: var(--color-surface); fill: var(--color-on-surface); }
-    </style>
+  <h1>New Submission</h1>
 
-    <!-- CORE SITE STYLE -->
-    <link rel="stylesheet" href="./style.css" />
+  <div class="form-container">
+    <form id="submissionForm">
+      <label for="targetSystem">Target System</label>
+      <input type="text" id="targetSystem" name="targetSystem" required placeholder="Enter the target system..." />
 
-    <!-- PAGE STYLE (if needed) -->
-    <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
+      <label for="description">Description</label>
+      <input type="text" id="description" name="description" required placeholder="Enter a short description..." />
 
-    <!-- FONTS & OPTIONAL -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
-    <link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.css" />
-  </head>
+      <label for="knownTMPs">Known TMPs</label>
+      <textarea id="knownTMPs" name="knownTMPs" rows="3" placeholder="Enter known TMPs, comma-separated"></textarea>
+      <small>Populate with TMP identifiers separated by commas. Example: TMP_A,TMP_B,TMP_C</small>
 
-  <body>
-    <div class="vrc-dynamic-player-tags-container1">
+      <label for="knownTriggers">Known Triggers</label>
+      <textarea id="knownTriggers" name="knownTriggers" rows="3" placeholder="Enter known triggers, comma-separated"></textarea>
+      <small>Populate with trigger identifiers separated by commas. Example: Trigger_X,Trigger_Y</small>
 
-      <!-- NAVIGATION (same as main page) -->
-      <navigation-wrapper class="navigation-wrapper">
-        <div class="navigation-container1">
-          <nav class="navigation-wrapper">
-            <div class="navigation-container">
-              <div class="navigation-brand">
-                <a href="vrc-dynamic-player-tags.html">
-                  <div class="navigation-logo-link">
-                    <span class="section-title">VRCDynaTags</span>
-                  </div>
-                </a>
-              </div>
-              <div class="navigation-desktop-center">
-                <span class="navigation-page-title">Submit Preset</span>
-              </div>
-            </div>
-          </nav>
-        </div>
-      </navigation-wrapper>
+      <button type="submit">Submit Entry</button>
+    </form>
 
-      <!-- HEADER SECTION -->
-      <header class="header-section">
-        <div class="header-container">
-          <div class="header-content">
-            <h1 class="header-title hero-title">Submit a Preset</h1>
-          </div>
-        </div>
-      </header>
+    <div id="confirmation" class="confirmation" style="display:none;">Submission created! Redirecting...</div>
+  </div>
 
-      <!-- FORM SECTION -->
-      <section class="dashboard-section">
-        <div class="vrcdynamicplayertags-dashboard-container">
-          <div class="dashboard-table-wrapper">
-            <form id="submissionForm" class="modal-form" style="width:100%; max-width:600px; margin:auto; padding:1rem; gap:1rem; display:flex; flex-direction:column;">
-              <div class="form-group">
-                <label for="prefabName">Prefab Name</label>
-                <input type="text" id="prefabName" name="prefabName" class="input" placeholder="Prefab Name" required />
-              </div>
+  <script>
+    const FORM = document.getElementById("submissionForm");
+    const CONFIRM = document.getElementById("confirmation");
+    const PRESETS_PATH = "./presets/";
+    const INDEX_FILE = "index.json";
 
-              <div class="form-group">
-                <label for="description">Description</label>
-                <textarea id="description" name="description" class="input" placeholder="Description" required></textarea>
-              </div>
+    async function fetchIndex() {
+      try {
+        const res = await fetch(PRESETS_PATH + INDEX_FILE);
+        return await res.json();
+      } catch {
+        return [];
+      }
+    }
 
-              <div class="form-group">
-                <label for="array1">Tracked Array 1</label>
-                <textarea id="array1" name="array1" class="input" placeholder="Enter tracked array 1 items (comma separated)" required></textarea>
-              </div>
+    async function saveJSON(filename, data) {
+      // NOTE: This requires server-side support to actually write files.
+      // For local testing or in Node/Server environment, replace this with proper write logic.
+      console.log("Writing JSON:", filename, data);
+    }
 
-              <div class="form-group">
-                <label for="array2">Tracked Array 2</label>
-                <textarea id="array2" name="array2" class="input" placeholder="Enter tracked array 2 items (comma separated)" required></textarea>
-              </div>
+    function generateUniqueCode(existingCodes) {
+      let code;
+      do {
+        code = Math.floor(100000 + Math.random() * 900000).toString(); // 6 digits
+      } while (existingCodes.includes(code));
+      return code;
+    }
 
-              <div class="modal-footer" style="margin-top:1rem; text-align:center;">
-                <button type="submit" class="btn btn-primary btn-lg">Submit Preset</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </section>
+    FORM.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-      <!-- FOOTER (same as main) -->
-      <footer-wrapper class="footer-wrapper">
-        <div class="footer-container1">
-          <footer class="footer-root">
-            <div class="footer-container">
-              <div class="footer-grid">
-                <div class="footer-brand-column">
-                  <!-- footer brand content -->
-                </div>
-                <div class="footer-links-column">
-                  <!-- resources -->
-                </div>
-                <div class="footer-links-column">
-                  <!-- community -->
-                </div>
-              </div>
-              <div class="footer-bottom">
-                <span class="footer-status-text">Systems Operational</span>
-              </div>
-            </div>
-          </footer>
-        </div>
-      </footer-wrapper>
+      const targetSystem = document.getElementById("targetSystem").value.trim();
+      const description = document.getElementById("description").value.trim();
+      const knownTMPs = document.getElementById("knownTMPs").value.split(",").map(s => s.trim()).filter(Boolean);
+      const knownTriggers = document.getElementById("knownTriggers").value.split(",").map(s => s.trim()).filter(Boolean);
 
-    </div>
+      // Load index.json
+      let index = await fetchIndex();
+      let existingCodes = [];
+      for (const file of index) {
+        const code = file.replace(".json",""); // assume filename = code.json
+        existingCodes.push(code);
+      }
 
-    <script>
-      document.getElementById("submissionForm").addEventListener("submit", function (e) {
-        e.preventDefault();
-        alert("Submission received!");
-      });
-    </script>
-  </body>
+      // Generate unique code
+      const code = generateUniqueCode(existingCodes);
+
+      // Prepare JSON
+      const entry = {
+        code: code,
+        targetSystem: targetSystem,
+        description: description,
+        KnownTMPs: knownTMPs,
+        KnownTriggers: knownTriggers
+      };
+
+      // Save JSON (server-side required)
+      await saveJSON(`${PRESETS_PATH}${code}.json`, entry);
+
+      // Update index.json
+      index.push(`${code}.json`);
+      await saveJSON(`${PRESETS_PATH}${INDEX_FILE}`, index);
+
+      // Confirmation
+      CONFIRM.style.display = "block";
+      setTimeout(() => {
+        window.location.href = "vrc-dynamic-player-tags.html";
+      }, 1500);
+    });
+  </script>
+
+</body>
 </html>
