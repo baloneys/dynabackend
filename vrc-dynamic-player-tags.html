@@ -113,7 +113,7 @@
   <script>
   document.addEventListener("DOMContentLoaded", () => {
 
-    const PRESETS_PATH = "./presets/";
+    const PRESETS_PATH = "https://dynabackend-h8jf.onrender.com/presets/"; // backend URL
     const PAGE_SIZE = 5;
 
     let allPresets = [];
@@ -129,6 +129,7 @@
 
     function logDebug(msg) {
       if(debugConsole) debugConsole.textContent += msg + "\n";
+      console.log(msg);
     }
 
     async function loadPresets() {
@@ -217,8 +218,43 @@
     });
 
     document.getElementById("refreshBtn").addEventListener("click", loadPresets);
-    document.getElementById("importBtn").addEventListener("click", () => {});
-    document.getElementById("validateBtn").addEventListener("click", () => {});
+
+    document.getElementById("importBtn").addEventListener("click", async () => {
+      const input = document.createElement("input");
+      input.type = "file";
+      input.accept = "application/json";
+      input.onchange = async e => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = async ev => {
+          try {
+            const jsonData = JSON.parse(ev.target.result);
+            const resp = await fetch("https://dynabackend-h8jf.onrender.com/submit", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(jsonData)
+            });
+            const result = await resp.json();
+            if (resp.ok && result.success) {
+              logDebug(`Imported ${file.name}, new code: ${result.code}`);
+              await loadPresets(); // reload table
+            } else {
+              logDebug(`Error importing ${file.name}: ${JSON.stringify(result)}`);
+            }
+          } catch(err) {
+            logDebug("Failed to parse JSON file: " + err);
+          }
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    });
+
+    document.getElementById("validateBtn").addEventListener("click", () => {
+      logDebug(`Validation not implemented yet.`);
+    });
+
     document.getElementById("gotoSubmissions").addEventListener("click", () => {
       window.location.href = "submissions.html";
     });
