@@ -1,200 +1,116 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Submit Dynamic Player Tag</title>
-<link rel="stylesheet" href="style.css"> <!-- existing CSS from main site -->
-<style>
-  body {
-    font-family: var(--font-family-body, Arial, sans-serif);
-    background-color: var(--color-surface, #121212);
-    color: var(--color-on-surface, #fff);
-    display: flex;
-    justify-content: center;
-    padding: 2rem;
-  }
+  <meta charset="utf-8" />
+  <title>VRCDynamicPlayerTags Submissions</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  .submission-container {
-    max-width: 600px;
-    width: 100%;
-    background-color: var(--color-surface-elevated, #1e1e1e);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  h1 {
-    text-align: center;
-    margin-bottom: 1rem;
-    font-size: 2rem;
-    color: var(--color-primary, #854FEA);
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  label {
-    font-weight: bold;
-    margin-bottom: 0.25rem;
-    display: block;
-  }
-
-  input, textarea {
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    border: 1px solid var(--color-border, #444);
-    background-color: var(--color-surface, #222);
-    color: var(--color-on-surface, #fff);
-    font-size: 0.95rem;
-    width: 100%;
-  }
-
-  textarea {
-    resize: vertical;
-    min-height: 80px;
-  }
-
-  small {
-    display: block;
-    margin-top: -0.25rem;
-    margin-bottom: 0.5rem;
-    color: var(--color-on-surface-secondary, #aaa);
-    font-size: 0.85rem;
-  }
-
-  button {
-    padding: 0.65rem;
-    border-radius: 0.5rem;
-    background-color: var(--color-primary, #854FEA);
-    border: none;
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    margin-top: 0.5rem;
-  }
-
-  button:hover {
-    background-color: var(--color-secondary, #6f3fc5);
-  }
-
-  .confirmation {
-    text-align: center;
-    margin-top: 0.5rem;
-    font-weight: bold;
-    color: var(--color-success, #4caf50);
-  }
-
-  #debug-console {
-    margin-top: 1rem;
-    background-color: #111;
-    color: #0f0;
-    font-family: monospace;
-    font-size: 0.85rem;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    max-height: 150px;
-    overflow-y: auto;
-  }
-</style>
+  <!-- RESET & BASE -->
+  <style>
+    html { line-height: 1.15; }
+    body { margin: 0; font-family: Inter, sans-serif; line-height: 1.6; background:#f5f5f5; color:#111; }
+    * { box-sizing: border-box; }
+    input, textarea, button { font-family: inherit; font-size: 1rem; }
+    button { cursor:pointer; }
+  </style>
 </head>
 <body>
 
-<div class="submission-container">
-  <h1>Submit Dynamic Player Tag</h1>
-  <form id="submission-form">
-    <div>
-      <label for="targetSystem">Target System</label>
-      <input type="text" id="targetSystem" name="targetSystem" required>
-      <small>Enter the system this preset targets (e.g., Unity, OSC, VRC SDK)</small>
-    </div>
-    
-    <div>
-      <label for="description">Description</label>
-      <textarea id="description" name="description" required></textarea>
-      <small>Describe what this preset does</small>
+  <header style="padding:1rem; display:flex; justify-content:space-between; align-items:center; background:#222; color:#fff;">
+    <h1>Submit New Preset</h1>
+    <button id="goBackBtn" style="padding:0.5rem 1rem;">Back</button>
+  </header>
+
+  <main style="max-width:600px; margin:2rem auto; background:#fff; padding:2rem; border-radius:8px; box-shadow:0 0 10px rgba(0,0,0,0.1);">
+    <div style="margin-bottom:1rem;">
+      <label>Target System:</label><br>
+      <input type="text" id="targetSystem" style="width:100%;padding:0.5rem;" />
     </div>
 
-    <div>
-      <label for="knownTMPs">Known TMPs</label>
-      <textarea id="knownTMPs" name="knownTMPs"></textarea>
-      <small>Enter TMPs this preset uses, separated by commas</small>
+    <div style="margin-bottom:1rem;">
+      <label>Description:</label><br>
+      <textarea id="description" rows="3" style="width:100%;padding:0.5rem;"></textarea>
     </div>
 
-    <div>
-      <label for="knownTriggers">Known Triggers</label>
-      <textarea id="knownTriggers" name="knownTriggers"></textarea>
-      <small>Enter triggers this preset uses, separated by commas</small>
+    <div style="margin-bottom:1rem;">
+      <label>Known TMPs (comma separated):</label><br>
+      <input type="text" id="knownTMPs" style="width:100%;padding:0.5rem;" />
     </div>
 
-    <button type="submit">Submit</button>
-  </form>
+    <div style="margin-bottom:1rem;">
+      <label>Known Triggers (comma separated):</label><br>
+      <input type="text" id="knownTriggers" style="width:100%;padding:0.5rem;" />
+    </div>
 
-  <div class="confirmation" id="confirmation-message" style="display:none;"></div>
+    <button id="submitBtn" style="padding:0.7rem 1.5rem;">Submit Preset</button>
 
-  <div id="debug-console"></div>
-</div>
+    <section style="margin-top:1.5rem;">
+      <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
+    </section>
+  </main>
 
-<script>
-const form = document.getElementById('submission-form');
-const confirmation = document.getElementById('confirmation-message');
-const debug = document.getElementById('debug-console');
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const targetSystemInput = document.getElementById("targetSystem");
+    const descriptionInput = document.getElementById("description");
+    const knownTMPsInput = document.getElementById("knownTMPs");
+    const knownTriggersInput = document.getElementById("knownTriggers");
+    const submitBtn = document.getElementById("submitBtn");
+    const debugConsole = document.getElementById("debugConsole");
+    const goBackBtn = document.getElementById("goBackBtn");
 
-function logDebug(message) {
-  const entry = document.createElement('div');
-  entry.textContent = message;
-  debug.appendChild(entry);
-  debug.scrollTop = debug.scrollHeight;
-}
-
-form.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const targetSystem = document.getElementById('targetSystem').value.trim();
-  const description = document.getElementById('description').value.trim();
-  const knownTMPs = document.getElementById('knownTMPs').value.split(',').map(s => s.trim()).filter(s => s);
-  const knownTriggers = document.getElementById('knownTriggers').value.split(',').map(s => s.trim()).filter(s => s);
-
-  logDebug("Submitting form...");
-  logDebug(`Target: ${targetSystem}, Description: ${description}`);
-  logDebug(`KnownTMPs: ${JSON.stringify(knownTMPs)}, KnownTriggers: ${JSON.stringify(knownTriggers)}`);
-
-  try {
-    const res = await fetch('https://dynabackend-h8jf.onrender.com/submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ targetSystem, description, knownTMPs, knownTriggers })
-    });
-
-    if (!res.ok) {
-      const text = await res.text();
-      throw new Error(`HTTP ${res.status}: ${text}`);
+    function logDebug(msg) {
+      if(debugConsole) debugConsole.textContent += msg + "\n";
     }
 
-    const data = await res.json();
-    logDebug(`Server response: ${JSON.stringify(data)}`);
+    function generateCode() {
+      return Math.floor(100000 + Math.random() * 900000).toString();
+    }
 
-    confirmation.textContent = `Submission successful! Generated code: ${data.code}`;
-    confirmation.style.color = 'var(--color-success, #4caf50)';
-    confirmation.style.display = 'block';
+    submitBtn.addEventListener("click", async () => {
+      const targetSystem = targetSystemInput.value.trim();
+      const description = descriptionInput.value.trim();
+      const knownTMPs = knownTMPsInput.value.split(",").map(s => s.trim()).filter(Boolean);
+      const knownTriggers = knownTriggersInput.value.split(",").map(s => s.trim()).filter(Boolean);
 
-    // Redirect back after 3 seconds
-    setTimeout(() => window.location.href = 'vrc-dynamic-player-tags.html', 3000);
-  } catch (err) {
-    logDebug(`Error: ${err.message}`);
-    confirmation.textContent = `Error submitting: ${err.message}`;
-    confirmation.style.color = 'red';
-    confirmation.style.display = 'block';
-  }
-});
-</script>
+      if(!targetSystem || !description) {
+        logDebug("Target System and Description are required.");
+        return;
+      }
+
+      const code = generateCode();
+      const preset = { code, targetSystem, description, knownTMPs, knownTriggers };
+
+      logDebug(`Submitting preset ${code}...`);
+
+      try {
+        const res = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(preset)
+        });
+        const result = await res.json();
+
+        if(result.success) {
+          logDebug(`Preset ${result.code} saved successfully!`);
+          targetSystemInput.value = "";
+          descriptionInput.value = "";
+          knownTMPsInput.value = "";
+          knownTriggersInput.value = "";
+        } else {
+          logDebug(`Error: ${result.error}`);
+        }
+      } catch(err) {
+        logDebug("Submission failed: " + err);
+      }
+    });
+
+    goBackBtn.addEventListener("click", () => {
+      window.location.href = "vrc-dynamic-player-tags.html";
+    });
+
+  });
+  </script>
 
 </body>
 </html>
