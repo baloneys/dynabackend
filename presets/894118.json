@@ -1,0 +1,17 @@
+{
+  "code": "894118",
+  "targetSystem": "meow",
+  "description": "wolf",
+  "KnownTMPs": [
+    "cat",
+    "dog",
+    "uwu",
+    "car"
+  ],
+  "KnownTriggers": [
+    "cat",
+    "uwu",
+    "meow",
+    "salad"
+  ]
+}
