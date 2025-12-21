@@ -1,136 +1,217 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>VRCDynamicPlayerTags - Submissions</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Submit Dynamic Player Tag</title>
+<link rel="stylesheet" href="style.css"> <!-- existing CSS from main site -->
+<style>
+  body {
+    font-family: var(--font-family-body, Arial, sans-serif);
+    background-color: var(--color-surface, #121212);
+    color: var(--color-on-surface, #fff);
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+  }
 
-  <!-- RESET & BASE -->
-  <style data-tag="reset-style-sheet">
-    html { line-height: 1.15; }
-    body { margin: 0; }
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; }
-  </style>
+  .submission-container {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--color-surface-elevated, #1e1e1e);
+    padding: 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
 
-  <style data-tag="default-style-sheet">
-    html { font-family: Inter, sans-serif; font-size: 1rem; }
-    body { line-height: 1.6; background: var(--color-surface); color: var(--color-on-surface); }
-    input, textarea { font-family: Inter, sans-serif; font-size: 1rem; }
-  </style>
+  h1 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 2rem;
+    color: var(--color-primary, #854FEA);
+  }
 
-  <!-- CORE STYLE -->
-  <link rel="stylesheet" href="./style.css" />
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
 
-  <!-- PAGE STYLE -->
-  <link rel="stylesheet" href="./submissions.css" />
+  label {
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+    display: block;
+  }
 
-  <!-- FONTS -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" />
+  input, textarea {
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--color-border, #444);
+    background-color: var(--color-surface, #222);
+    color: var(--color-on-surface, #fff);
+    font-size: 0.95rem;
+    width: 100%;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 80px;
+  }
+
+  small {
+    display: block;
+    margin-top: -0.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--color-on-surface-secondary, #aaa);
+    font-size: 0.85rem;
+  }
+
+  button {
+    padding: 0.65rem;
+    border-radius: 0.5rem;
+    background-color: var(--color-primary, #854FEA);
+    border: none;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    margin-top: 0.5rem;
+  }
+
+  button:hover {
+    background-color: var(--color-secondary, #6f3fc5);
+  }
+
+  .confirmation {
+    text-align: center;
+    margin-top: 0.5rem;
+    font-weight: bold;
+    color: var(--color-success, #4caf50);
+  }
+
+  #debug-console {
+    margin-top: 1rem;
+    background-color: #111;
+    color: #0f0;
+    font-family: monospace;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
+  }
+</style>
 </head>
-
 <body>
 
-  <header class="header-section" style="display:flex;justify-content:center;align-items:center;margin-bottom:2rem;">
-    <h1 class="header-title hero-title">Submit a New Preset</h1>
-  </header>
-
-  <section class="submission-form-section" style="max-width:700px;margin:auto;">
-    <div class="submission-card" style="padding:2rem;background:#f4f4f4;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+<div class="submission-container">
+  <h1>Submit Dynamic Player Tag</h1>
+  <form id="submission-form">
+    <div>
       <label for="targetSystem">Target System</label>
-      <input type="text" id="targetSystem" placeholder="Enter target system" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;" />
-
-      <label for="description">Description</label>
-      <textarea id="description" rows="3" placeholder="Enter description" style="width:100%;padding:0.5rem;margin-bottom:0.5rem;"></textarea>
-
-      <label for="knownTMPs">Known TMPs</label>
-      <textarea id="knownTMPs" rows="2" placeholder="Comma-separated TMP names" style="width:100%;padding:0.5rem;margin-bottom:0.2rem;"></textarea>
-      <small>Populate with TMP names separated by commas</small>
-
-      <label for="knownTriggers">Known Triggers</label>
-      <textarea id="knownTriggers" rows="2" placeholder="Comma-separated trigger names" style="width:100%;padding:0.5rem;margin-bottom:0.2rem;"></textarea>
-      <small>Populate with trigger names separated by commas</small>
-
-      <button id="submitBtn" style="margin-top:1rem;padding:0.75rem 1.5rem;">Submit Preset</button>
+      <input type="text" id="targetSystem" name="targetSystem" required>
+      <small>Enter the system this preset targets (e.g., Unity, OSC, VRC SDK)</small>
     </div>
-  </section>
+    
+    <div>
+      <label for="description">Description</label>
+      <textarea id="description" name="description" required></textarea>
+      <small>Describe what this preset does</small>
+    </div>
 
-  <section style="margin:1rem auto; max-width:700px;">
-    <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
-  </section>
+    <div>
+      <label for="knownTMPs">Known TMPs</label>
+      <textarea id="knownTMPs" name="knownTMPs"></textarea>
+      <small>Enter TMPs this preset uses, separated by commas</small>
+    </div>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const submitBtn = document.getElementById("submitBtn");
-      const debugConsole = document.getElementById("debugConsole");
+    <div>
+      <label for="knownTriggers">Known Triggers</label>
+      <textarea id="knownTriggers" name="knownTriggers"></textarea>
+      <small>Enter triggers this preset uses, separated by commas</small>
+    </div>
 
-      function logDebug(msg) {
-        if(debugConsole) debugConsole.textContent += msg + "\n";
-      }
+    <button type="submit">Submit</button>
+  </form>
 
-      async function submitPreset() {
-        const targetSystem = document.getElementById("targetSystem").value.trim();
-        const description = document.getElementById("description").value.trim();
-        const knownTMPs = document.getElementById("knownTMPs").value.split(",").map(s => s.trim()).filter(Boolean);
-        const knownTriggers = document.getElementById("knownTriggers").value.split(",").map(s => s.trim()).filter(Boolean);
+  <div class="confirmation" id="confirmation-message" style="display:none;"></div>
 
-        if (!targetSystem || !description) {
-          alert("Target System and Description are required");
-          return;
-        }
+  <div id="debug-console"></div>
+</div>
 
-        const code = Math.floor(100000 + Math.random() * 900000).toString();
-        logDebug(`→ Submitting preset ${code}...`);
+<script>
+const form = document.getElementById('submission-form');
+const confirmation = document.getElementById('confirmation-message');
+const debug = document.getElementById('debug-console');
 
-        const preset = { code, targetSystem, description, KnownTMPs: knownTMPs, KnownTriggers: knownTriggers };
+function logDebug(message) {
+  const entry = document.createElement('div');
+  entry.textContent = message;
+  debug.appendChild(entry);
+  debug.scrollTop = debug.scrollHeight;
+}
 
-        try {
-          // Save individual JSON file (unchanged)
-          await fetch(`/presets/${code}.json`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(preset, null, 2)
-          });
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-          logDebug(`✔ Preset ${code}.json saved.`);
+  const targetSystem = document.getElementById('targetSystem').value.trim();
+  const description = document.getElementById('description').value.trim();
+  const knownTMPs = document.getElementById('knownTMPs').value.split(',').map(s => s.trim()).filter(s => s);
+  const knownTriggers = document.getElementById('knownTriggers').value.split(',').map(s => s.trim()).filter(s => s);
 
-          // Update index.json only (NEW FORMAT)
-          const indexRes = await fetch(`/presets/index.json`);
-          let indexData = { presets: [] };
+  logDebug("Submitting form...");
+  logDebug(`Target: ${targetSystem}, Description: ${description}`);
+  logDebug(`KnownTMPs: ${JSON.stringify(knownTMPs)}, KnownTriggers: ${JSON.stringify(knownTriggers)}`);
 
-          try {
-            indexData = await indexRes.json();
-          } catch(e) {
-            logDebug("Index file not found, creating new one...");
-          }
-
-          // Append new preset info in new format
-          indexData.presets.push({
-            code,
-            targetSystem,
-            description
-          });
-
-          await fetch(`/presets/index.json`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(indexData, null, 2)
-          });
-
-          logDebug(`✔ index.json updated with ${code}`);
-
-          alert(`Preset ${code} submitted successfully!`);
-
-        } catch (err) {
-          logDebug(`❌ Submission failed: ${err}`);
-          alert("Submission failed. Check console.");
-        }
-      }
-
-      submitBtn.addEventListener("click", submitPreset);
+  try {
+    const res = await fetch('https://dynabackend-h8jf.onrender.com/submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ targetSystem, description, knownTMPs, knownTriggers })
     });
-  </script>
+
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text}`);
+    }
+
+    const data = await res.json();
+    logDebug(`Server response: ${JSON.stringify(data)}`);
+
+    // Update index.json in the new format
+    const indexRes = await fetch('https://dynabackend-h8jf.onrender.com/presets/index.json');
+    let indexData = { presets: [] };
+    try { indexData = await indexRes.json(); } catch(e){ logDebug("Creating new index.json..."); }
+
+    indexData.presets.push({
+      code: data.code,
+      targetSystem,
+      description
+    });
+
+    await fetch('https://dynabackend-h8jf.onrender.com/presets/index.json', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(indexData, null, 2)
+    });
+    logDebug(`✔ index.json updated with ${data.code}`);
+
+    confirmation.textContent = `Submission successful! Generated code: ${data.code}`;
+    confirmation.style.color = 'var(--color-success, #4caf50)';
+    confirmation.style.display = 'block';
+
+    setTimeout(() => window.location.href = 'vrc-dynamic-player-tags.html', 3000);
+  } catch (err) {
+    logDebug(`Error: ${err.message}`);
+    confirmation.textContent = `Error submitting: ${err.message}`;
+    confirmation.style.color = 'red';
+    confirmation.style.display = 'block';
+  }
+});
+</script>
 
 </body>
 </html>
