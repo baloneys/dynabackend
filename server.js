@@ -2,17 +2,26 @@ import express from "express";
 import fetch from "node-fetch";
 import bodyParser from "body-parser";
 import crypto from "crypto";
+import cors from "cors"; // <-- import cors
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Enable CORS for all origins (or restrict to your GitHub Pages domain)
+app.use(cors({
+  origin: ["https://kanaris-beans.com"], // allow only your frontend
+  methods: ["GET","POST","PUT","DELETE","OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
+app.use(bodyParser.json());
+
+// GitHub config
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const REPO_OWNER = "YOUR_GITHUB_USERNAME";
 const REPO_NAME = "YOUR_REPO_NAME";
 const BRANCH = "main";
 const BASE_PATH = "presets";
-
-app.use(bodyParser.json());
 
 // Generate unique 6-digit code
 function generateCode() {
@@ -72,10 +81,10 @@ app.post("/submit", async (req, res) => {
       targetSystem,
       description,
       KnownTMPs: knownTMPs || [],
-      KnownTriggers: knownTriggers || []
+      KnownTriggers: knownTriggers || [],
     };
 
-    // Save preset file
+    // Save preset JSON
     await createOrUpdateFile(`${BASE_PATH}/${code}.json`, preset, `Add preset ${code}`);
 
     // Update index.json
@@ -95,7 +104,6 @@ app.post("/submit", async (req, res) => {
     }
 
     indexData.presets.push(code);
-
     await createOrUpdateFile(indexPath, indexData, `Update index.json with ${code}`);
 
     res.json({ success: true, code });
