@@ -53,13 +53,11 @@
           <h2 class="section-title">Explore Presets</h2>
           <p class="section-content">Search by exact Code, Target System, or Description.</p>
         </div>
-
         <div class="search-bar-form-wrapper">
           <div class="search-bar-input-group" style="max-width:400px;margin:auto;">
             <input type="text" id="searchInput" class="search-bar-input"
               placeholder="Exact match search..." style="font-size:1rem;padding:0.7rem;" />
           </div>
-
           <div class="search-bar-filter-chips" style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center;">
             <button type="button" class="search-bar-chip active" data-mode="code">Code</button>
             <button type="button" class="search-bar-chip" data-mode="targetSystem">Target System</button>
@@ -109,88 +107,149 @@
   </section>
 
   <script>
-    document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", () => {
 
-      const PRESETS_API = "https://dynabackend-h8jf.onrender.com/presets/";
-      const PAGE_SIZE = 5;
+    const INDEX_JSON_URL = "./presets/index.json";
+    const PAGE_SIZE = 5;
 
-      let allPresets = [];
-      let filtered = [];
-      let currentPage = 0;
-      let searchMode = "code";
+    let allPresets = [];
+    let filtered = [];
+    let currentPage = 0;
+    let searchMode = "code";
 
-      const tableBody = document.getElementById("tableBody");
-      const searchInput = document.getElementById("searchInput");
-      const pageIndicator = document.getElementById("pageIndicator");
-      const chips = document.querySelectorAll(".search-bar-chip");
-      const debugConsole = document.getElementById("debugConsole");
+    const tableBody = document.getElementById("tableBody");
+    const searchInput = document.getElementById("searchInput");
+    const pageIndicator = document.getElementById("pageIndicator");
+    const chips = document.querySelectorAll(".search-bar-chip");
+    const debugConsole = document.getElementById("debugConsole");
 
-      function logDebug(msg) {
-        if(debugConsole) debugConsole.textContent += msg + "\n";
+    function logDebug(msg) {
+      if(debugConsole) debugConsole.textContent += msg + "\n";
+    }
+
+    async function loadIndex() {
+      allPresets = [];
+      try {
+        logDebug("Fetching index.json...");
+        const res = await fetch(INDEX_JSON_URL + "?_=" + new Date().getTime()); // cache-buster
+        if(!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        logDebug(`Loaded ${data.presets.length} presets from index.json`);
+        allPresets = data.presets;
+      } catch(err) {
+        logDebug("Failed to load index.json: " + err);
       }
 
-      async function loadPresets() {
-        allPresets = [];
-        logDebug("Loading index.json from server...");
-        try {
-          const indexRes = await fetch(PRESETS_API + "index.json");
-          const indexData = await indexRes.json();
-          logDebug(`Found ${indexData.presets.length} presets.`);
+      filtered = [...allPresets];
+      currentPage = 0;
+      renderTable();
+    }
 
-          for (const code of indexData.presets) {
-            try {
-              const presetData = await fetch(PRESETS_API + code + ".json").then(r => r.json());
-              allPresets.push(presetData);
-              logDebug(`Loaded preset ${code}`);
-            } catch(err) {
-              logDebug(`Failed to load preset ${code}: ${err}`);
-            }
-          }
-        } catch(err) {
-          logDebug("Failed to load index.json: " + err);
-        }
+    function renderTable() {
+      tableBody.innerHTML = "";
+      const start = currentPage * PAGE_SIZE;
+      const items = filtered.slice(start, start + PAGE_SIZE);
 
+      items.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td><code>${p.code}</code></td>
+          <td>${p.targetSystem || ""}</td>
+          <td>${p.description || ""}</td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      pageIndicator.textContent =
+        `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
+    }
+
+    function applySearch() {
+      const q = searchInput.value.trim().toLowerCase();
+      if(!q) {
         filtered = [...allPresets];
-        currentPage = 0;
-        render();
+      } else {
+        filtered = allPresets.filter(p => (p[searchMode] || "").toLowerCase() === q);
       }
+      currentPage = 0;
+      renderTable();
+    }
 
-      function render() {
-        tableBody.innerHTML = "";
-        const start = currentPage * PAGE_SIZE;
-        const items = filtered.slice(start, start + PAGE_SIZE);
+    searchInput.addEventListener("input", applySearch);
+    chips.forEach(c => {
+      c.addEventListener("click", () => {
+        chips.forEach(b => b.classList.remove("active"));
+        c.classList.add("active");
+        searchMode = c.dataset.mode;
+        applySearch();
+      });
+    });
 
-        items.forEach(p => {
-          const tr = document.createElement("tr");
-          tr.innerHTML = `
-            <td><code>${p.code}</code></td>
-            <td>${p.targetSystem || ""}</td>
-            <td>${p.description || ""}</td>
-          `;
-          tableBody.appendChild(tr);
-        });
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if(currentPage > 0) { currentPage--; renderTable(); }
+    });
 
-        pageIndicator.textContent =
-          `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
-      }
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if((currentPage + 1) * PAGE_SIZE < filtered.length) { currentPage++; renderTable(); }
+    });
 
-      function applySearch() {
-        const q = searchInput.value.trim().toLowerCase();
+    document.getElementById("refreshBtn").addEventListener("click", loadIndex);
 
-        if (!q) {
-          filtered = [...allPresets];
-        } else {
-          filtered = allPresets.filter(p => {
-            const value = (p[searchMode] || "").toLowerCase();
-            return value === q; // exact match
+    document.getElementById("importBtn").addEventListener("click", async () => {
+      try {
+        logDebug("Import JSON clicked...");
+        const input = document.createElement("input");
+        input.type = "file";
+        input.accept = ".json";
+        input.onchange = async e => {
+          const file = e.target.files[0];
+          const text = await file.text();
+          const json = JSON.parse(text);
+          if(!json.code || !json.targetSystem || !json.description) throw new Error("Invalid JSON");
+          logDebug(`Imported preset ${json.code}`);
+          
+          // POST to backend to save preset and update index.json
+          const res = await fetch("/submit", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(json)
           });
-        }
-        currentPage = 0;
-        render();
+          const result = await res.json();
+          if(result.success) {
+            logDebug(`Preset ${result.code} saved to GitHub.`);
+            loadIndex();
+          } else {
+            logDebug(`Failed to save preset: ${result.error}`);
+          }
+        };
+        input.click();
+      } catch(err) {
+        logDebug("Import failed: " + err);
       }
+    });
 
-      searchInput.addEventListener("input", applySearch);
+    document.getElementById("validateBtn").addEventListener("click", async () => {
+      logDebug("Validate codes clicked...");
+      try {
+        // Trigger redeploy by updating index.json (force push)
+        const res = await fetch("/validate", { method: "POST" });
+        const result = await res.json();
+        if(result.success) logDebug("Deployment triggered successfully.");
+        else logDebug("Deployment failed: " + result.error);
+      } catch(err) {
+        logDebug("Deployment error: " + err);
+      }
+    });
 
-      chips.forEach(c => {
-        c.addEventListener("click", () => {
-          chips.forEach(
+    document.getElementById("gotoSubmissions").addEventListener("click", () => {
+      window.location.href = "submissions.html";
+    });
+
+    // initial load
+    loadIndex();
+
+  });
+  </script>
+
+</body>
+</html>
