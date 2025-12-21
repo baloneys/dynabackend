@@ -2,155 +2,185 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>VRC Dynamic Player Tags</title>
+  <title>VRCDynamicPlayerTags</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-</head>
 
+  <!-- Load all core styles -->
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
+
+</head>
 <body>
 
-<section class="search-bar-section">
-  <div class="search-bar-container">
-    <div class="search-bar-card">
-      <div class="search-bar-header">
-        <h2 class="section-title">Explore Presets</h2>
-        <p class="section-content">
-          Search presets by code, target system, or description.
-        </p>
-      </div>
-
-      <div class="search-bar-form-wrapper">
-        <div class="search-bar-input-group">
-          <input
-            id="searchInput"
-            class="search-bar-input"
-            placeholder="Exact match only"
-          />
+  <!-- SEARCH BAR -->
+  <section class="search-bar-section">
+    <div class="search-bar-container">
+      <div class="search-bar-card">
+        <div class="search-bar-header">
+          <h2 class="section-title">Explore Presets</h2>
+          <p class="section-content">
+            Search through the dynamic player tag configurations by code, target system, or description.
+          </p>
         </div>
 
-        <div class="search-bar-filter-chips">
-          <button class="search-bar-chip active" data-mode="code">Code</button>
-          <button class="search-bar-chip" data-mode="target">Target</button>
-          <button class="search-bar-chip" data-mode="description">Description</button>
+        <div class="search-bar-form-wrapper">
+          <div class="search-bar-input-group">
+            <input type="text" id="search-input" class="search-bar-input"
+              placeholder="Exact match search..." />
+          </div>
+          <div class="search-bar-filter-chips" style="margin-top: 1rem;">
+            <button class="search-bar-chip active" data-mode="code">Code</button>
+            <button class="search-bar-chip" data-mode="targetSystem">Target System</button>
+            <button class="search-bar-chip" data-mode="description">Description</button>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<section class="content-section">
-  <table>
-    <thead>
-      <tr>
-        <th>Code</th>
-        <th>Target System</th>
-        <th>Description</th>
-        <th>KnownTMPs</th>
-        <th>KnownTriggers</th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"></tbody>
-  </table>
+  <!-- TABLE -->
+  <section class="dashboard-section">
+    <div class="vrcdynamicplayertags-dashboard-container">
+      <div class="dashboard-table-wrapper">
+        <table class="vrcdynamicplayertags-dashboard-table">
+          <thead>
+            <tr>
+              <th>Code</th>
+              <th>Target System</th>
+              <th>Description</th>
+              <th>KnownTMPs</th>
+              <th>KnownTriggers</th>
+            </tr>
+          </thead>
+          <tbody id="submissionTableBody">
+            <!-- JS will populate -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
 
-  <div class="bottom-controls">
-    <button id="refreshBtn">Refresh Code List</button>
-    <button id="importBtn">Import JSON</button>
-    <button id="validateBtn">Validate Codes</button>
-  </div>
-
-  <div class="pagination">
-    <button id="prevPage">Prev</button>
-    <span id="pageInfo"></span>
-    <button id="nextPage">Next</button>
-  </div>
-</section>
+  <!-- Bottom Action Buttons & Pagination -->
+  <section class="cta-actions-section">
+    <div class="cta-actions-container" style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1rem;">
+      <button id="refreshData" class="action-card">Refresh Presets</button>
+      <button id="importConfig" class="action-card">Import JSON</button>
+      <button id="validateCodes" class="action-card">Validate Codes</button>
+    </div>
+    <div style="text-align:center;margin-top:1rem;">
+      <button id="prevPage" class="btn btn-secondary">Prev</button>
+      <span id="pageIndicator"></span>
+      <button id="nextPage" class="btn btn-secondary">Next</button>
+    </div>
+  </section>
 
 <script>
-const PAGE_SIZE = 5;
-const PRESET_PATH = "./presets/";
 
-let presets = [];
-let filtered = [];
-let page = 1;
-let searchMode = "code";
+document.addEventListener("DOMContentLoaded", () => {
 
-async function loadPresets() {
-  const index = await fetch(PRESET_PATH + "index.json").then(r => r.json());
-  presets = [];
+  const PRESETS_PATH = "./presets/";
+  const ROWS_PER_PAGE = 5;
 
-  for (const file of index) {
-    const data = await fetch(PRESET_PATH + file).then(r => r.json());
-    presets.push(data);
+  let allEntries = [];
+  let filteredEntries = [];
+  let currentPage = 0;
+  let searchMode = "code";
+
+  const tableBody = document.getElementById("submissionTableBody");
+  const searchInput = document.getElementById("search-input");
+  const pageIndicator = document.getElementById("pageIndicator");
+  const chips = document.querySelectorAll(".search-bar-chip");
+
+  async function loadPresets() {
+    allEntries = [];
+
+    try {
+      const indexRes = await fetch(PRESETS_PATH + "index.json");
+      const files = await indexRes.json();
+
+      for (const file of files) {
+        const data = await fetch(PRESETS_PATH + file).then(r => r.json());
+        allEntries.push(data);
+      }
+
+    } catch (err) {
+      console.warn("Could not load presets:", err);
+    }
+
+    filteredEntries = [...allEntries];
+    currentPage = 0;
+    renderTable();
   }
 
-  filtered = presets;
-  page = 1;
-  render();
-}
+  function renderTable() {
+    tableBody.innerHTML = "";
+    const start = currentPage * ROWS_PER_PAGE;
+    const pageItems = filteredEntries.slice(start, start + ROWS_PER_PAGE);
 
-function render() {
-  const body = document.getElementById("tableBody");
-  body.innerHTML = "";
+    for (const p of pageItems) {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td><code>${p.code}</code></td>
+        <td>${p.targetSystem}</td>
+        <td>${p.description}</td>
+        <td>${p.KnownTMPs?.join(", ") ?? ""}</td>
+        <td>${p.KnownTriggers?.join(", ") ?? ""}</td>
+      `;
+      tableBody.appendChild(tr);
+    }
 
-  const start = (page - 1) * PAGE_SIZE;
-  const slice = filtered.slice(start, start + PAGE_SIZE);
-
-  for (const p of slice) {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `
-      <td>${p.code}</td>
-      <td>${p.targetSystem}</td>
-      <td>${p.description}</td>
-      <td>${p.KnownTMPs.join(", ")}</td>
-      <td>${p.KnownTriggers.join(", ")}</td>
-    `;
-    body.appendChild(tr);
+    pageIndicator.textContent =
+      `Page ${currentPage+1} of ${Math.max(1, Math.ceil(filteredEntries.length / ROWS_PER_PAGE))}`;
   }
 
-  document.getElementById("pageInfo").textContent =
-    `Page ${page} / ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
-}
+  function applySearch() {
+    const q = searchInput.value.trim().toLowerCase();
 
-function applySearch(value) {
-  if (!value) {
-    filtered = presets;
-  } else {
-    filtered = presets.filter(p => {
-      if (searchMode === "code") return p.code === value;
-      if (searchMode === "target") return p.targetSystem === value;
-      if (searchMode === "description") return p.description === value;
+    if (!q) {
+      filteredEntries = [...allEntries];
+    } else {
+      filteredEntries = allEntries.filter(entry => {
+        const field = entry[searchMode] ?? "";
+        return field.toLowerCase() === q;
+      });
+    }
+    currentPage = 0;
+    renderTable();
+  }
+
+  searchInput.addEventListener("input", applySearch);
+
+  chips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      chips.forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      searchMode = chip.dataset.mode;
+      applySearch();
     });
-  }
-  page = 1;
-  render();
-}
+  });
 
-document.getElementById("searchInput").addEventListener("input", e => {
-  applySearch(e.target.value.trim());
+  document.getElementById("prevPage").addEventListener("click", () => {
+    if (currentPage > 0) {
+      currentPage--;
+      renderTable();
+    }
+  });
+
+  document.getElementById("nextPage").addEventListener("click", () => {
+    if ((currentPage+1) * ROWS_PER_PAGE < filteredEntries.length) {
+      currentPage++;
+      renderTable();
+    }
+  });
+
+  document.getElementById("refreshData").addEventListener("click", loadPresets);
+  document.getElementById("importConfig").addEventListener("click", () => {});
+  document.getElementById("validateCodes").addEventListener("click", () => {});
+
+  loadPresets();
+
 });
 
-document.querySelectorAll(".search-bar-chip").forEach(btn => {
-  btn.onclick = () => {
-    document.querySelectorAll(".search-bar-chip").forEach(b => b.classList.remove("active"));
-    btn.classList.add("active");
-    searchMode = btn.dataset.mode;
-    applySearch(document.getElementById("searchInput").value.trim());
-  };
-});
-
-document.getElementById("prevPage").onclick = () => {
-  if (page > 1) page--, render();
-};
-
-document.getElementById("nextPage").onclick = () => {
-  if (page * PAGE_SIZE < filtered.length) page++, render();
-};
-
-document.getElementById("refreshBtn").onclick = loadPresets;
-document.getElementById("importBtn").onclick = () => {};
-document.getElementById("validateBtn").onclick = () => {};
-
-loadPresets();
 </script>
 
 </body>
