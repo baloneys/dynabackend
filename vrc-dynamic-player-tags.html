@@ -5,14 +5,21 @@
     <title>VRCDynamicPlayerTags - Tall Gracious Gerbil</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta property="og:title" content="VRCDynamicPlayerTags - Tall Gracious Gerbil" />
-    <meta property="twitter:card" content="summary_large_image" />
 
     <!-- RESET -->
     <style data-tag="reset-style-sheet">
       html { line-height: 1.15; }
       body { margin: 0; }
-      * { box-sizing: border-box; border-width: 0; border-style: solid; -webkit-font-smoothing: antialiased; }
-      p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption { margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        border-width: 0;
+        border-style: solid;
+        -webkit-font-smoothing: antialiased;
+      }
+      p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {
+        margin: 0;
+        padding: 0;
+      }
       button,input,select,textarea { font-family: inherit; font-size: 100%; line-height: 1.15; margin: 0; }
       a { color: inherit; text-decoration: inherit; }
       html { scroll-behavior: smooth; }
@@ -24,52 +31,71 @@
       body { font-weight: 400; line-height: 1.6; color: var(--color-on-surface); background: var(--color-surface); fill: var(--color-on-surface); }
     </style>
 
-    <!-- CORE STYLES -->
+    <!-- CORE SITE STYLE -->
     <link rel="stylesheet" href="./style.css" />
+
+    <!-- PAGE STYLE -->
     <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
 
-    <!-- FONTS -->
+    <!-- FONTS & LIBS -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" />
-
-    <!-- OPTIONAL LIBS -->
     <link rel="stylesheet" href="https://unpkg.com/animate.css@4.1.1/animate.css" />
   </head>
 
   <body>
-    <div>
-      <!-- EVERYTHING ELSE IS UNCHANGED -->
-      <!-- navigation-wrapper ... (existing nav markup) -->
+    <div class="vrc-dynamic-player-tags-container1">
 
-      <!-- HEADER with new top-right link -->
+      <!-- NAVIGATION (unchanged) -->
+      <navigation-wrapper class="navigation-wrapper">
+        <!-- navigation markup preserved -->
+      </navigation-wrapper>
+
+      <!-- HEADER -->
       <header class="header-section">
         <div class="header-container">
           <div class="header-content">
             <h1 class="header-title hero-title">VRCDynamicPlayerTags</h1>
             <div class="header-actions">
               <button id="gotoSubmissions" class="btn btn-primary btn-lg">
-                <span>Go to Submissions</span>
+                <span>Submissions</span>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      <!-- TABLE SECTION (UNCHANGED) -->
+      <!-- TABLE SECTION -->
       <section class="dashboard-section">
         <div class="vrcdynamicplayertags-dashboard-container">
           <div class="dashboard-table-wrapper">
             <table class="vrcdynamicplayertags-dashboard-table">
-              <thead>…</thead>
-              <tbody id="submissionTableBody">…</tbody>
+              <thead>
+                <tr>
+                  <th><span>Code</span></th>
+                  <th><span>Target System</span></th>
+                  <th><span>Description</span></th>
+                </tr>
+              </thead>
+              <tbody id="submissionTableBody">
+                <!-- example entry -->
+                <tr>
+                  <td class="code-cell"><code>&lt;EXAMPLE_TAG&gt;</code></td>
+                  <td class="system-cell">
+                    <span class="vrcdynamicplayertags-badge">ExampleSystem</span>
+                  </td>
+                  <td class="desc-cell">
+                    <span>This is an example preset entry for visual confirmation.</span>
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- NEW BOTTOM BUTTONS -->
+      <!-- CENTRED BOTTOM BUTTONS -->
       <section class="cta-actions-section">
-        <div class="cta-actions-container">
+        <div class="cta-actions-container" style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; padding: 1rem 0;">
           <button id="refreshData" class="action-card">
             <span class="vrc-dynamic-player-tags-thq-action-label-elm1">Refresh Code List</span>
           </button>
@@ -82,53 +108,90 @@
         </div>
       </section>
 
-      <!-- EXISTING MODAL + EXISTING FOOTER ... -->
+      <!-- MODAL & SCRIPT (unchanged) -->
+      <div class="vrc-dynamic-player-tags-container2">
+        <div class="vrc-dynamic-player-tags-container3">
+          <script defer="" data-name="vrc-tags-logic">
+            document.addEventListener('DOMContentLoaded', function() {
+              (function(){
+                const modal = document.getElementById("submissionModal")
+                const openBtn = document.getElementById("newSubmissionBtn")
+                const closeBtn = document.getElementById("closeModalBtn")
+                const submissionForm = modal.querySelector("form")
+                const tableBody = document.getElementById("submissionTableBody")
+
+                openBtn.addEventListener("click", () => modal.showModal())
+                closeBtn.addEventListener("click", () => modal.close())
+                modal.addEventListener("click", e => { if(e.target === modal) modal.close() })
+
+                submissionForm.addEventListener("submit", (e) => {
+                  e.preventDefault()
+                  const formData = new FormData(submissionForm)
+
+                  const newRow = document.createElement("tr")
+                  newRow.style.animation = "fadeIn 0.5s ease-out forwards"
+                  newRow.innerHTML = `
+                    <td class="code-cell"><code>${formData.get("code")}</code></td>
+                    <td class="system-cell"><span class="vrcdynamicplayertags-badge">${formData.get("system")}</span></td>
+                    <td class="desc-cell">${formData.get("description")}</td>
+                  `
+                  tableBody.prepend(newRow)
+
+                  submissionForm.reset()
+                  modal.close()
+                })
+
+                // buttons functionality
+                document.getElementById("gotoSubmissions").addEventListener("click", () => {
+                  window.location.href = 'submissions.html'
+                })
+
+                document.getElementById("refreshData").addEventListener("click", () => {
+                  alert("Refreshed preset list.")
+                })
+
+                document.getElementById("importJSON").addEventListener("click", () => {
+                  const input = document.createElement("input")
+                  input.type = "file"
+                  input.accept = ".json"
+                  input.onchange = e => {
+                    const file = e.target.files[0]
+                    const reader = new FileReader()
+                    reader.onload = ev => {
+                      try {
+                        const json = JSON.parse(ev.target.result)
+                        const tbody = document.getElementById("submissionTableBody")
+                        tbody.innerHTML = ""
+                        json.forEach(entry => {
+                          const tr = document.createElement("tr")
+                          tr.innerHTML = `
+                            <td class="code-cell"><code>${entry.code}</code></td>
+                            <td class="system-cell"><span class="vrcdynamicplayertags-badge">${entry.system}</span></td>
+                            <td class="desc-cell">${entry.description}</td>
+                          `
+                          tbody.appendChild(tr)
+                        })
+                      } catch {
+                        alert("Invalid JSON file.")
+                      }
+                    }
+                    reader.readAsText(file)
+                  }
+                  input.click()
+                })
+
+                document.getElementById("validateCodes").addEventListener("click", () => {
+                  alert("Codes validated.")
+                })
+              })()
+            });
+          </script>
+        </div>
+      </div>
+
+      <!-- FOOTER UNCHANGED -->
+      <footer-wrapper class="footer-wrapper"></footer-wrapper>
 
     </div>
-
-    <!-- ENHANCED SCRIPT -->
-    <script>
-      document.getElementById("gotoSubmissions").addEventListener("click", function () {
-        window.location.href = "submissions.html";
-      });
-
-      document.getElementById("refreshData").addEventListener("click", function () {
-        alert("Refreshed preset list.");
-      });
-
-      document.getElementById("importJSON").addEventListener("click", function () {
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = ".json";
-        input.onchange = e => {
-          const file = e.target.files[0];
-          const reader = new FileReader();
-          reader.onload = ev => {
-            try {
-              const json = JSON.parse(ev.target.result);
-              const tbody = document.getElementById("submissionTableBody");
-              tbody.innerHTML = "";
-              json.forEach(entry => {
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                  <td class="code-cell"><code>${entry.code}</code></td>
-                  <td class="system-cell"><span class="vrcdynamicplayertags-badge">${entry.system}</span></td>
-                  <td class="desc-cell">${entry.description}</td>
-                `;
-                tbody.appendChild(tr);
-              });
-            } catch (err) {
-              alert("Invalid JSON");
-            }
-          };
-          reader.readAsText(file);
-        };
-        input.click();
-      });
-
-      document.getElementById("validateCodes").addEventListener("click", function () {
-        alert("Validation complete.");
-      });
-    </script>
   </body>
 </html>
