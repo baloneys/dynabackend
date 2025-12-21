@@ -2,124 +2,111 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Submit Preset - VRCDynamicPlayerTags</title>
+  <title>VRCDynamicPlayerTags - Submissions</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- RESET & BASE -->
-  <style data-tag="reset-style-sheet">
+  <style>
     html { line-height: 1.15; }
     body { margin: 0; }
     * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
     a { text-decoration: none; color: inherit; }
-    input, textarea, button, select { font-family: Inter, sans-serif; }
-  </style>
-
-  <style data-tag="default-style-sheet">
-    html { font-family: Inter, sans-serif; font-size: 1rem; }
-    body { line-height: 1.6; background: var(--color-surface); color: var(--color-on-surface); }
+    body { font-family: Inter, sans-serif; font-size: 1rem; line-height: 1.6; background: #f5f5f5; color: #111; }
+    h1,h2,h3,h4,h5,h6 { margin: 0; }
+    button { cursor: pointer; }
   </style>
 
   <link rel="stylesheet" href="./style.css" />
-  <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
-
 </head>
-
 <body>
-  <header class="header-section" style="display:flex;justify-content:space-between;align-items:center;">
-    <h1 class="header-title hero-title">Create New Preset</h1>
-    <button id="goBackBtn" class="btn btn-secondary btn-lg">Back</button>
-  </header>
 
-  <section style="max-width:700px;margin:2rem auto;padding:1rem;background:var(--color-surface-elevated);border-radius:8px;box-shadow:0px 4px 10px rgba(0,0,0,0.1);">
-    <div class="form-group">
-      <label for="targetSystem">Target System</label>
-      <input id="targetSystem" type="text" placeholder="e.g. VRChat Core" class="form-control" />
-    </div>
+<header style="display:flex; justify-content:space-between; align-items:center; padding:1rem;">
+  <h1>Submit a New Preset</h1>
+  <button id="backBtn" class="btn">Back</button>
+</header>
 
-    <div class="form-group">
-      <label for="description">Description</label>
-      <textarea id="description" rows="3" placeholder="Describe this preset…" class="form-control"></textarea>
-    </div>
+<main style="max-width:700px; margin:2rem auto; background:#fff; padding:2rem; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
 
-    <div class="form-group">
-      <label for="knownTMPs">Known TMPs <small>(comma separated)</small></label>
-      <input id="knownTMPs" type="text" placeholder="TMP1, TMP2, …" class="form-control" />
-      <p style="font-size:0.85rem;color:var(--color-on-surface-secondary);">
-        List all TextMeshPro object identifiers this preset modifies.
-      </p>
-    </div>
+  <div style="margin-bottom:1rem;">
+    <label>Target System</label><br>
+    <input type="text" id="targetSystem" style="width:100%; padding:0.5rem;" />
+  </div>
 
-    <div class="form-group">
-      <label for="knownTriggers">Known Triggers <small>(comma separated)</small></label>
-      <input id="knownTriggers" type="text" placeholder="Trigger1, Trigger2, …" class="form-control" />
-      <p style="font-size:0.85rem;color:var(--color-on-surface-secondary);">
-        List all trigger names this preset uses.
-      </p>
-    </div>
+  <div style="margin-bottom:1rem;">
+    <label>Description</label><br>
+    <input type="text" id="description" style="width:100%; padding:0.5rem;" />
+  </div>
 
-    <button id="submitBtn" class="btn btn-primary btn-lg">Create Preset</button>
+  <div style="margin-bottom:1rem;">
+    <label>Known TMPs (comma-separated)</label><br>
+    <input type="text" id="knownTMPs" style="width:100%; padding:0.5rem;" />
+    <small>List TMP IDs separated by commas.</small>
+  </div>
 
-    <section style="margin-top:1rem;">
-      <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
-    </section>
+  <div style="margin-bottom:1rem;">
+    <label>Known Triggers (comma-separated)</label><br>
+    <input type="text" id="knownTriggers" style="width:100%; padding:0.5rem;" />
+    <small>List Trigger IDs separated by commas.</small>
+  </div>
+
+  <button id="submitBtn" style="padding:0.75rem 1.5rem; font-size:1rem;">Submit</button>
+
+  <section style="margin-top:2rem;">
+    <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
   </section>
+</main>
 
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const targetSystemInput = document.getElementById("targetSystem");
-    const descriptionInput = document.getElementById("description");
-    const knownTMPsInput = document.getElementById("knownTMPs");
-    const knownTriggersInput = document.getElementById("knownTriggers");
-    const submitBtn = document.getElementById("submitBtn");
-    const debugConsole = document.getElementById("debugConsole");
-    const goBackBtn = document.getElementById("goBackBtn");
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const targetSystem = document.getElementById("targetSystem");
+  const description = document.getElementById("description");
+  const knownTMPs = document.getElementById("knownTMPs");
+  const knownTriggers = document.getElementById("knownTriggers");
+  const submitBtn = document.getElementById("submitBtn");
+  const debugConsole = document.getElementById("debugConsole");
+  const backBtn = document.getElementById("backBtn");
 
-    function logDebug(msg) {
-      debugConsole.textContent += msg + "\n";
-    }
+  function log(msg) {
+    debugConsole.textContent += msg + "\n";
+    debugConsole.scrollTop = debugConsole.scrollHeight;
+  }
 
-    function generateCode() {
-      return Math.floor(100000 + Math.random() * 900000).toString();
-    }
+  submitBtn.addEventListener("click", async () => {
+    const payload = {
+      targetSystem: targetSystem.value,
+      description: description.value,
+      knownTMPs: knownTMPs.value.split(",").map(s => s.trim()).filter(Boolean),
+      knownTriggers: knownTriggers.value.split(",").map(s => s.trim()).filter(Boolean)
+    };
 
-    submitBtn.addEventListener("click", async () => {
-      const targetSystem = targetSystemInput.value.trim();
-      const description = descriptionInput.value.trim();
-      const knownTMPs = knownTMPsInput.value.split(",").map(s => s.trim()).filter(Boolean);
-      const knownTriggers = knownTriggersInput.value.split(",").map(s => s.trim()).filter(Boolean);
+    log(`→ Submitting preset ${payload.targetSystem}...`);
 
-      if (!targetSystem || !description) {
-        logDebug("Error: Target System and Description are required.");
-        return;
+    try {
+      const res = await fetch("/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        log(`✅ Submission successful: ${data.code}`);
+        alert(`Preset submitted with code: ${data.code}`);
+        window.history.back();
+      } else {
+        log(`❌ Submission failed: ${JSON.stringify(data)}`);
+        alert("Submission failed. Check debug console.");
       }
-
-      const code = generateCode();
-      const preset = { code, targetSystem, description, KnownTMPs: knownTMPs, KnownTriggers: knownTriggers };
-
-      logDebug(`→ Submitting preset ${code}...`);
-      try {
-        const res = await fetch("/submit", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(preset)
-        });
-        const result = await res.json();
-
-        if (res.ok && result.success) {
-          logDebug(`✔ Preset ${result.code} saved!`);
-        } else {
-          logDebug(`✖ Submission error: ${result.error || JSON.stringify(result)}`);
-        }
-      } catch (err) {
-        logDebug("❌ Submission failed: " + err);
-      }
-    });
-
-    goBackBtn.addEventListener("click", () => {
-      window.location.href = "vrc-dynamic-player-tags.html";
-    });
+    } catch (err) {
+      log(`❌ Submission failed: ${err}`);
+      alert("Submission failed. Check debug console.");
+    }
   });
-  </script>
+
+  backBtn.addEventListener("click", () => window.history.back());
+});
+</script>
 
 </body>
 </html>
