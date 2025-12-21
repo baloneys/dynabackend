@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Tall Gracious Gerbil</title>
+    <meta property="og:title" content="Tall Gracious Gerbil" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <meta property="twitter:card" content="summary_large_image" />
+
+    <style data-tag="reset-style-sheet">
+      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;  -webkit-font-smoothing: antialiased;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6,figure,blockquote,figcaption {  margin: 0;  padding: 0;}button {  background-color: transparent;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;  color: inherit;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}pre {  white-space: normal;}input {  padding: 2px 4px;}img {  display: block;}details {  display: block;  margin: 0;  padding: 0;}summary::-webkit-details-marker {  display: none;}[data-thq="accordion"] [data-thq="accordion-content"] {  max-height: 0;  overflow: hidden;  transition: max-height 0.3s ease-in-out;  padding: 0;}[data-thq="accordion"] details[data-thq="accordion-trigger"][open] + [data-thq="accordion-content"] {  max-height: 1000vh;}details[data-thq="accordion-trigger"][open] summary [data-thq="accordion-icon"] {  transform: rotate(180deg);}html { scroll-behavior: smooth  }
+    </style>
+    <style data-tag="default-style-sheet">
+      html {
+        font-family: Inter;
+        font-size: 1rem;
+      }
+
+      body {
+        font-weight: 400;
+        font-style:normal;
+        text-decoration: undefined;
+        text-transform: undefined;
+        letter-spacing: 0.01em;
+        line-height: 1.6;
+        color: var(--color-on-surface);
+        background: var(--color-surface);
+
+        fill: var(--color-on-surface);
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/animate.css@4.1.1/animate.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&amp;display=swap"
+      data-tag="font"
+    />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@teleporthq/teleport-custom-scripts/dist/style.css"
+    />
+  </head>
+  <body>
+    <link rel="stylesheet" href="./style.css" />
+    <div>
+      <link href="./index.css" rel="stylesheet" />
+
+      <div class="home-container1">
+        <navigation-wrapper class="navigation-wrapper">
+          <!--Navigation component-->
+          <div class="navigation-container1">
+            <div class="navigation-container2">
+              <div class="navigation-container3">
+                <style>
+                  @media (prefers-reduced-motion: reduce) {
+                  .navigation-mobile-overlay.is-active {
+                    animation: none;
+                  }
+                  }
+                </style>
+              </div>
+            </div>
+            <nav class="navigation-wrapper">
+              <div class="navigation-container">
+                <div class="navigation-brand">
+                  <a href="index.html">
+                    <div class="navigation-logo-link">
+                      <span class="section-title">VRCDynaTags</span>
+                    </div>
+                  </a>
+                </div>
+                <div class="navigation-desktop-center">
+                  <span class="navigation-page-title">
+                    VRCDynamicPlayerTags Presets
+                  </span>
+                </div>
+                <div class="navigation-actions">
+                  <button class="navigation-submit-btn btn btn-primary">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-7-7v14"></path>
+                    </svg>
+                    <span>Add New Submission</span>
+                  </button>
+                  <button
+                    id="mobile-toggle"
+                    aria-label="Toggle Menu"
+                    aria-expanded="false"
+                    class="navigation-mobile-toggle"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon-menu"
+                    >
+                      <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </nav>
+            <div id="mobile-overlay" class="navigation-mobile-overlay">
+              <div class="navigation-mobile-header">
+                <span class="section-title">VRCDynaTags</span>
+                <button
+                  id="mobile-close"
+                  aria-label="Close Menu"
+                  class="navigation-mobile-close"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M18 6L6 18M6 6l12 12"></path>
+                  </svg>
+                </button>
+              </div>
+              <div class="navigation-mobile-content">
+                <div class="navigation-mobile-meta">
+                  <span class="navigation-mobile-label">Active View</span>
+                  <h2 class="section-title">VRCDynamicPlayerTags Presets</h2>
+                </div>
+                <div class="navigation-mobile-actions">
+                  <button
+                    class="navigation-submit-btn-mobile btn btn-primary btn-lg"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path d="M5 12h14m-7-7v14"></path>
+                    </svg>
+                    <span>Add New Submission</span>
+                  </button>
+                </div>
+                <ul class="navigation-mobile-links">
+                  <li class="navigation-mobile-item">
+                    <a href="index.html">
+                      <div class="navigation-mobile-link">
+                        <span>Browse Presets</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="navigation-mobile-item">
+                    <a href="#">
+                      <div class="navigation-mobile-link">
+                        <span>Documentation</span>
+                      </div>
+                    </a>
+                  </li>
+                  <li class="navigation-mobile-item">
+                    <a href="#">
+                      <div class="navigation-mobile-link">
+                        <span>Community Tags</span>
+                      </div>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="navigation-container4">
+              <div class="navigation-container5">
+                <style>
+                          @keyframes mobileFadeIn {from {opacity: 0;
+                  transform: translateY(-10px);}
+                  to {opacity: 1;
+                  transform: translateY(0);}}
+                </style>
+              </div>
+            </div>
+            <div class="navigation-container6">
+              <div class="navigation-container7">
+                <script defer="" data-name="navigation-logic">
+                  document.addEventListener('DOMContentLoaded', function() {
+                    (function(){
+                      const mobileToggle = document.getElementById("mobile-toggle")
+                      const mobileClose = document.getElementById("mobile-close")
+                      const mobileOverlay = document.getElementById("mobile-overlay")
+
+                      if (mobileToggle && mobileOverlay) {
+                        mobileToggle.addEventListener("click", () => {
+                          mobileOverlay.classList.add("is-active")
+                          mobileToggle.setAttribute("aria-expanded", "true")
+                          document.body.style.overflow = "hidden"
+                        })
+                      }
+
+                      if (mobileClose && mobileOverlay) {
+                        mobileClose.addEventListener("click", () => {
+                          mobileOverlay.classList.remove("is-active")
+                          mobileToggle.setAttribute("aria-expanded", "false")
+                          document.body.style.overflow = ""
+                        })
+                      }
+
+                      // Close overlay on link click
+                      const mobileLinks = document.querySelectorAll(".navigation-mobile-link")
+                      mobileLinks.forEach((link) => {
+                        link.addEventListener("click", () => {
+                          mobileOverlay.classList.remove("is-active")
+                          mobileToggle.setAttribute("aria-expanded", "false")
+                          document.body.style.overflow = ""
+                        })
+                      })
+
+                      // Close overlay on backdrop click if needed (though it's a full screen surface)
+                      mobileOverlay.addEventListener("click", (e) => {
+                        if (e.target === mobileOverlay) {
+                          mobileOverlay.classList.remove("is-active")
+                          mobileToggle.setAttribute("aria-expanded", "false")
+                          document.body.style.overflow = ""
+                        }
+                      })
+                    })()
+                  });
+                </script>
+              </div>
+            </div>
+          </div>
+        </navigation-wrapper>
+        <section class="hero-section">
+          <div class="hero-media-wrapper">
+            <img
+              src="https://images.pexels.com/photos/8721329/pexels-photo-8721329.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1500"
+              alt="Futuristic VR Environment"
+              class="hero-bg-image"
+            />
+            <div class="hero-overlay"></div>
+          </div>
+          <div class="hero-content-outer">
+            <div class="hero-header-row">
+              <div class="hero-logo-space">
+                <span class="hero-brand">VRCDynaTags</span>
+              </div>
+              <div class="hero-action-space">
+                <button class="hero-submit-btn btn btn-primary btn-lg">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 12h14m-7-7v14"
+                    ></path>
+                  </svg>
+                  <span>Add New Submission</span>
+                </button>
+              </div>
+            </div>
+            <div class="hero-main-content">
+              <h1 class="home-hero-title hero-title">
+                VRCDynamicPlayerTags Presets
+              </h1>
+              <p class="home-hero-subtitle hero-subtitle">
+                The ultimate community-driven database for dynamic player
+                identification and aesthetic tag configurations.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="dashboard-section">
+          <div class="dashboard-container">
+            <div class="dashboard-controls">
+              <h2 class="section-title">Database Overview</h2>
+              <div class="dashboard-filters">
+                <div class="filter-group">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M4 4h16v2.172a2 2 0 0 1-.586 1.414L15 12v7l-6 2v-8.5L4.52 7.572A2 2 0 0 1 4 6.227z"
+                    ></path>
+                  </svg>
+                  <span>Filter Presets</span>
+                </div>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table class="dashboard-table">
+                <thead>
+                  <tr>
+                    <th><span>Code Snippet</span></th>
+                    <th><span>Target System</span></th>
+                    <th><span>Description</span></th>
+                    <th class="text-right"><span>Actions</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="skeleton-row">
+                    <td>
+                      <code class="code-preview">
+                        {tag: "VETERAN", color: "#9d00ff"}
+                      </code>
+                    </td>
+                    <td><span class="badge">OSC-VRC</span></td>
+                    <td>
+                      <span>
+                        Premium veteran tag with neon purple glow and pulse
+                        effect.
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-outline">View</button>
+                    </td>
+                  </tr>
+                  <tr class="skeleton-row">
+                    <td>
+                      <code class="code-preview">
+                        {tag: "STAFF", anim: "slide"}
+                      </code>
+                    </td>
+                    <td><span class="badge">DynaCore v2</span></td>
+                    <td>
+                      <span>
+                        Official staff identification with sliding animation.
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-outline">View</button>
+                    </td>
+                  </tr>
+                  <tr class="skeleton-row">
+                    <td>
+                      <code class="code-preview">
+                        {tag: "VIP", icon: "star"}
+                      </code>
+                    </td>
+                    <td><span class="badge">Universal</span></td>
+                    <td>
+                      <span>
+                        Gold VIP status indicator for high-tier supporters.
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-outline">View</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section class="cta-section">
+          <div class="cta-container">
+            <div class="cta-grid">
+              <div class="cta-card">
+                <div class="cta-icon-box">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    >
+                      <path d="M15 12v6m-3-3h6"></path>
+                      <rect
+                        width="14"
+                        height="14"
+                        x="8"
+                        y="8"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <path
+                        d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"
+                      ></path>
+                    </g>
+                  </svg>
+                </div>
+                <h3 class="section-subtitle">Submit Preset</h3>
+                <p class="section-content">
+                  Share your custom creations with the dynamic player community.
+                </p>
+                <button class="btn-md btn btn-accent">Get Started</button>
+              </div>
+              <div class="cta-card">
+                <div class="cta-icon-box">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 3v12m5-7l-5-5l-5 5m14 7v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                    ></path>
+                  </svg>
+                </div>
+                <h3 class="section-subtitle">Import Configuration</h3>
+                <p class="section-content">
+                  Bulk upload your existing preset libraries in JSON format.
+                </p>
+                <button class="btn-md btn btn-secondary">Upload File</button>
+              </div>
+              <div class="cta-card">
+                <div class="cta-icon-box">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                  >
+                    <g
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M12 15V3m9 12v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"
+                      ></path>
+                      <path d="m7 10l5 5l5-5"></path>
+                    </g>
+                  </svg>
+                </div>
+                <h3 class="section-subtitle">Export Presets</h3>
+                <p class="section-content">
+                  Download the latest database to use in your local environment.
+                </p>
+                <button class="btn-md btn btn-outline">Download All</button>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="showcase-section">
+          <div class="showcase-container">
+            <div class="showcase-header">
+              <h2 class="section-title">Trending Presets</h2>
+              <p class="section-content">
+                Hand-picked configurations currently popular in the Metaverse.
+              </p>
+            </div>
+            <div class="showcase-table-wrapper">
+              <table class="showcase-table">
+                <thead>
+                  <tr>
+                    <th><span>Signature</span></th>
+                    <th><span>Compatibility</span></th>
+                    <th><span>Community Note</span></th>
+                    <th class="text-right"><span>Action</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <code class="code-preview highlight">#NeonPulse</code>
+                    </td>
+                    <td><span class="badge-accent">OSC Extreme</span></td>
+                    <td><span>Optimized for low-latency VR headsets.</span></td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-link">Copy Code</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code class="code-preview highlight">#GlitchArt</code>
+                    </td>
+                    <td><span class="badge-secondary">Core-X</span></td>
+                    <td>
+                      <span>Features randomized RGB shifting patterns.</span>
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-link">Copy Code</button>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <code class="code-preview highlight">#Minimalist</code>
+                    </td>
+                    <td><span class="badge">Universal</span></td>
+                    <td>
+                      <span>
+                        Clean, non-intrusive text-only identification.
+                      </span>
+                    </td>
+                    <td class="text-right">
+                      <button class="btn btn-sm btn-link">Copy Code</button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+        <section class="process-section">
+          <div class="process-container">
+            <div class="process-intro">
+              <h2 class="section-title">How It Works</h2>
+              <p class="section-content">
+                Getting your custom tags into the world is a simple three-step
+                process.
+              </p>
+            </div>
+            <div class="process-steps">
+              <div class="step-item">
+                <div class="step-number"><span>01</span></div>
+                <div class="step-content">
+                  <h4 class="section-subtitle">Craft Your Code</h4>
+                  <p class="section-content">
+                    Use our online editor or local tools to build your dynamic
+                    tag logic.
+                  </p>
+                </div>
+              </div>
+              <div class="step-divider"></div>
+              <div class="step-item">
+                <div class="step-number"><span>02</span></div>
+                <div class="step-content">
+                  <h4 class="section-subtitle">Submit &amp; Review</h4>
+                  <p class="section-content">
+                    Upload your snippet. Our community moderators verify
+                    compatibility.
+                  </p>
+                </div>
+              </div>
+              <div class="step-divider"></div>
+              <div class="step-item">
+                <div class="step-number"><span>03</span></div>
+                <div class="step-content">
+                  <h4 class="section-subtitle">Global Deployment</h4>
+                  <p class="section-content">
+                    Once approved, your preset is available for everyone to
+                    import and use.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <div class="home-container2">
+          <div class="home-container3">
+            <script defer="" data-name="vrcdynatags-interactions">
+              document.addEventListener('DOMContentLoaded', function() {
+                (function(){
+                  const submitButtons = document.querySelectorAll(".hero-submit-btn, .cta-card button")
+                  submitButtons.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                      console.log("Submission flow initiated")
+                      btn.style.transform = "scale(0.95)"
+                      setTimeout(() => {
+                        btn.style.transform = ""
+                      }, 150)
+                    })
+                  })
+
+                  const filterGroups = document.querySelectorAll(".filter-group")
+                  filterGroups.forEach((group) => {
+                    group.addEventListener("click", () => {
+                      group.classList.toggle("active")
+                      if (group.classList.contains("active")) {
+                        group.style.borderColor = "var(--color-primary)"
+                        group.style.background = "color-mix(in oklab, var(--color-primary) 10%, var(--color-surface-elevated))"
+                      } else {
+                        group.style.borderColor = ""
+                        group.style.background = ""
+                      }
+                    })
+                  })
+
+                  const copyButtons = document.querySelectorAll(".btn-link")
+                  copyButtons.forEach((btn) => {
+                    btn.addEventListener("click", () => {
+                      const originalText = btn.textContent
+                      btn.textContent = "Copied!"
+                      btn.style.color = "var(--color-success)"
+                      setTimeout(() => {
+                        btn.textContent = originalText
+                        btn.style.color = ""
+                      }, 2000)
+                    })
+                  })
+                })()
+              });
+            </script>
+          </div>
+        </div>
+        <footer-wrapper class="footer-wrapper">
+          <!--Footer component-->
+          <div class="footer-container1">
+            <footer class="footer-root">
+              <div class="footer-container">
+                <div class="footer-grid">
+                  <div class="footer-brand-column">
+                    <div class="footer-logo-wrapper">
+                      <div class="footer-icon-box">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                        >
+                          <g
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            stroke-width="2"
+                          >
+                            <path d="m10 9l-3 3l3 3m4 0l3-3l-3-3"></path>
+                            <rect
+                              width="18"
+                              height="18"
+                              x="3"
+                              y="3"
+                              rx="2"
+                            ></rect>
+                          </g>
+                        </svg>
+                      </div>
+                      <span class="footer-brand-name">VRCDynaTags</span>
+                    </div>
+                    <p class="footer-tagline section-content">
+                      Elevate your presence in VRChat with dynamic, real-time
+                      player tags. Customizable presets for every system.
+                    </p>
+                    <div class="footer-social-links">
+                      <a href="#">
+                        <div aria-label="GitHub" class="footer-social-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                          >
+                            <g
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5c.08-1.25-.27-2.48-1-3.5c.28-1.15.28-2.35 0-3.5c0 0-1 0-3 1.5c-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5c-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"
+                              ></path>
+                              <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </a>
+                      <a href="#">
+                        <div aria-label="Discord" class="footer-social-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                          >
+                            <g
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                            >
+                              <path
+                                d="M8 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m6 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"
+                              ></path>
+                              <path
+                                d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833-1.667 3.5-3c.667-1.667.5-5.833-1.5-11.5c-1.457-1.015-3-1.34-4.5-1.5l-.972 1.923a11.9 11.9 0 0 0-4.053 0L9 4c-1.5.16-3.043.485-4.5 1.5c-2 5.667-2.167 9.833-1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2-2 2-3"
+                              ></path>
+                              <path d="M7 16.5c3.5 1 6.5 1 10 0"></path>
+                            </g>
+                          </svg>
+                        </div>
+                      </a>
+                      <a href="#">
+                        <div aria-label="Twitter" class="footer-social-btn">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6c2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4c-.9-4.2 4-6.6 7-3.8c1.1 0 3-1.2 3-1.2"
+                            ></path>
+                          </svg>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-links-column">
+                    <h3 class="footer-column-title section-subtitle">
+                      Resources
+                    </h3>
+                    <nav class="footer-nav">
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>Documentation</span>
+                        </div>
+                      </a>
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>Target Systems</span>
+                        </div>
+                      </a>
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>Code Examples</span>
+                        </div>
+                      </a>
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>Preset Library</span>
+                        </div>
+                      </a>
+                    </nav>
+                  </div>
+                  <div class="footer-links-column">
+                    <h3 class="footer-column-title section-subtitle">
+                      Community
+                    </h3>
+                    <nav class="footer-nav">
+                      <a href="Homepage">
+                        <div class="footer-link"><span>Submissions</span></div>
+                      </a>
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>VRChat Integration</span>
+                        </div>
+                      </a>
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>Support Server</span>
+                        </div>
+                      </a>
+                      <a href="Homepage">
+                        <div class="footer-link">
+                          <span>Developer API</span>
+                        </div>
+                      </a>
+                    </nav>
+                  </div>
+                </div>
+                <div class="footer-bottom">
+                  <div class="footer-legal">
+                    <span class="footer-copyright">
+                      &amp;copy; 2025 VRCDynaTags. All rights reserved.
+                    </span>
+                    <div class="footer-legal-links">
+                      <a href="#">
+                        <div class="footer-legal-link">
+                          <span>Privacy Policy</span>
+                        </div>
+                      </a>
+                      <a href="#">
+                        <div class="footer-legal-link">
+                          <span>Terms of Service</span>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                  <div class="footer-status-indicator">
+                    <span class="footer-status-dot"></span>
+                    <span class="footer-status-text">Systems Operational</span>
+                  </div>
+                </div>
+              </div>
+            </footer>
+            <div class="footer-container2">
+              <div class="footer-container3">
+                <style>
+                          @keyframes pulse-status {0% {transform: scale(1);
+                  opacity: 1;}
+                  50% {transform: scale(1.2);
+                  opacity: 0.7;}
+                  100% {transform: scale(1);
+                  opacity: 1;}}
+                </style>
+              </div>
+            </div>
+            <div class="footer-container4">
+              <div class="footer-container5">
+                <script defer="" data-name="footer-interactions">
+                  document.addEventListener('DOMContentLoaded', function() {
+                    (function(){
+                      const footerLinks = document.querySelectorAll(".footer-link")
+
+                      footerLinks.forEach((link) => {
+                        link.addEventListener("mouseenter", () => {
+                          link.style.transition = "all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+                        })
+                      })
+
+                      const statusIndicator = document.querySelector(".footer-status-indicator")
+                      if (statusIndicator) {
+                        statusIndicator.addEventListener("click", () => {
+                          const text = statusIndicator.querySelector(".footer-status-text")
+                          const originalText = text.textContent
+                          text.textContent = "Checking..."
+
+                          setTimeout(() => {
+                            text.textContent = originalText
+                          }, 1500)
+                        })
+                      }
+                    })()
+                  });
+                </script>
+              </div>
+            </div>
+          </div>
+        </footer-wrapper>
+        <a href="https://play.teleporthq.io/signup">
+          <div aria-label="Sign up to TeleportHQ" class="home-container4">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 19 21"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="home-icon25"
+            >
+              <path
+                d="M9.1017 4.64355H2.17867C0.711684 4.64355 -0.477539 5.79975 -0.477539 7.22599V13.9567C-0.477539 15.3829 0.711684 16.5391 2.17867 16.5391H9.1017C10.5687 16.5391 11.7579 15.3829 11.7579 13.9567V7.22599C11.7579 5.79975 10.5687 4.64355 9.1017 4.64355Z"
+                fill="#B23ADE"
+              ></path>
+              <path
+                d="M10.9733 12.7878C14.4208 12.7878 17.2156 10.0706 17.2156 6.71886C17.2156 3.3671 14.4208 0.649963 10.9733 0.649963C7.52573 0.649963 4.73096 3.3671 4.73096 6.71886C4.73096 10.0706 7.52573 12.7878 10.9733 12.7878Z"
+                fill="#FF5C5C"
+              ></path>
+              <path
+                d="M17.7373 13.3654C19.1497 14.1588 19.1497 15.4634 17.7373 16.2493L10.0865 20.5387C8.67402 21.332 7.51855 20.6836 7.51855 19.0968V10.5141C7.51855 8.92916 8.67402 8.2807 10.0865 9.07221L17.7373 13.3654Z"
+                fill="#2874DE"
+              ></path>
+            </svg>
+            <span class="home-text29">Built in TeleportHQ</span>
+          </div>
+        </a>
+      </div>
+      <link
+        rel="canonical"
+        href="https://tall-gracious-gerbil-p1492b.teleporthq.app/"
+      />
+    </div>
+  </body>
+</html>
