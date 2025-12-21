@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Submit Dynamic Player Tag</title>
-<link rel="stylesheet" href="style.css"> <!-- Keep your existing site CSS -->
+<link rel="stylesheet" href="style.css"> <!-- existing CSS from main site -->
 <style>
   body {
     font-family: var(--font-family-body, Arial, sans-serif);
@@ -22,6 +22,9 @@
     padding: 2rem;
     border-radius: 1rem;
     box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
   h1 {
@@ -34,38 +37,40 @@
   form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.75rem;
   }
 
   label {
     font-weight: bold;
     margin-bottom: 0.25rem;
+    display: block;
   }
 
   input, textarea {
-    padding: 0.75rem;
+    padding: 0.5rem;
     border-radius: 0.5rem;
     border: 1px solid var(--color-border, #444);
     background-color: var(--color-surface, #222);
     color: var(--color-on-surface, #fff);
-    font-size: 1rem;
+    font-size: 0.95rem;
     width: 100%;
   }
 
   textarea {
     resize: vertical;
-    min-height: 100px;
+    min-height: 80px;
   }
 
   small {
     display: block;
-    margin-top: -0.5rem;
+    margin-top: -0.25rem;
     margin-bottom: 0.5rem;
     color: var(--color-on-surface-secondary, #aaa);
+    font-size: 0.85rem;
   }
 
   button {
-    padding: 0.75rem;
+    padding: 0.65rem;
     border-radius: 0.5rem;
     background-color: var(--color-primary, #854FEA);
     border: none;
@@ -73,6 +78,7 @@
     font-weight: bold;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin-top: 0.5rem;
   }
 
   button:hover {
@@ -81,9 +87,21 @@
 
   .confirmation {
     text-align: center;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     font-weight: bold;
     color: var(--color-success, #4caf50);
+  }
+
+  #debug-console {
+    margin-top: 1rem;
+    background-color: #111;
+    color: #0f0;
+    font-family: monospace;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    max-height: 150px;
+    overflow-y: auto;
   }
 </style>
 </head>
@@ -120,11 +138,21 @@
   </form>
 
   <div class="confirmation" id="confirmation-message" style="display:none;"></div>
+
+  <div id="debug-console"></div>
 </div>
 
 <script>
 const form = document.getElementById('submission-form');
 const confirmation = document.getElementById('confirmation-message');
+const debug = document.getElementById('debug-console');
+
+function logDebug(message) {
+  const entry = document.createElement('div');
+  entry.textContent = message;
+  debug.appendChild(entry);
+  debug.scrollTop = debug.scrollHeight;
+}
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
@@ -134,6 +162,10 @@ form.addEventListener('submit', async (e) => {
   const knownTMPs = document.getElementById('knownTMPs').value.split(',').map(s => s.trim()).filter(s => s);
   const knownTriggers = document.getElementById('knownTriggers').value.split(',').map(s => s.trim()).filter(s => s);
 
+  logDebug("Submitting form...");
+  logDebug(`Target: ${targetSystem}, Description: ${description}`);
+  logDebug(`KnownTMPs: ${JSON.stringify(knownTMPs)}, KnownTriggers: ${JSON.stringify(knownTriggers)}`);
+
   try {
     const res = await fetch('https://dynabackend-h8jf.onrender.com/submit', {
       method: 'POST',
@@ -141,16 +173,23 @@ form.addEventListener('submit', async (e) => {
       body: JSON.stringify({ targetSystem, description, knownTMPs, knownTriggers })
     });
 
-    if (!res.ok) throw new Error(`Submission failed: ${res.statusText}`);
+    if (!res.ok) {
+      const text = await res.text();
+      throw new Error(`HTTP ${res.status}: ${text}`);
+    }
 
     const data = await res.json();
+    logDebug(`Server response: ${JSON.stringify(data)}`);
+
     confirmation.textContent = `Submission successful! Generated code: ${data.code}`;
+    confirmation.style.color = 'var(--color-success, #4caf50)';
     confirmation.style.display = 'block';
 
     // Redirect back after 3 seconds
     setTimeout(() => window.location.href = 'vrc-dynamic-player-tags.html', 3000);
   } catch (err) {
-    confirmation.textContent = `Error: ${err.message}`;
+    logDebug(`Error: ${err.message}`);
+    confirmation.textContent = `Error submitting: ${err.message}`;
     confirmation.style.color = 'red';
     confirmation.style.display = 'block';
   }
