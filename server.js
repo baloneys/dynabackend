@@ -150,6 +150,34 @@ app.post("/submit", async (req, res) => {
   }
 });
 
+// -------- UPDATE TRACKING --------
+app.post("/update", (req, res) => {
+  const {
+    version,
+    name,
+    type,
+    url,
+    userAgent,
+    timestamp
+  } = req.body;
+
+  if (!version || !type) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
+
+  // For now: log it (Render logs are persistent)
+  console.log("UPDATE EVENT", {
+    version,
+    name,
+    type,
+    url,
+    userAgent,
+    timestamp
+  });
+
+  res.json({ ok: true });
+});
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
