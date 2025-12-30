@@ -1,7 +1,0 @@
-{
-  "code": "EXAMPLE_TAG",
-  "targetSystem": "ExampleSystem",
-  "description": "Example preset loaded",
-  "KnownTMPs": ["NameText", "StatusText"],
-  "KnownTriggers": ["TriggerA", "TriggerB"]
-}
