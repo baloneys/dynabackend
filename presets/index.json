@@ -11,6 +11,12 @@
       "targetSystem": "SpinTheBottle Options (Parser Coloured)",
       "description": "In the event you want the options on the wheel to update their tags. (swaps <player> <rem_player> and <random> to someone)",
       "creator": "ModerateWinGuy"
+    },
+    {
+      "code": "P8BZGV",
+      "targetSystem": "Test Submission",
+      "description": "Testing the database",
+      "creator": "baloneys"
     }
   ]
 }
