@@ -5,6 +5,12 @@
       "targetSystem": "SpinTheBottle",
       "description": "A highly regarded spin the wheel prefab featuring stringloading and a option display.",
       "creator": "ModerateWinGuy"
+    },
+    {
+      "code": "MHWU96",
+      "targetSystem": "SpinTheBottle Options (Parser Coloured)",
+      "description": "In the event you want the options on the wheel to update their tags. (swaps <player> <rem_player> and <random> to someone)",
+      "creator": "ModerateWinGuy"
     }
   ]
 }
