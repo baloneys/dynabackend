@@ -267,6 +267,7 @@
             color: var(--color-text);
             line-height: 1.6;
             min-height: 100vh;
+            padding-bottom: 250px;
         }
 
         .main-content {
@@ -589,6 +590,122 @@
             margin-bottom: 1rem;
         }
 
+        /* Debug Console - Bottom Center */
+        .debug-console {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 800px;
+            max-height: 200px;
+            background: rgba(26, 26, 26, 0.98);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 12px;
+            padding: 1rem;
+            overflow-y: auto;
+            z-index: 9999;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+        }
+
+        .debug-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .debug-title {
+            font-weight: 600;
+            color: #6366f1;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .debug-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .debug-clear,
+        .debug-toggle {
+            padding: 0.25rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 600;
+        }
+
+        .debug-clear {
+            background: rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: #ef4444;
+        }
+
+        .debug-clear:hover {
+            background: rgba(239, 68, 68, 0.3);
+        }
+
+        .debug-toggle {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            color: #6366f1;
+        }
+
+        .debug-toggle:hover {
+            background: rgba(99, 102, 241, 0.3);
+        }
+
+        .debug-content.hidden {
+            display: none;
+        }
+
+        .debug-console.collapsed {
+            max-height: 50px;
+        }
+
+        .debug-content {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .debug-entry {
+            padding: 0.5rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            border-left: 3px solid #6366f1;
+        }
+
+        .debug-entry.error {
+            border-left-color: #ef4444;
+        }
+
+        .debug-entry.success {
+            border-left-color: #10b981;
+        }
+
+        .debug-entry.warning {
+            border-left-color: #f59e0b;
+        }
+
+        .debug-timestamp {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.7rem;
+        }
+
+        .debug-message {
+            color: rgba(255, 255, 255, 0.9);
+            margin-top: 0.25rem;
+            word-wrap: break-word;
+        }
+
         /* Responsive */
         @media (max-width: 991px) {
             .footer-grid {
@@ -641,6 +758,12 @@
 
             table {
                 min-width: 600px;
+            }
+
+            .debug-console {
+                width: calc(100% - 20px);
+                max-height: 150px;
+                bottom: 10px;
             }
 
             .footer-grid {
@@ -796,6 +919,18 @@
         </div>
     </div>
 
+    <!-- Debug Console -->
+    <div class="debug-console" id="debugConsole">
+        <div class="debug-header">
+            <span class="debug-title">Debug Console</span>
+            <div class="debug-buttons">
+                <button class="debug-toggle" id="debugToggle" onclick="window.toggleDebug()">Hide</button>
+                <button class="debug-clear" onclick="window.clearDebug()">Clear</button>
+            </div>
+        </div>
+        <div class="debug-content" id="debugContent"></div>
+    </div>
+
     <footer-wrapper class="footer-wrapper">
         <div class="footer-container1">
             <footer class="footer-root">
@@ -883,6 +1018,44 @@
     </footer-wrapper>
 
     <script>
+        // Debug logging
+        window.debugLog = function(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugContent = document.getElementById('debugContent');
+            const entry = document.createElement('div');
+            entry.className = `debug-entry ${type}`;
+            entry.innerHTML = `
+                <div class="debug-timestamp">[${timestamp}]</div>
+                <div class="debug-message">${message}</div>
+            `;
+            debugContent.appendChild(entry);
+            debugContent.scrollTop = debugContent.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        };
+
+        window.clearDebug = function() {
+            document.getElementById('debugContent').innerHTML = '';
+            window.debugLog('🧹 Debug console cleared');
+        };
+
+        window.toggleDebug = function() {
+            const debugContent = document.getElementById('debugContent');
+            const debugConsole = document.getElementById('debugConsole');
+            const toggleBtn = document.getElementById('debugToggle');
+            
+            if (debugContent.classList.contains('hidden')) {
+                debugContent.classList.remove('hidden');
+                debugConsole.classList.remove('collapsed');
+                toggleBtn.textContent = 'Hide';
+            } else {
+                debugContent.classList.add('hidden');
+                debugConsole.classList.add('collapsed');
+                toggleBtn.textContent = 'Show';
+            }
+        };
+
+        window.debugLog('✅ Page loaded successfully');
+
         // Navigation script
         document.addEventListener('DOMContentLoaded', function() {
             const navToggle = document.getElementById("navToggle");
@@ -966,12 +1139,15 @@
 
         async function loadPresets() {
             try {
+                window.debugLog('🔄 Fetching presets from index.json...', 'info');
                 const response = await fetch('https://raw.githubusercontent.com/baloneys/dynabackend/main/presets/index.json');
                 const data = await response.json();
                 allPresets = data.presets || [];
                 filteredPresets = [...allPresets];
+                window.debugLog(`✅ Loaded ${allPresets.length} presets successfully`, 'success');
                 displayPresets();
             } catch (error) {
+                window.debugLog(`❌ Error loading presets: ${error.message}`, 'error');
                 console.error('Error loading presets:', error);
                 document.getElementById('tableBody').innerHTML = `
                     <tr><td colspan="3" class="empty-state">
@@ -1073,29 +1249,29 @@
         document.getElementById('searchInput').addEventListener('input', filterPresets);
 
         function refreshCodes() {
-            allPresets = [];
-            filteredPresets = [];
-            document.getElementById('tableBody').innerHTML = `
-                <tr><td colspan="3" class="empty-state"><p>Loading presets...</p></td></tr>
-            `;
+            window.debugLog('🔄 Refreshing code list...', 'info');
             loadPresets();
         }
 
         function importJSON() {
+            window.debugLog('📥 Opening file selector for JSON import...', 'info');
             const input = document.createElement('input');
             input.type = 'file';
             input.accept = '.json';
             input.onchange = async (e) => {
                 try {
                     const file = e.target.files[0];
+                    window.debugLog(`📄 Reading file: ${file.name}`, 'info');
                     const text = await file.text();
                     const data = JSON.parse(text);
                     allPresets = data.presets || [];
                     filteredPresets = [...allPresets];
                     currentPage = 1;
                     displayPresets();
+                    window.debugLog(`✅ JSON imported successfully! Loaded ${allPresets.length} presets`, 'success');
                     alert('JSON imported successfully!');
                 } catch (error) {
+                    window.debugLog(`❌ Error importing JSON: ${error.message}`, 'error');
                     alert('Error importing JSON: ' + error.message);
                 }
             };
@@ -1103,6 +1279,7 @@
         }
 
         function validateCodes() {
+            window.debugLog('🔍 Validating codes...', 'info');
             const codes = new Set();
             const duplicates = [];
             
@@ -1115,8 +1292,10 @@
             });
 
             if (duplicates.length > 0) {
+                window.debugLog(`⚠️ Found ${duplicates.length} duplicate code(s): ${duplicates.join(', ')}`, 'warning');
                 alert(`⚠️ Found ${duplicates.length} duplicate code(s):\n${duplicates.join(', ')}\n\nPlease report this to the admin.`);
             } else {
+                window.debugLog(`✅ All codes are unique! Total presets: ${allPresets.length}`, 'success');
                 alert('✓ All codes are unique!\n\nTotal presets: ' + allPresets.length);
             }
         }
