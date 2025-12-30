@@ -6,6 +6,7 @@
     <title>Submit Dynamic Player Tag</title>
     <link rel="shortcut icon" href="../public/pw64s5dmavz539gvjm065tw71xp1.png" type="icon/png" sizes="32x32">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
     <style>
         /* Navigation Styles */
         .navigation-wrapper {
@@ -635,6 +636,15 @@
         </div>
     </div>
 
+    <!-- Debug Console -->
+    <div class="debug-console" id="debugConsole">
+        <div class="debug-header">
+            <span class="debug-title">Debug Console</span>
+            <button class="debug-clear" onclick="clearDebug()">Clear</button>
+        </div>
+        <div id="debugContent"></div>
+    </div>
+
     <footer-wrapper class="footer-wrapper">
         <div class="footer-container1">
             <footer class="footer-root">
@@ -766,6 +776,28 @@
         const form = document.getElementById('submissionForm');
         const messageContainer = document.getElementById('messageContainer');
         const submitBtn = document.getElementById('submitBtn');
+
+        // Debug logging
+        function debugLog(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const debugContent = document.getElementById('debugContent');
+            const entry = document.createElement('div');
+            entry.className = `debug-entry ${type}`;
+            entry.innerHTML = `
+                <div class="debug-timestamp">[${timestamp}]</div>
+                <div class="debug-message">${message}</div>
+            `;
+            debugContent.appendChild(entry);
+            debugContent.scrollTop = debugContent.scrollHeight;
+            console.log(`[${timestamp}] ${message}`);
+        }
+
+        function clearDebug() {
+            document.getElementById('debugContent').innerHTML = '';
+            debugLog('Debug console cleared');
+        }
+
+        debugLog('Page loaded successfully');
 
         function showMessage(message, type = 'success') {
             const className = type === 'success' ? 'success-message' : 'error-message';
