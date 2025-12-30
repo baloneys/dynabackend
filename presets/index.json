@@ -103,6 +103,12 @@
       "targetSystem": "meow",
       "description": "sex",
       "creator": "beef"
+    },
+    {
+      "code": "GMZ0NH",
+      "targetSystem": "SpinTheBottle",
+      "description": "ModerateWinGuy's spin the wheel prefab used in a majority of VRChat drinking worlds.",
+      "creator": "ModerateWinGuy"
     }
   ]
 }
