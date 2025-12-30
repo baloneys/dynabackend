@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script defer src="https://analytics.baloneys.studio/script.js" data-website-id="03418d76-12f0-4a2b-94ba-24dff73a6f6b"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VRCDynamicPlayerTags Database</title>
@@ -1140,7 +1141,9 @@
         async function loadPresets() {
             try {
                 window.debugLog('🔄 Fetching presets from index.json...', 'info');
-                const response = await fetch('https://kanaris-beans.com/dynabackend/presets/index.json');
+                const response = await fetch('https://kanaris-beans.com/dynabackend/presets/index.json', {
+                    cache: 'no-store'
+                });
                 const data = await response.json();
                 allPresets = data.presets || [];
                 filteredPresets = [...allPresets];
