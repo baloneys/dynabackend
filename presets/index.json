@@ -1,3 +1,10 @@
 {
-  "presets": []
+  "presets": [
+    {
+      "code": "1TRFCL",
+      "targetSystem": "SpinTheBottle",
+      "description": "A highly regarded spin the wheel prefab featuring stringloading and a option display.",
+      "creator": "ModerateWinGuy"
+    }
+  ]
 }
