@@ -1,256 +1,1127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script defer src="https://analytics.baloneys.studio/script.js" data-website-id="03418d76-12f0-4a2b-94ba-24dff73a6f6b"></script>
-  <meta charset="utf-8" />
-  <title>VRCDynamicPlayerTags</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VRCDynamicPlayerTags Database</title>
+    <link rel="shortcut icon" href="../public/pw64s5dmavz539gvjm065tw71xp1.png" type="icon/png" sizes="32x32">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
+    <style>
+        /* Navigation Styles */
+        .navigation-wrapper {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-  <!-- RESET & BASE -->
-  <style data-tag="reset-style-sheet">
-    html { line-height: 1.15; }
-    body { margin: 0; }
-    * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
-    a { text-decoration: none; color: inherit; }
-  </style>
+        .navigation-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
 
-  <style data-tag="default-style-sheet">
-    html { font-family: Inter, sans-serif; font-size: 1rem; }
-    body { line-height: 1.6; background: var(--color-surface); color: var(--color-on-surface); }
-  </style>
+        .navigation-logo {
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
 
-  <!-- CORE STYLE -->
-  <link rel="stylesheet" href="./style.css" />
+        .navigation-logo:hover {
+            opacity: 0.8;
+        }
 
-  <!-- PAGE STYLE -->
-  <link rel="stylesheet" href="./vrc-dynamic-player-tags.css" />
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+        }
 
-  <!-- FONTS -->
-  <link rel="stylesheet"
-    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" />
+        .navigation-desktop-menu {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .navigation-link {
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            cursor: pointer;
+            transition: color 0.2s ease;
+            text-decoration: none;
+        }
+
+        .navigation-link:hover {
+            color: #ffffff;
+        }
+
+        .navigation-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #ffffff;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .navigation-mobile-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(10, 10, 10, 0.98);
+            z-index: 2000;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+            overflow-y: auto;
+        }
+
+        .navigation-mobile-overlay.is-open {
+            transform: translateX(0);
+        }
+
+        .navigation-mobile-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navigation-mobile-content {
+            padding: 2rem;
+        }
+
+        .navigation-mobile-links {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .navigation-mobile-link {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            padding: 0.5rem 0;
+        }
+
+        .navigation-mobile-link:hover {
+            color: #ffffff;
+            transform: translateX(0.5rem);
+        }
+
+        .navigation-mobile-actions {
+            margin-top: 2rem;
+        }
+
+        /* Footer Styles */
+        .footer-root {
+            width: 100%;
+            background: #1a1a1a;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 4rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem 1.5rem;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-brand-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .footer-logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        .footer-brand-description {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 300px;
+        }
+
+        .section-content {
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .footer-social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.2);
+            color: rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .footer-social-icon:hover {
+            background: rgba(99, 102, 241, 0.3);
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .footer-nav-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section-subtitle,
+        .footer-column-title {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #fff;
+        }
+
+        .footer-nav-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .footer-nav-link {
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.7);
+            transition: color 0.2s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .footer-nav-link:hover {
+            color: #fff;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .footer-bottom-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-copyright {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Page Specific Styles */
+        :root {
+            --color-surface: #0a0a0a;
+            --color-surface-elevated: #1a1a1a;
+            --color-primary: #6366f1;
+            --color-primary-hover: #4f46e5;
+            --color-primary-dark: #4338ca;
+            --color-text: #ffffff;
+            --color-text-secondary: rgba(255, 255, 255, 0.7);
+            --color-border: rgba(255, 255, 255, 0.1);
+            --color-code-bg: #6366f1;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--color-surface);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .main-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+            padding-top: 100px;
+            min-height: calc(100vh - 400px);
+        }
+
+        header.page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-top: 2rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-subtitle {
+            color: var(--color-text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--color-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid var(--color-border);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .btn-sm {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            border-radius: 6px;
+        }
+
+        .btn-lg {
+            padding: 0.875rem 1.75rem;
+            font-size: 1rem;
+            border-radius: 8px;
+        }
+
+        .search-section {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-section h2 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .search-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .search-input-main {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--color-surface);
+            border: 1px solid var(--color-border);
+            border-radius: 8px;
+            color: var(--color-text);
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .search-input-main:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+
+        .search-input-main::placeholder {
+            color: var(--color-text-secondary);
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--color-border);
+            border-radius: 6px;
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: rgba(99, 102, 241, 0.3);
+            color: var(--color-text);
+        }
+
+        .filter-btn.active {
+            background: rgba(99, 102, 241, 0.2);
+            border-color: var(--color-primary);
+            color: var(--color-primary);
+        }
+
+        .table-wrapper {
+            background: var(--color-surface-elevated);
+            border: 1px solid var(--color-border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+            color: var(--color-text);
+            border-bottom: 1px solid var(--color-border);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 1.25rem 1rem;
+            border-bottom: 1px solid var(--color-border);
+            color: var(--color-text-secondary);
+            vertical-align: middle;
+        }
+
+        tbody tr {
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: rgba(99, 102, 241, 0.05);
+        }
+
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .code-bubble {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            color: white;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+        }
+
+        .system-badge {
+            display: inline-block;
+            padding: 0.4rem 0.875rem;
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.3px;
+        }
+
+        .system-badge.osc {
+            background: rgba(168, 85, 247, 0.15);
+            color: #a855f7;
+            border-color: rgba(168, 85, 247, 0.3);
+        }
+
+        .system-badge.unity {
+            background: rgba(59, 130, 246, 0.15);
+            color: #3b82f6;
+            border-color: rgba(59, 130, 246, 0.3);
+        }
+
+        .system-badge.universal {
+            background: rgba(99, 102, 241, 0.15);
+            color: #6366f1;
+            border-color: rgba(99, 102, 241, 0.3);
+        }
+
+        .creator-tag {
+            display: inline-block;
+            padding: 0.3rem 0.75rem;
+            background: rgba(99, 102, 241, 0.15);
+            color: #a5b4fc;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin-left: 0.5rem;
+        }
+
+        .code-cell {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .description-cell {
+            max-width: 400px;
+            line-height: 1.5;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
+            padding: 1rem;
+        }
+
+        .pagination button {
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            border-radius: 6px;
+            color: var(--color-text);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .pagination button:hover:not(:disabled) {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: var(--color-primary);
+        }
+
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .pagination span {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 2rem 0 4rem 0;
+            flex-wrap: wrap;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--color-text-secondary);
+        }
+
+        .empty-state p {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 991px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .footer-brand-column {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 767px) {
+            .navigation-desktop-menu {
+                display: none;
+            }
+
+            .navigation-toggle {
+                display: block;
+            }
+
+            .navigation-container {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+                padding-top: 80px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .filter-buttons {
+                gap: 0.5rem;
+            }
+
+            .filter-btn {
+                flex: 1 1 auto;
+                min-width: fit-content;
+            }
+
+            .header-actions {
+                flex-direction: column;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-brand-column {
+                text-align: center;
+                align-items: center;
+            }
+            
+            .footer-social-links {
+                justify-content: center;
+            }
+            
+            .footer-brand-description {
+                max-width: 100%;
+            }
+            
+            .footer-bottom-content {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+            
+            .footer-nav-column {
+                text-align: center;
+            }
+        }
+    </style>
 </head>
-
 <body>
-
-  <!-- HEADER WITH SUBMISSION BUTTON -->
-  <header class="header-section" style="display:flex;justify-content:space-between;align-items:center;">
-    <div class="header-container">
-      <div class="header-content">
-        <h1 class="header-title hero-title">VRCDynamicPlayerTags</h1>
-      </div>
-    </div>
-    <div style="margin-right:24px;">
-      <button id="gotoSubmissions" class="btn btn-primary btn-lg">
-        New Submission
-      </button>
-    </div>
-  </header>
-
-  <!-- SEARCH BAR -->
-  <section class="search-bar-section">
-    <div class="search-bar-container" style="max-width:700px;margin:auto;">
-      <div class="search-bar-card" style="padding:1.5rem;">
-        <div class="search-bar-header">
-          <h2 class="section-title">Explore Presets</h2>
-          <p class="section-content">Search by exact Code, Target System, or Description.</p>
+    <navigation-wrapper class="navigation-wrapper">
+        <div class="navigation-container1">
+            <nav class="navigation-wrapper">
+                <div class="navigation-container">
+                    <a href="../index.html">
+                        <div class="navigation-logo">
+                            <span class="section-title">baloneys</span>
+                        </div>
+                    </a>
+                    <div class="navigation-desktop-menu">
+                        <a href="../index.html">
+                            <div class="navigation-link"><span>Home</span></div>
+                        </a>
+                        <a href="https://vrchat.com/home/user/usr_54097a4a-dab6-47ce-bcc5-00f39aa03555" target="_blank" rel="noreferrer noopener">
+                            <div class="navigation-link"><span>Worlds</span></div>
+                        </a>
+                        <a href="vrc-dynamic-player-tags.html">
+                            <div class="navigation-link"><span>Tagging</span></div>
+                        </a>
+                        <a href="https://jinxxy.com/baloneys" target="_blank" rel="noreferrer noopener">
+                            <div class="navigation-link"><span>Store</span></div>
+                        </a>
+                        <a href="https://discord.gg/gYWJsYhwXN" target="_blank" rel="noreferrer noopener">
+                            <div class="btn-sm btn-primary btn"><span>Contact Me</span></div>
+                        </a>
+                    </div>
+                    <button id="navToggle" aria-label="Open Menu" aria-expanded="false" class="navigation-toggle">
+                        <svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+                            <path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                </div>
+            </nav>
+            <div id="mobileOverlay" class="navigation-mobile-overlay">
+                <div class="navigation-mobile-header">
+                    <a href="../index.html">
+                        <div class="navigation-logo">
+                            <span class="section-title">baloneys</span>
+                        </div>
+                    </a>
+                    <button id="navClose" aria-label="Close Menu" class="navigation-toggle">
+                        <svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+                            <path d="M18 6L6 18M6 6l12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </button>
+                </div>
+                <div class="navigation-mobile-content">
+                    <div class="navigation-mobile-links">
+                        <a href="../index.html"><div class="navigation-mobile-link"><span>Home</span></div></a>
+                        <a href="https://vrchat.com/home/user/usr_54097a4a-dab6-47ce-bcc5-00f39aa03555" target="_blank" rel="noreferrer noopener">
+                            <div class="navigation-mobile-link"><span>Worlds</span></div>
+                        </a>
+                        <a href="vrc-dynamic-player-tags.html"><div class="navigation-mobile-link"><span>Tagging</span></div></a>
+                        <a href="https://jinxxy.com/baloneys" target="_blank" rel="noreferrer noopener">
+                            <div class="navigation-mobile-link"><span>Store</span></div>
+                        </a>
+                    </div>
+                    <div class="navigation-mobile-actions">
+                        <a href="https://discord.gg/gYWJsYhwXN" target="_blank" rel="noreferrer noopener">
+                            <div class="btn-primary btn-lg btn"><span>Contact Me</span></div>
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="search-bar-form-wrapper">
-          <div class="search-bar-input-group" style="max-width:400px;margin:auto;">
-            <input type="text" id="searchInput" class="search-bar-input"
-              placeholder="Exact match search..." style="font-size:1rem;padding:0.7rem;" />
-          </div>
-          <div class="search-bar-filter-chips" style="margin-top:1rem;display:flex;gap:0.5rem;justify-content:center;">
-            <button type="button" class="search-bar-chip active" data-mode="code">Code</button>
-            <button type="button" class="search-bar-chip" data-mode="targetSystem">Target System</button>
-            <button type="button" class="search-bar-chip" data-mode="description">Description</button>
-          </div>
+    </navigation-wrapper>
+
+    <div class="main-content">
+        <header class="page-header">
+            <h1>VRCDynamicPlayerTags</h1>
+            <p class="page-subtitle">Community-driven database for dynamic player identification presets</p>
+            <div class="header-actions">
+                <a href="submissions.html" class="btn btn-primary">Add New Submission</a>
+                <a href="../index.html" class="btn btn-secondary">Back to Home</a>
+            </div>
+        </header>
+
+        <div class="search-section">
+            <h2>Filter Presets</h2>
+            <div class="search-controls">
+                <input type="text" id="searchInput" class="search-input-main" placeholder="Search presets...">
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all" onclick="setSearchFilter('all')">All</button>
+                    <button class="filter-btn" data-filter="code" onclick="setSearchFilter('code')">Code</button>
+                    <button class="filter-btn" data-filter="creator" onclick="setSearchFilter('creator')">Creator</button>
+                    <button class="filter-btn" data-filter="target" onclick="setSearchFilter('target')">Target System</button>
+                    <button class="filter-btn" data-filter="description" onclick="setSearchFilter('description')">Description</button>
+                </div>
+            </div>
         </div>
-      </div>
+
+        <div class="table-wrapper">
+            <table id="presetTable">
+                <thead>
+                    <tr>
+                        <th>CODE & CREATOR</th>
+                        <th>TARGET SYSTEM</th>
+                        <th>DESCRIPTION</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td colspan="3" class="empty-state">
+                            <p>Loading presets...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="pagination" id="pagination">
+            <button id="prevBtn" onclick="previousPage()">← Previous</button>
+            <span id="pageInfo">Page 1</span>
+            <button id="nextBtn" onclick="nextPage()">Next →</button>
+        </div>
+
+        <div class="actions-bar">
+            <button class="btn btn-secondary" onclick="refreshCodes()">🔄 Refresh Code List</button>
+            <button class="btn btn-secondary" onclick="importJSON()">📥 Import JSON</button>
+            <button class="btn btn-secondary" onclick="validateCodes()">✓ Validate Codes</button>
+        </div>
     </div>
-  </section>
 
-  <!-- TABLE (3 COLUMNS) -->
-  <section class="dashboard-section">
-    <div class="vrcdynamicplayertags-dashboard-container">
-      <div class="dashboard-table-wrapper">
-        <table class="vrcdynamicplayertags-dashboard-table">
-          <thead>
-            <tr>
-              <th>Code</th>
-              <th>Target System</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
-        </table>
-      </div>
-    </div>
-  </section>
+    <footer-wrapper class="footer-wrapper">
+        <div class="footer-container1">
+            <footer class="footer-root">
+                <div class="footer-container">
+                    <div class="footer-grid">
+                        <div class="footer-brand-column">
+                            <a href="../index.html">
+                                <div class="footer-logo-link">
+                                    <span class="footer-logo-text">baloneys</span>
+                                </div>
+                            </a>
+                            <p class="footer-brand-description section-content">
+                                <span>Crafting highly immersive experiences,</span><br />
+                                <span>environments, and robust prefabs.</span>
+                            </p>
+                            <div class="footer-social-links">
+                                <a href="https://discord.gg/gYWJsYhwXN" target="_blank" rel="noreferrer noopener">
+                                    <div aria-label="Discord" class="footer-social-icon">
+                                        <svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+                                            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M8 12a1 1 0 1 0 2 0a1 1 0 0 0-2 0m6 0a1 1 0 1 0 2 0a1 1 0 0 0-2 0"></path>
+                                                <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833-1.667 3.5-3c.667-1.667.5-5.833-1.5-11.5c-1.457-1.015-3-1.34-4.5-1.5l-.972 1.923a11.9 11.9 0 0 0-4.053 0L9 4c-1.5.16-3.043.485-4.5 1.5c-2 5.667-2.167 9.833-1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2-2 2-3"></path>
+                                                <path d="M7 16.5c3.5 1 6.5 1 10 0"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </a>
+                                <a href="https://x.com/beilude" target="_blank" rel="noreferrer noopener">
+                                    <div aria-label="Twitter" class="footer-social-icon">
+                                        <svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+                                            <path d="M22 4.01c-1 .49-1.98.689-3 .99c-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4c0 0-4.182 7.433 4 11c-1.872 1.247-3.739 2.088-6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58-1.04 6.522-3.723 7.651-7.742a13.8 13.8 0 0 0 .497-3.753c0-.249 1.51-2.772 1.818-4.013z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                                        </svg>
+                                    </div>
+                                </a>
+                                <a href="https://github.com/baloneys" target="_blank" rel="noreferrer noopener">
+                                    <div aria-label="GitHub" class="footer-social-icon">
+                                        <svg width="24" xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24">
+                                            <g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5c.08-1.25-.27-2.48-1-3.5c.28-1.15.28-2.35 0-3.5c0 0-1 0-3 1.5c-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.4 5.4 0 0 0 4 9c0 3.5 3 5.5 6 5.5c-.39.49-.68 1.05-.85 1.65S8.93 17.38 9 18v4"></path>
+                                                <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                            </g>
+                                        </svg>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="footer-nav-column">
+                            <h3 class="section-subtitle footer-column-title">Navigation</h3>
+                            <nav class="footer-nav-list">
+                                <a href="../index.html"><div class="footer-nav-link"><span>Home</span></div></a>
+                                <a href="https://jinxxy.com/baloneys" target="_blank" rel="noreferrer noopener">
+                                    <div class="footer-nav-link"><span>Jinxxy Store</span></div>
+                                </a>
+                                <a href="https://vrchat.com/home/user/usr_54097a4a-dab6-47ce-bcc5-00f39aa03555" target="_blank" rel="noreferrer noopener">
+                                    <div class="footer-nav-link"><span>VRChat Worlds</span></div>
+                                </a>
+                                <a href="vrc-dynamic-player-tags.html">
+                                    <div class="footer-nav-link"><span>VRCDynamicPlayerTags</span></div>
+                                </a>
+                            </nav>
+                        </div>
+                        <div class="footer-nav-column">
+                            <h3 class="section-subtitle footer-column-title">Resources</h3>
+                            <nav class="footer-nav-list">
+                                <a href="https://discord.gg/gYWJsYhwXN" target="_blank" rel="noreferrer noopener">
+                                    <div class="footer-nav-link"><span>Support Discord</span></div>
+                                </a>
+                                <a href="https://kanaris-beans.com/terms" target="_blank" rel="noreferrer noopener">
+                                    <div class="footer-nav-link"><span>Terms of Service</span></div>
+                                </a>
+                                <a href="https://kanaris-beans.com/privacy" target="_blank" rel="noreferrer noopener">
+                                    <div class="footer-nav-link"><span>Privacy Policy</span></div>
+                                </a>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <div class="footer-bottom-content">
+                            <p class="footer-copyright section-content">© 2025 baloneys. All rights reserved</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </footer-wrapper>
 
-  <!-- ACTION BUTTONS & PAGINATION -->
-  <section class="cta-actions-section">
-    <div class="cta-actions-container"
-      style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;padding:1rem 0;">
-      <button id="refreshBtn" class="action-card">Refresh Code List</button>
-      <button id="importBtn" class="action-card">Import JSON</button>
-      <button id="validateBtn" class="action-card">Validate Codes</button>
-    </div>
-    <div style="text-align:center;margin-top:1rem;">
-      <button id="prevBtn" class="btn btn-secondary">Prev</button>
-      <span id="pageIndicator"></span>
-      <button id="nextBtn" class="btn btn-secondary">Next</button>
-    </div>
-  </section>
+    <script>
+        // Navigation script
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById("navToggle");
+            const navClose = document.getElementById("navClose");
+            const mobileOverlay = document.getElementById("mobileOverlay");
+            const body = document.body;
 
-  <!-- DEBUG CONSOLE -->
-  <section style="margin:1rem auto; max-width:700px;">
-    <pre id="debugConsole" style="background:#111;color:#0f0;padding:1rem;overflow:auto;height:150px;"></pre>
-  </section>
+            function openMenu() {
+                mobileOverlay.classList.add("is-open");
+                navToggle.setAttribute("aria-expanded", "true");
+                body.style.overflow = "hidden";
+            }
 
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
+            function closeMenu() {
+                mobileOverlay.classList.remove("is-open");
+                navToggle.setAttribute("aria-expanded", "false");
+                body.style.overflow = "";
+            }
 
-    const INDEX_JSON_URL = "./presets/index.json";
-    const PAGE_SIZE = 5;
+            navToggle.addEventListener("click", openMenu);
+            navClose.addEventListener("click", closeMenu);
 
-    let allPresets = [];
-    let filtered = [];
-    let currentPage = 0;
-    let searchMode = "code";
+            const mobileLinks = mobileOverlay.querySelectorAll(".navigation-mobile-link");
+            mobileLinks.forEach((link) => {
+                link.addEventListener("click", closeMenu);
+            });
 
-    const tableBody = document.getElementById("tableBody");
-    const searchInput = document.getElementById("searchInput");
-    const pageIndicator = document.getElementById("pageIndicator");
-    const chips = document.querySelectorAll(".search-bar-chip");
-    const debugConsole = document.getElementById("debugConsole");
+            window.addEventListener("resize", () => {
+                if (window.innerWidth > 767 && mobileOverlay.classList.contains("is-open")) {
+                    closeMenu();
+                }
+            });
 
-    function logDebug(msg) {
-      if(debugConsole) debugConsole.textContent += msg + "\n";
-    }
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && mobileOverlay.classList.contains("is-open")) {
+                    closeMenu();
+                }
+            });
+        });
 
-    async function loadIndex() {
-      allPresets = [];
-      try {
-        logDebug("Fetching index.json...");
-        const res = await fetch(INDEX_JSON_URL + "?_=" + new Date().getTime()); // cache-buster
-        if(!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        logDebug(`Loaded ${data.presets.length} presets from index.json`);
-        allPresets = data.presets;
-      } catch(err) {
-        logDebug("Failed to load index.json: " + err);
-      }
+        // Database functionality
+        let allPresets = [];
+        let filteredPresets = [];
+        let currentPage = 1;
+        let currentFilter = 'all';
+        const itemsPerPage = 15;
 
-      filtered = [...allPresets];
-      currentPage = 0;
-      renderTable();
-    }
+        // Set search filter mode
+        function setSearchFilter(filter) {
+            currentFilter = filter;
+            
+            // Update button states
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
+            
+            // Update placeholder
+            const input = document.getElementById('searchInput');
+            const placeholders = {
+                all: 'Search all fields...',
+                code: 'Search by code...',
+                creator: 'Search by creator...',
+                target: 'Search by target system...',
+                description: 'Search by description...'
+            };
+            input.placeholder = placeholders[filter];
+            
+            // Trigger search
+            filterPresets();
+        }
 
-    function renderTable() {
-      tableBody.innerHTML = "";
-      const start = currentPage * PAGE_SIZE;
-      const items = filtered.slice(start, start + PAGE_SIZE);
+        // Determine system badge class based on target system name
+        function getSystemBadgeClass(targetSystem) {
+            const lower = targetSystem.toLowerCase();
+            if (lower.includes('osc')) return 'osc';
+            if (lower.includes('unity')) return 'unity';
+            if (lower.includes('universal')) return 'universal';
+            return '';
+        }
 
-      items.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td><code>${p.code}</code></td>
-          <td>${p.targetSystem || ""}</td>
-          <td>${p.description || ""}</td>
-        `;
-        tableBody.appendChild(tr);
-      });
+        async function loadPresets() {
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/baloneys/dynabackend/main/presets/index.json');
+                const data = await response.json();
+                allPresets = data.presets || [];
+                filteredPresets = [...allPresets];
+                displayPresets();
+            } catch (error) {
+                console.error('Error loading presets:', error);
+                document.getElementById('tableBody').innerHTML = `
+                    <tr><td colspan="3" class="empty-state">
+                        <p>Error loading presets. Please try refreshing.</p>
+                        <button class="btn btn-primary" onclick="loadPresets()" style="margin-top: 1rem;">Retry</button>
+                    </td></tr>
+                `;
+            }
+        }
 
-      pageIndicator.textContent =
-        `Page ${currentPage + 1} of ${Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))}`;
-    }
+        function displayPresets() {
+            const tbody = document.getElementById('tableBody');
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const pagePresets = filteredPresets.slice(start, end);
 
-    function applySearch() {
-      const q = searchInput.value.trim().toLowerCase();
-      if(!q) {
-        filtered = [...allPresets];
-      } else {
-        filtered = allPresets.filter(p => (p[searchMode] || "").toLowerCase() === q);
-      }
-      currentPage = 0;
-      renderTable();
-    }
+            if (pagePresets.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="3" class="empty-state">
+                        <p>No presets found matching your search.</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Try adjusting your filters or <a href="submissions.html" style="color: #6366f1;">submit a new preset</a>.</p>
+                    </td></tr>
+                `;
+                return;
+            }
 
-    searchInput.addEventListener("input", applySearch);
-    chips.forEach(c => {
-      c.addEventListener("click", () => {
-        chips.forEach(b => b.classList.remove("active"));
-        c.classList.add("active");
-        searchMode = c.dataset.mode;
-        applySearch();
-      });
-    });
+            tbody.innerHTML = pagePresets.map(preset => {
+                const badgeClass = getSystemBadgeClass(preset.targetSystem || '');
+                return `
+                <tr>
+                    <td>
+                        <div class="code-cell">
+                            <span class="code-bubble">${preset.code}</span>
+                            ${preset.creator ? `<span class="creator-tag">${preset.creator}</span>` : ''}
+                        </div>
+                    </td>
+                    <td>
+                        <span class="system-badge ${badgeClass}">${preset.targetSystem || 'N/A'}</span>
+                    </td>
+                    <td class="description-cell">${preset.description || 'No description'}</td>
+                </tr>
+            `}).join('');
 
-    document.getElementById("prevBtn").addEventListener("click", () => {
-      if(currentPage > 0) { currentPage--; renderTable(); }
-    });
+            updatePagination();
+        }
 
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      if((currentPage + 1) * PAGE_SIZE < filtered.length) { currentPage++; renderTable(); }
-    });
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredPresets.length / itemsPerPage) || 1;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages}`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage >= totalPages;
+        }
 
-    document.getElementById("refreshBtn").addEventListener("click", loadIndex);
+        function nextPage() {
+            const totalPages = Math.ceil(filteredPresets.length / itemsPerPage);
+            if (currentPage < totalPages) {
+                currentPage++;
+                displayPresets();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
 
-    document.getElementById("importBtn").addEventListener("click", async () => {
-      try {
-        logDebug("Import JSON clicked...");
-        const input = document.createElement("input");
-        input.type = "file";
-        input.accept = ".json";
-        input.onchange = async e => {
-          const file = e.target.files[0];
-          const text = await file.text();
-          const json = JSON.parse(text);
-          if(!json.code || !json.targetSystem || !json.description) throw new Error("Invalid JSON");
-          logDebug(`Imported preset ${json.code}`);
-          
-          // POST to backend to save preset and update index.json
-          const res = await fetch("/submit", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(json)
-          });
-          const result = await res.json();
-          if(result.success) {
-            logDebug(`Preset ${result.code} saved to GitHub.`);
-            loadIndex();
-          } else {
-            logDebug(`Failed to save preset: ${result.error}`);
-          }
-        };
-        input.click();
-      } catch(err) {
-        logDebug("Import failed: " + err);
-      }
-    });
+        function previousPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                displayPresets();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        }
 
-    document.getElementById("validateBtn").addEventListener("click", async () => {
-      logDebug("Validate codes clicked...");
-      try {
-        // Trigger redeploy by updating index.json (force push)
-        const res = await fetch("/validate", { method: "POST" });
-        const result = await res.json();
-        if(result.success) logDebug("Deployment triggered successfully.");
-        else logDebug("Deployment failed: " + result.error);
-      } catch(err) {
-        logDebug("Deployment error: " + err);
-      }
-    });
+        function filterPresets() {
+            const searchValue = document.getElementById('searchInput').value.toLowerCase();
 
-    document.getElementById("gotoSubmissions").addEventListener("click", () => {
-      window.location.href = "submissions.html";
-    });
+            filteredPresets = allPresets.filter(preset => {
+                if (!searchValue) return true;
 
-    // initial load
-    loadIndex();
+                switch(currentFilter) {
+                    case 'code':
+                        return (preset.code || '').toLowerCase().includes(searchValue);
+                    case 'creator':
+                        return (preset.creator || '').toLowerCase().includes(searchValue);
+                    case 'target':
+                        return (preset.targetSystem || '').toLowerCase().includes(searchValue);
+                    case 'description':
+                        return (preset.description || '').toLowerCase().includes(searchValue);
+                    case 'all':
+                    default:
+                        return (preset.code || '').toLowerCase().includes(searchValue) ||
+                               (preset.creator || '').toLowerCase().includes(searchValue) ||
+                               (preset.targetSystem || '').toLowerCase().includes(searchValue) ||
+                               (preset.description || '').toLowerCase().includes(searchValue);
+                }
+            });
 
-  });
-  </script>
+            currentPage = 1;
+            displayPresets();
+        }
 
+        document.getElementById('searchInput').addEventListener('input', filterPresets);
+
+        function refreshCodes() {
+            allPresets = [];
+            filteredPresets = [];
+            document.getElementById('tableBody').innerHTML = `
+                <tr><td colspan="3" class="empty-state"><p>Loading presets...</p></td></tr>
+            `;
+            loadPresets();
+        }
+
+        function importJSON() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = '.json';
+            input.onchange = async (e) => {
+                try {
+                    const file = e.target.files[0];
+                    const text = await file.text();
+                    const data = JSON.parse(text);
+                    allPresets = data.presets || [];
+                    filteredPresets = [...allPresets];
+                    currentPage = 1;
+                    displayPresets();
+                    alert('JSON imported successfully!');
+                } catch (error) {
+                    alert('Error importing JSON: ' + error.message);
+                }
+            };
+            input.click();
+        }
+
+        function validateCodes() {
+            const codes = new Set();
+            const duplicates = [];
+            
+            allPresets.forEach(preset => {
+                if (codes.has(preset.code)) {
+                    duplicates.push(preset.code);
+                } else {
+                    codes.add(preset.code);
+                }
+            });
+
+            if (duplicates.length > 0) {
+                alert(`⚠️ Found ${duplicates.length} duplicate code(s):\n${duplicates.join(', ')}\n\nPlease report this to the admin.`);
+            } else {
+                alert('✓ All codes are unique!\n\nTotal presets: ' + allPresets.length);
+            }
+        }
+
+        loadPresets();
+    </script>
 </body>
 </html>
