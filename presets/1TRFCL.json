@@ -1,0 +1,13 @@
+{
+  "code": "1TRFCL",
+  "targetSystem": "SpinTheBottle",
+  "description": "A highly regarded spin the wheel prefab featuring stringloading and a option display.",
+  "KnownTMPs": [
+    "Top Option"
+  ],
+  "KnownTriggers": [
+    "BottleSpinner"
+  ],
+  "creator": "ModerateWinGuy",
+  "submittedAt": "2025-12-30T09:11:18.044Z"
+}
