@@ -1,23 +1,40 @@
 # VRCDynamicPlayerTags
 
-> Dynamic player detection and text display system for VRChat worlds
+> Dynamic player name tag replacement system for VRChat game text arrays
 
-Hey there! This is a system I built to help VRChat world creators easily detect players and update TextMeshPro (TMP) objects based on who's in trigger zones. Think of it like a plug-and-play solution for things like "who's sitting in this chair" or "who won this game" without having to write a bunch of Udon code yourself.
+Hey there! This is a system I built to help VRChat world creators automatically replace player name tags in text arrays with actual player names during gameplay. Think of it like a plug-and-play solution for games like Never Have I Ever, Spin the Wheel, or Truth or Dare—where your prompts say things like "`<player>` must dance with `<rem_player>`" and the system automatically fills in real player names.
 
 ## What Does This Thing Do?
 
 VRCDynamicPlayerTags lets you:
-- Detect when players enter trigger zones
-- Automatically update TMP text objects with player display names
-- Choose between simple text or colored text with fancy formatting
-- Use community-created presets for popular VRChat prefabs
-- Strip and reconfigure setups without breaking your world
+- Parse text arrays that contain special player name tags
+- Automatically replace `<player>`, `<rem_player>`, and `<random>` tags with actual player names
+- Use community-created presets for popular VRChat game prefabs
+- Configure everything through a visual Unity Editor tool—no coding required
 
 Perfect for:
-- Seating systems (show who's sitting where)
-- Game scoreboards (display current player, winners, etc.)
-- Interactive chairs and props
-- Any situation where you need to display "Player X is here"
+- Never Have I Ever systems
+- Spin the Wheel / Fortune Wheel games
+- Truth or Dare prefabs
+- Any game system that uses text prompts with player names
+
+## How Tags Work
+
+Your game's text arrays contain special tags that the system detects and replaces at runtime:
+
+### `<player>` - Primary Player
+The current or main player in the context.
+- **Example:** "`<player>` won the game!" → "Alice won the game!"
+
+### `<rem_player>` - Different Random Player
+A different random player (not the same as `<player>`).
+- **Example:** "`<player>` must kiss `<rem_player>`" → "Alice must kiss Bob"
+
+### `<random>` - Any Random Player
+Any random player from the world.
+- **Example:** "`<random>` has to sing a song!" → "Charlie has to sing a song!"
+
+Tags are replaced dynamically each time the text is displayed, so every round feels unique!
 
 ## Quick Start
 
@@ -232,9 +249,9 @@ I'll review it and add it to the database so others can use it.
 
 ## Workflow Examples
 
-### Example 1: Using a Preset Code
+### Example 1: Using a Preset Code for Spin the Wheel
 
-You found a preset code `GMZ0NH` for ModerateWinGuy's Spin the Wheel prefab.
+You found preset code `GMZ0NH` for ModerateWinGuy's Spin the Wheel prefab.
 
 **Steps:**
 1. Open the Manager: `baloneys → VRC Dynamic Player Tags Manager`
@@ -246,50 +263,70 @@ You found a preset code `GMZ0NH` for ModerateWinGuy's Spin the Wheel prefab.
 7. The manager auto-fills TMPs and Triggers from the preset
 8. Click "✨ Tagify GameObject"
 
-Done! The wheel now shows player names when they win.
+Done! Your wheel prompts now display real player names instead of `<player>` tags.
 
-### Example 2: Manual Configuration (No Preset)
+### Example 2: Manual Configuration for Custom Game
 
-You have a custom chair setup with no preset available.
+You built a custom Never Have I Ever system with no preset available.
 
 **GameObject Structure:**
 ```
-MyChair (select this as Root)
-├── ChairTrigger (has a collider)
+NeverHaveIEver (select this as Root)
+├── QuestionTrigger (has a collider)
 └── UI
-    └── PlayerNameDisplay (TMP object)
+    └── QuestionText (TMP object with text like "Never have I ever kissed <player>")
 ```
 
 **Steps:**
 1. Open the Manager
-2. Select "MyChair" as Root GameObject
+2. Select "NeverHaveIEver" as Root GameObject
 3. Choose "SyncedTagParserSimple" as Script Type
 4. Enable "Manual Configuration" at the bottom
-5. Click "+ Add TMP" and type `PlayerNameDisplay`
-6. Click "+ Add Trigger" and type `ChairTrigger`
-7. Adjust "Detect Players Anywhere" to `false` (with override checked)
-8. Click "✨ Tagify GameObject"
+5. Click "+ Add TMP" and type `QuestionText`
+6. Click "+ Add Trigger" and type `QuestionTrigger`
+7. Click "✨ Tagify GameObject"
 
-The chair now displays who's sitting in it!
+Your prompts now replace `<player>`, `<rem_player>`, and `<random>` tags automatically!
 
-### Example 3: Modifying an Existing Setup
+### Example 3: Truth or Dare with Multiple Text Objects
 
-You already tagified your GameObject but want to add more TMPs or change settings.
+Your Truth or Dare game displays prompts on multiple TMP objects with colored text:
+
+**GameObject Structure:**
+```
+TruthOrDare (select this as Root)
+├── GameTrigger
+├── MainPrompt (TMP: "Truth: <player> must tell <rem_player> a secret")
+└── SecondaryPrompt (TMP: "Dare: <random> has to dance")
+```
+
+**Steps:**
+1. Select "TruthOrDare" as Root GameObject
+2. Choose "SyncedTagParserSimpleColored" as Script Type
+3. Enable "Manual Configuration"
+4. Add TMPs: `MainPrompt`, `SecondaryPrompt`
+5. Add Trigger: `GameTrigger`
+6. Click "✨ Tagify GameObject"
+
+Both text objects now parse and replace player tags with colored formatting!
+
+### Example 4: Modifying Tag Behavior
+
+You already tagified your game but want to adjust detection settings:
 
 **Steps:**
 1. Select your GameObject
 2. Open the Manager (it auto-detects existing scripts)
 3. Notice the button says "✏️ Modify GameObject" now
-4. Enable "Manual Configuration"
-5. Add new TMPs with "+ Add TMP"
-6. Change parser settings if needed
-7. Click "✏️ Modify GameObject"
+4. Check "Override" next to "Detect Players Anywhere" and set to `false`
+5. Adjust "Run Delay" if needed
+6. Click "✏️ Modify GameObject"
 
-Your scripts are updated without losing the existing setup!
+Your scripts are updated without losing the configuration!
 
-### Example 4: Switching Presets
+### Example 5: Switching Between Presets
 
-You set up with one preset but want to try a different one:
+You set up with one game preset but want to try a different one:
 
 1. Select your GameObject
 2. Open the Stripper: `baloneys → Strip VRC Dynamic Player Tags`
@@ -300,105 +337,69 @@ You set up with one preset but want to try a different one:
 7. Enter the new preset code and click "Fetch"
 8. Click "✨ Tagify GameObject"
 
-Clean slate with the new preset!
-
-### Example 5: Multiple Chairs with Colored Names
-
-You have 3 chairs and want colored player names:
-
-**GameObject Structure:**
-```
-ChairSystem (select this as Root)
-├── Chair1
-│   ├── Chair1Trigger
-│   └── Chair1Name (TMP)
-├── Chair2
-│   ├── Chair2Trigger
-│   └── Chair2Name (TMP)
-└── Chair3
-    ├── Chair3Trigger
-    └── Chair3Name (TMP)
-```
-
-**Steps:**
-1. Select "ChairSystem" as Root GameObject
-2. Choose "SyncedTagParserSimpleColored" as Script Type
-3. Enable "Manual Configuration"
-4. Add TMPs: `Chair1Name`, `Chair2Name`, `Chair3Name`
-5. Add Triggers: `Chair1Trigger`, `Chair2Trigger`, `Chair3Trigger`
-6. Click "✨ Tagify GameObject"
-
-All three chairs now show colored player names automatically!
-
-### Example 6: Using Preset Override Settings
-
-A preset has `detectAnywhere = true` but you want it `false` for your use case:
-
-**Steps:**
-1. Load the preset
-2. Select your GameObject
-3. Check the "Override" checkbox next to "Detect Players Anywhere"
-4. Toggle "Detect Players Anywhere" to `false`
-5. Click "✨ Tagify GameObject"
-
-The preset TMPs/Triggers are used, but with your custom detection setting!
+Clean slate with the new game configuration!
 
 ## How It Works (Technical)
 
 For those curious about what's happening under the hood:
 
+### Tag Parsing System
+1. **Text Arrays:** Your game prefab has TextMeshPro objects containing text with special tags
+2. **Tag Detection:** The scripts scan the text for `<player>`, `<rem_player>`, and `<random>` tags
+3. **Player Selection:** When tags are detected, the system selects appropriate players from the world
+4. **String Replacement:** Tags are replaced with actual player display names
+5. **Network Sync:** Replacements are synced across all clients so everyone sees the same names
+6. **Dynamic Updates:** Tags are re-parsed each time the text changes or updates
+
 ### SyncedTagParserSimple
-1. **Detection Area:** A BoxCollider child of your Root GameObject (not the triggers) that detects OnPlayerTriggerEnter/Exit
-2. **Syncing:** When a player enters, their display name is synced across all clients using Udon networking
-3. **Single TMP:** Updates one TMP object with the synced player name
+1. **Single TMP:** Parses one TextMeshPro object
+2. **Trigger Detection:** Uses a detection area (BoxCollider) to know when to parse
+3. **Tag Replacement:** Scans text for tags and replaces them with player names
 4. **Delay:** Optional delay (default 5s) prevents race conditions during world load
 5. **Detect Modes:** 
-   - `detectAnywhere = false`: Only updates when players are in the detection area
-   - `detectAnywhere = true`: Updates for any player in the world (ignores trigger)
+   - `detectAnywhere = false`: Only parses when triggered by detection area
+   - `detectAnywhere = true`: Continuously parses regardless of triggers
 
 ### SyncedTagParserSimpleColored
-1. **Direct Trigger Detection:** Uses the trigger object's own collider (no separate detection area)
-2. **Syncing:** Same player name syncing as Simple
-3. **Multiple TMPs:** Can update multiple TMP objects simultaneously
+1. **Multiple TMPs:** Can parse multiple TextMeshPro objects simultaneously
+2. **Direct Trigger:** Uses trigger colliders directly (no separate detection area)
+3. **Tag Replacement:** Same tag detection and replacement as Simple
 4. **Formatting:** Supports rich text formatting and colors
-5. **No Detection Area:** Relies entirely on trigger colliders
+5. **Network Sync:** Player selections synced across all clients
+
+### Tag Replacement Flow
+```
+Game Displays Text
+    ↓
+"<player> won!" detected
+    ↓
+System selects player (e.g., Alice)
+    ↓
+Text replaced: "Alice won!"
+    ↓
+Synced to all clients
+    ↓
+Everyone sees "Alice won!"
+```
 
 ### Script Locations
-The scripts are applied to each trigger object listed in your "Known Triggers" configuration. Each trigger gets its own independent instance of the script.
-
-### Detection Flow
-```
-Player Enters Trigger
-    ↓
-OnPlayerTriggerEnter fires
-    ↓
-Player name captured
-    ↓
-Synced across network
-    ↓
-TMPs updated on all clients
-    ↓
-Player Exits Trigger
-    ↓
-TMPs cleared/reset
-```
+The scripts are applied to trigger objects in your game prefab. Each trigger gets its own instance of the script, which parses the associated TMP objects.
 
 The scripts use UdonSharp for easy maintenance and readability.
 
 ## Troubleshooting
 
-### "Nothing happens when I enter the trigger"
+### "Tags aren't being replaced in my text"
 
 **Check:**
+- Are the tags spelled correctly? `<player>`, `<rem_player>`, `<random>` (case sensitive)
 - Is the trigger's GameObject active?
-- Does the trigger have a collider?
-- Is "Is Trigger" checked on the collider?
 - Are you testing in Play Mode, not Edit Mode?
 - Wait for the run delay (default 5 seconds after world load)
-- For Simple script: Is there a DetectionArea child under your Root GameObject?
-- Is "Detect Players Anywhere" set correctly? (`false` for trigger-based, `true` for global)
+- For Simple script: Is there a DetectionArea under your Root GameObject?
+- Check the console for errors
 
-### "TMP objects aren't updating"
+### "TMP text doesn't update at all"
 
 **Check:**
 - Are the TMP object names spelled exactly right? (Case sensitive!)
@@ -406,8 +407,7 @@ The scripts use UdonSharp for easy maintenance and readability.
 - Are the TMP objects active in the hierarchy?
 - For Simple script: Only the first TMP in your list is used
 - For Colored script: All TMPs should be assigned
-- Look for errors in the console
-- Click the "🔍 Debug: Show Active Arrays" button to see what the manager found
+- Click "🔍 Debug: Show Active Arrays" to see what the manager found
 
 ### "I get errors when clicking Tagify"
 
@@ -415,9 +415,25 @@ The scripts use UdonSharp for easy maintenance and readability.
 - Is UdonSharp installed and working?
 - Are your Root GameObject, TMPs, and Triggers all set correctly?
 - Do the trigger and TMP GameObjects actually exist in the hierarchy?
-- Try clicking "🔍 Debug: Show Active Arrays" to verify your configuration
+- Try clicking "🔍 Debug: Show Active Arrays" to verify configuration
 - Look at the console for specific error messages
-- If errors persist, try stripping and re-applying
+- Try stripping and re-applying if errors persist
+
+### "Wrong player names are being used"
+
+**Check:**
+- Is "Detect Players Anywhere" set correctly? (`false` for trigger-based, `true` for always-on)
+- Are there enough players in the world for `<rem_player>` and `<random>` to work?
+- `<rem_player>` requires at least 2 players
+- Check if the tags are correctly written in your original text
+
+### "Tags are replaced but with empty text"
+
+This usually means no players are available:
+- Make sure there are players in the world
+- For `<rem_player>`, you need at least 2 players total
+- For `<random>`, you need at least 1 player
+- Check if "Detect Players Anywhere" needs to be `true` for your use case
 
 ### "Detection area is huge/tiny"
 
@@ -427,28 +443,11 @@ The detection area defaults to 10x5x10. You can adjust it:
 1. In the Manager, change "Detection Size" before clicking Tagify
 
 **After creating:**
-1. Find the "DetectionArea" child under your Root GameObject (not under triggers!)
+1. Find the "DetectionArea" child under your Root GameObject
 2. Select it
 3. Modify the BoxCollider size in the Inspector
 
-**Note:** Detection areas are only created for SyncedTagParserSimple, not SyncedTagParserSimpleColored.
-
-### "Players detected when they shouldn't be"
-
-Make sure "Detect Players Anywhere" is set to `false`. If the override checkbox is checked and it's set to `true`, the script detects all players in the world, not just those in triggers.
-
-Uncheck the override to use the preset default, or check it and set it to `false`.
-
-### "I can't find the Detection Area"
-
-**For SyncedTagParserSimple:**
-- Look under your Root GameObject (the one you selected in "Root GameObject" field)
-- It should be named "DetectionArea"
-- It's created as a direct child of the root, not the trigger objects
-
-**For SyncedTagParserSimpleColored:**
-- This script doesn't use detection areas, so you won't find one!
-- It relies on trigger colliders directly
+**Note:** Detection areas are only for SyncedTagParserSimple, not SyncedTagParserSimpleColored.
 
 ### "Button says 'Modify' but I want to start fresh"
 
@@ -460,9 +459,14 @@ The manager detects existing scripts automatically. To start over:
 
 ### "Manual entries disappear when I load a preset"
 
-This is intentional! When you click "Fetch", the manager clears manual entries so the preset can load clean. If you want to keep manual entries:
-1. Don't click Fetch again, or
-2. Add your manual entries after loading the preset
+This is intentional! When you click "Fetch", the manager clears manual entries so the preset can load clean. Add your manual entries after loading the preset.
+
+### "My game prompts have special characters that break"
+
+Make sure your text uses proper encoding:
+- Tags must use angle brackets: `<player>` not `(player)` or `{player}`
+- Don't escape the angle brackets in TextMeshPro
+- Rich text tags (like `<color>`) won't conflict with player tags
 
 ## Known Limitations
 
@@ -534,8 +538,17 @@ No promises on timeline, but I'm actively working on improvements!
 
 ## FAQ
 
+**Q: What tags does the system recognize?**  
+A: Three tags: `<player>` (main player), `<rem_player>` (different random player), and `<random>` (any random player).
+
+**Q: Do I need to write my prompts a specific way?**  
+A: Just include the tags anywhere in your text! Example: "Never have I ever kissed `<player>`" works perfectly.
+
+**Q: Can I use multiple tags in one prompt?**  
+A: Absolutely! "`<player>` must dance with `<rem_player>` while `<random>` watches" works great.
+
 **Q: Does this work with avatar scaling?**  
-A: Yep, the detection uses VRChat's player tracking, so scaled avatars work fine.
+A: Yep, it uses VRChat's player tracking so scaled avatars work fine.
 
 **Q: Can I use this with other Udon scripts?**  
 A: Yes! This doesn't interfere with other scripts on the same GameObject.
@@ -544,40 +557,34 @@ A: Yes! This doesn't interfere with other scripts on the same GameObject.
 A: Nope! The Manager tool handles everything. Just fill in the fields and click Tagify.
 
 **Q: Can I modify the scripts?**  
-A: Absolutely! They're UdonSharp so they're readable and editable. Just don't redistribute the modified versions.
+A: Absolutely! They're UdonSharp so they're readable and editable. Just don't redistribute modified versions.
 
 **Q: Will this break when VRChat updates?**  
 A: I'll do my best to keep it compatible. If an update breaks something, hit me up on Discord.
 
 **Q: Is this Quest compatible?**  
-A: It should be! The scripts are simple and optimized. Test your world on Quest to be sure.
+A: Yes! The scripts are simple and optimized. Test your world on Quest to be sure.
 
 **Q: Can I use this in commissioned worlds?**  
 A: Yes! Commercial use is allowed. See the license for details.
 
-**Q: How do I update to a new version?**  
-A: Just import the new package over the old one. Unity will update the files.
-
 **Q: What's the difference between Simple and Colored scripts?**  
-A: Simple uses one TMP and has a detection area. Colored supports multiple TMPs with rich text formatting but no detection area. Simple is easier for most use cases.
+A: Simple parses one TMP and has a detection area. Colored supports multiple TMPs with rich text formatting but no detection area. Simple is easier for most use cases.
 
 **Q: When should I use "Detect Players Anywhere"?**  
-A: Use `false` (default) for location-specific detection like chairs or game zones. Use `true` for global displays like "Current World Champion" that should work anywhere.
+A: Use `false` (default) for trigger-based games. Use `true` if your game should always parse tags regardless of player position.
 
-**Q: Why does the Detection Area go on the Root GameObject and not the triggers?**  
-A: This is by design for Simple script. It creates one shared detection area rather than individual ones per trigger. For more granular control, use triggers with their own colliders or switch to the Colored script.
+**Q: Why does the Detection Area go on the Root GameObject?**  
+A: This is by design for Simple script. It creates one shared detection area rather than individual ones per trigger.
 
 **Q: Can I mix preset and manual TMPs/Triggers?**  
 A: Yes! Enable "Manual Configuration" and add your own entries. They'll be combined with the preset's configuration.
 
-**Q: What happens if I click "Fetch" after adding manual entries?**  
-A: Manual entries are cleared when you load a new preset. Add your manual entries after fetching!
-
 **Q: The button says "Modify" - will it break my setup?**  
-A: Nope! The manager detects existing scripts and updates them safely. You can modify settings and re-apply without losing your configuration.
+A: Nope! The manager detects existing scripts and updates them safely.
 
-**Q: Can I have multiple presets on one GameObject?**  
-A: Not recommended. Each trigger gets one script. If you need multiple behaviors, use separate GameObjects or manual configuration.
+**Q: Can I have multiple game systems on one GameObject?**  
+A: Not recommended. Each trigger gets one script. Use separate GameObjects for different games.
 
 **Q: What's the "🔍 Debug: Show Active Arrays" button for?**  
 A: It shows exactly which TMPs and Triggers the manager will use when you click Tagify. Super useful for troubleshooting!
