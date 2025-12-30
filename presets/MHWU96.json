@@ -1,0 +1,20 @@
+{
+  "code": "MHWU96",
+  "targetSystem": "SpinTheBottle Options (Parser Coloured)",
+  "description": "In the event you want the options on the wheel to update their tags. (swaps <player> <rem_player> and <random> to someone)",
+  "KnownTMPs": [
+    "Option1",
+    "Option2",
+    "Option3",
+    "Option4",
+    "Option5",
+    "Option6",
+    "Option7",
+    "Option8"
+  ],
+  "KnownTriggers": [
+    "BottleSpinner"
+  ],
+  "creator": "ModerateWinGuy",
+  "submittedAt": "2025-12-30T09:33:09.756Z"
+}
