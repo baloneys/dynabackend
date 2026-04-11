@@ -1,0 +1,56 @@
+<player>, follow <rem_player> around the world for the next 3 rounds. Wherever they go, you go.
+<player>, DM <rem_player> the most unhinged compliment you can think of.
+<player>, let <rem_player> write your next chat message for you.
+<player>, do your best impression of <rem_player>'s avatar or drink 5.
+<player>, change your display name to whatever <rem_player> picks for the next 3 rounds.
+<player>, slow dance with <rem_player> for 30 seconds. Group picks the song.
+<player>, let <rem_player> pick someone in the room you have to compliment out loud.
+<player>, stare at <rem_player> without moving for 30 seconds or take 5.
+<player>, you must agree with everything <rem_player> says until your next turn.
+<player>, let the group roast your avatar. No defending yourself or take 3.
+<player>, add <rem_player>'s name somewhere in your status until your next turn.
+<player>, whisper something in <rem_player>'s ear. <rem_player> reacts, but can't say what it was.
+<player>, get down on one knee and propose to <rem_player>. They decide if they say yes.
+<player>, you can only respond to people by pointing at <rem_player> until your next turn.
+<player>, let <rem_player> mute and unmute you whenever they want until your next turn.
+<player>, confess something you've never told anyone in this room or take 10.
+<player>, you must end every sentence with <rem_player>'s name until your next turn.
+<player>, let <rem_player> pick a dare from earlier in the game for you to redo.
+<player>, give <rem_player> a genuine apology for something. Make it convincing.
+<player>, <rem_player> picks a word you're banned from saying until your next turn. Say it and drink 3.
+<player>, write <rem_player> a haiku about their avatar. Read it aloud.
+<player>, <rem_player> gets to go through your recent Discord messages and read one out loud. You can pay 5 drinks to skip.
+<player>, let <rem_player> pick your next avatar from your own list. You wear it no questions asked.
+<player>, make up a backstory for <rem_player>'s avatar and present it to the room.
+<player>, you must ask <rem_player> for permission before speaking until your next turn.
+<player>, <rem_player> sets a timer. You have to make everyone in the room laugh before it runs out or drink 5.
+<player>, swap your mic settings with <rem_player> until your next turn. (Gain, volume, whatever — honour system.)
+<player>, <rem_player> picks any song. You have to hum it until someone guesses it, or drink 3.
+<player>, let <rem_player> choose one person in the room you have to avoid for the next 2 rounds.
+<player>, you must refer to <rem_player> as "my beloved" for the rest of the game or drink 2 every time you forget.
+<player>, sit on <rem_player>'s lap until your next turn.
+Walk up to the closest group of people and say whatever the group picks.
+Tell <rem_player> your deepest, darkest secret or take 5.
+Let <rem_player> pick your avatar, you must wear it for the next 5 rounds <player>.
+Change your status to <rem_player>'s pick or take 5.
+Add I love <rem_player> to your bio.
+<player>, walk up to the nearest group and do your best Crocodile Dundee impression. Group decides if it's convincing enough or you drink 5.
+<player>, DM <rem_player> the most unhinged compliment but it has to be entirely in Australian slang. If <rem_player> can't understand it, you drink 3.
+<player>, change your status to "I lost a fight to a magpie and I'd do it again" until your next turn or take 5.
+<player>, you can only refer to <rem_player> as "ya big drongo" until your next turn or drink 2 every time you forget.
+<player>, confess something to <rem_player> in your worst Australian accent. If the room rates it less than a 5/10, drink 3.
+<player>, add "certified bogan" to your bio until your next turn or take 5.
+<player>, make up a bush survival tip and present it to the room like it's deadly serious. If anyone laughs, they drink.
+<player>, write <rem_player> a haiku about Vegemite. Read it aloud with full emotion.
+<player>, <rem_player> picks any Australian animal. You have to convince the room you could survive an encounter with it or drink 5.
+<player>, get down on one knee and propose to <rem_player>. You must call them "the most beautiful sheila/bloke I've ever laid eyes on at the servo." They decide if they say yes.
+<player>, change your display name to "Maccas Run Survivor" for the next 3 rounds or take 5.
+<player>, do your best impression of a magpie swooping <rem_player>. Room votes if it was accurate or you drink 3.
+<player>, you must end every sentence with "no worries mate" until your next turn. Forget it and drink 2.
+<player>, <rem_player> picks a quintessentially Australian word you're banned from saying until your next turn. Say it and drink 3. (Suggestions: mate, yeah, nah, arvo, servo.)
+<player>, slow dance with <rem_player> for 30 seconds. Group picks the song but it must be Australian. Flame trees, Eagle Rock, or Down Under only.
+<player>, let <rem_player> go through your recent messages and read one out loud in their best bogan accent. Pay 5 drinks to skip.
+<player>, make up a full backstory for <rem_player>'s avatar but they're from rural Queensland and have never left. Present it to the room.
+<player>, <rem_player> sets a timer. You have to convince everyone in the room that drop bears are real before it runs out or drink 5.
+<player>, you must ask <rem_player> for permission before speaking until your next turn, but every request must start with "oi, reckon I could—"
+<player>, follow <rem_player> around the world for the next 3 rounds narrating everything they do like a nature documentary about Australian wildlife.
