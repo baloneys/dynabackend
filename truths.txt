@@ -1,0 +1,46 @@
+<player>, have you ever thought about <rem_player> romantically?
+A question for the room: Would you sleep with <player>?
+Have you ever felt strongly either negatively or positively for <rem_player>?
+Have you ever had your license suspended?
+Have you ever been done for drink driving?
+<player>, what's the most embarrassing thing you've done to impress someone in this room?
+<player>, have you ever had a crush on someone in this room you've never told?
+<player>, what's the most illegal thing you've ever done?
+<player>, have you ever lied to get out of plans with someone currently playing?
+<player>, what's the most unhinged thought you've had this week?
+<player>, have you ever ghosted someone and genuinely felt nothing about it?
+<player>, what's something you've done in VRC you'd never admit to your family?
+<player>, have you ever talked badly about someone in this room behind their back?
+<player>, what's the pettiest reason you've ever ended or avoided a relationship?
+<player>, have you ever stolen something? What was it?
+<player>, what's the most embarrassing thing on your browser history right now?
+<player>, have you ever pretended to be someone else online to get closer to someone?
+<player>, what's the worst thing you've ever said to someone you loved?
+<player>, have you ever sabotaged a relationship, yours or someone else's?
+<player>, be honest — what do you actually think of <rem_player>'s avatar?
+<player>, have you ever had feelings for someone in this room you never acted on?
+<player>, what's something you've never told anyone in this room but probably should?
+<player>, on a scale of 1–10, how would you rate <rem_player> and why?
+<player>, have you ever done something in VRC that got you removed from a world or group?
+<player>, what's the most embarrassing reason you've cried in the last 6 months?
+<player>, if you had to kiss someone in this room, who would it be and why?
+A question for the room: Who do you think is most likely to have a secret double life?
+A question for the room: Who here do you think is the biggest simp and who are they simping for?
+A question for the room: Who do you think has the most unhinged search history in this room?
+A question for the room: Who in this room would last the longest in a zombie apocalypse?
+<player>, have you ever been done for drink driving or been in the car with someone who should've been?
+<player>, have you ever done something monumentally bogan and been genuinely proud of it?
+<player>, have you ever lost a fight — to an animal? What happened?
+<player>, be honest — have you ever actually enjoyed Vegemite or have you just been pretending your whole life?
+<player>, have you ever called in sick to work and spent the whole day at the beach?
+<player>, have you ever been so sunburned you couldn't sleep? What were you doing and why didn't you slip, slop, slap?
+<player>, have you ever woken up somewhere after a big night with absolutely no memory of how you got there?
+<player>, what's the most Australian thing you've ever done that you'd struggle to explain to someone overseas?
+<player>, have you ever genuinely considered whether you could wrestle a croc and won in your own head?
+<player>, have you ever eaten a Bunnings sausage sizzle and called it a meal? How many?
+<player>, have you ever been swooped by a magpie and completely lost your dignity?
+<player>, have you ever drank goon straight from the bag? At what point in the night?
+<player>, what's the roughest pub you've ever been to and what happened there?
+<player>, have you ever had a run-in with the law that you got out of purely by being charming?
+A question for the room: Who here is most likely to survive a night lost in the Australian bush?
+A question for the room: Who do you reckon has eaten the most questionable thing and called it a meal?
