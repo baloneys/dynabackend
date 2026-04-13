@@ -44,3 +44,4 @@ A question for the room: Who in this room would last the longest in a zombie apo
 <player>, have you ever had a run-in with the law that you got out of purely by being charming?
 A question for the room: Who here is most likely to survive a night lost in the Australian bush?
 A question for the room: Who do you reckon has eaten the most questionable thing and called it a meal?
+<player>, have you ever exploded <rem_player>'s balls?
