@@ -54,3 +54,4 @@ Add I love <rem_player> to your bio.
 <player>, <rem_player> sets a timer. You have to convince everyone in the room that drop bears are real before it runs out or drink 5.
 <player>, you must ask <rem_player> for permission before speaking until your next turn, but every request must start with "oi, reckon I could—"
 <player>, follow <rem_player> around the world for the next 3 rounds narrating everything they do like a nature documentary about Australian wildlife.
+<player>, get in the cuck chair and let <rem_player> dance on you for a minute.
