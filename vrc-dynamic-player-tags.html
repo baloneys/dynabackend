@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VRCDynamicPlayerTags Database</title>
-    <link rel="shortcut icon" href="../public/pw64s5dmavz539gvjm065tw71xp1.png" type="icon/png" sizes="32x32">
+    <link rel="shortcut icon" href="../public/pw64s5dmavz539gvjm065tw71xp1.png" type="image/png" sizes="32x32">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap">
     <style>
@@ -16,7 +16,7 @@
             left: 0;
             right: 0;
             z-index: 1000;
-            background: rgba(10, 10, 10, 0.95);
+            background: rgba(5, 5, 5, 0.95);
             backdrop-filter: blur(10px);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -42,7 +42,7 @@
         .section-title {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #6366f1;
+            color: #9d00ff;
         }
 
         .navigation-desktop-menu {
@@ -78,7 +78,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(10, 10, 10, 0.98);
+            background: rgba(5, 5, 5, 0.98);
             z-index: 2000;
             transform: translateX(-100%);
             transition: transform 0.3s ease;
@@ -128,7 +128,7 @@
         /* Footer Styles */
         .footer-root {
             width: 100%;
-            background: #1a1a1a;
+            background: #0d0a12;
             border-top: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 4rem;
         }
@@ -155,7 +155,7 @@
         .footer-logo-text {
             font-size: 1.5rem;
             font-weight: 700;
-            color: #6366f1;
+            color: #9d00ff;
         }
 
         .footer-brand-description {
@@ -183,14 +183,14 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(157, 0, 255, 0.2);
             color: rgba(255, 255, 255, 0.8);
             transition: all 0.3s ease;
             cursor: pointer;
         }
 
         .footer-social-icon:hover {
-            background: rgba(99, 102, 241, 0.3);
+            background: rgba(157, 0, 255, 0.3);
             color: #fff;
             transform: translateY(-2px);
         }
@@ -245,15 +245,15 @@
 
         /* Page Specific Styles */
         :root {
-            --color-surface: #0a0a0a;
-            --color-surface-elevated: #1a1a1a;
-            --color-primary: #6366f1;
-            --color-primary-hover: #4f46e5;
-            --color-primary-dark: #4338ca;
+            --color-surface: #050505;
+            --color-surface-elevated: #0d0a12;
+            --color-primary: #9d00ff;
+            --color-primary-hover: #8400d6;
+            --color-primary-dark: #6f00b5;
             --color-text: #ffffff;
             --color-text-secondary: rgba(255, 255, 255, 0.7);
             --color-border: rgba(255, 255, 255, 0.1);
-            --color-code-bg: #6366f1;
+            --color-code-bg: #9d00ff;
         }
 
         * {
@@ -289,7 +289,7 @@
             font-size: 2.5rem;
             font-weight: 900;
             margin-bottom: 0.5rem;
-            background: linear-gradient(135deg, #818cf8 0%, #6366f1 100%);
+            background: linear-gradient(135deg, #c77dff 0%, #9d00ff 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -328,7 +328,7 @@
         .btn-primary:hover {
             background: var(--color-primary-hover);
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+            box-shadow: 0 4px 12px rgba(157, 0, 255, 0.4);
         }
 
         .btn-secondary {
@@ -387,7 +387,7 @@
         .search-input-main:focus {
             outline: none;
             border-color: var(--color-primary);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            box-shadow: 0 0 0 3px rgba(157, 0, 255, 0.1);
         }
 
         .search-input-main::placeholder {
@@ -413,13 +413,13 @@
         }
 
         .filter-btn:hover {
-            background: rgba(99, 102, 241, 0.1);
-            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(157, 0, 255, 0.1);
+            border-color: rgba(157, 0, 255, 0.3);
             color: var(--color-text);
         }
 
         .filter-btn.active {
-            background: rgba(99, 102, 241, 0.2);
+            background: rgba(157, 0, 255, 0.2);
             border-color: var(--color-primary);
             color: var(--color-primary);
         }
@@ -437,7 +437,7 @@
         }
 
         thead {
-            background: rgba(99, 102, 241, 0.1);
+            background: rgba(157, 0, 255, 0.1);
         }
 
         th {
@@ -463,7 +463,7 @@
         }
 
         tbody tr:hover {
-            background: rgba(99, 102, 241, 0.05);
+            background: rgba(157, 0, 255, 0.05);
         }
 
         tbody tr:last-child td {
@@ -473,22 +473,22 @@
         .code-bubble {
             display: inline-block;
             padding: 0.5rem 1rem;
-            background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+            background: linear-gradient(135deg, #9d00ff 0%, #8400d6 100%);
             color: white;
             border-radius: 6px;
             font-weight: 600;
             font-size: 0.9rem;
             font-family: 'JetBrains Mono', monospace;
             letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 2px 8px rgba(157, 0, 255, 0.3);
         }
 
         .system-badge {
             display: inline-block;
             padding: 0.4rem 0.875rem;
-            background: rgba(16, 185, 129, 0.15);
-            color: #10b981;
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: rgba(199, 125, 255, 0.15);
+            color: #c77dff;
+            border: 1px solid rgba(199, 125, 255, 0.3);
             border-radius: 6px;
             font-weight: 500;
             font-size: 0.85rem;
@@ -497,27 +497,27 @@
 
         .system-badge.osc {
             background: rgba(168, 85, 247, 0.15);
-            color: #a855f7;
+            color: #b44dff;
             border-color: rgba(168, 85, 247, 0.3);
         }
 
         .system-badge.unity {
-            background: rgba(59, 130, 246, 0.15);
-            color: #3b82f6;
-            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(157, 0, 255, 0.15);
+            color: #9d00ff;
+            border-color: rgba(157, 0, 255, 0.3);
         }
 
         .system-badge.universal {
-            background: rgba(99, 102, 241, 0.15);
-            color: #6366f1;
-            border-color: rgba(99, 102, 241, 0.3);
+            background: rgba(157, 0, 255, 0.15);
+            color: #9d00ff;
+            border-color: rgba(157, 0, 255, 0.3);
         }
 
         .creator-tag {
             display: inline-block;
             padding: 0.3rem 0.75rem;
-            background: rgba(99, 102, 241, 0.15);
-            color: #a5b4fc;
+            background: rgba(157, 0, 255, 0.15);
+            color: #d4a5ff;
             border-radius: 12px;
             font-size: 0.8rem;
             font-weight: 500;
@@ -547,8 +547,8 @@
 
         .pagination button {
             padding: 0.5rem 1rem;
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(157, 0, 255, 0.2);
+            border: 1px solid rgba(157, 0, 255, 0.3);
             border-radius: 6px;
             color: var(--color-text);
             cursor: pointer;
@@ -557,7 +557,7 @@
         }
 
         .pagination button:hover:not(:disabled) {
-            background: rgba(99, 102, 241, 0.3);
+            background: rgba(157, 0, 255, 0.3);
             border-color: var(--color-primary);
         }
 
@@ -600,15 +600,15 @@
             width: 90%;
             max-width: 800px;
             max-height: 200px;
-            background: rgba(26, 26, 26, 0.98);
-            border: 1px solid rgba(99, 102, 241, 0.3);
+            background: rgba(13, 10, 18, 0.98);
+            border: 1px solid rgba(157, 0, 255, 0.3);
             border-radius: 12px;
             padding: 1rem;
             overflow-y: auto;
             z-index: 9999;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.75rem;
-            box-shadow: 0 8px 32px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 8px 32px rgba(157, 0, 255, 0.2);
         }
 
         .debug-header {
@@ -617,12 +617,12 @@
             align-items: center;
             margin-bottom: 0.5rem;
             padding-bottom: 0.5rem;
-            border-bottom: 1px solid rgba(99, 102, 241, 0.2);
+            border-bottom: 1px solid rgba(157, 0, 255, 0.2);
         }
 
         .debug-title {
             font-weight: 600;
-            color: #6366f1;
+            color: #9d00ff;
             font-size: 0.85rem;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -654,13 +654,13 @@
         }
 
         .debug-toggle {
-            background: rgba(99, 102, 241, 0.2);
-            border: 1px solid rgba(99, 102, 241, 0.3);
-            color: #6366f1;
+            background: rgba(157, 0, 255, 0.2);
+            border: 1px solid rgba(157, 0, 255, 0.3);
+            color: #9d00ff;
         }
 
         .debug-toggle:hover {
-            background: rgba(99, 102, 241, 0.3);
+            background: rgba(157, 0, 255, 0.3);
         }
 
         .debug-content.hidden {
@@ -681,7 +681,7 @@
             padding: 0.5rem;
             background: rgba(0, 0, 0, 0.3);
             border-radius: 6px;
-            border-left: 3px solid #6366f1;
+            border-left: 3px solid #9d00ff;
         }
 
         .debug-entry.error {
@@ -689,11 +689,11 @@
         }
 
         .debug-entry.success {
-            border-left-color: #10b981;
+            border-left-color: #c77dff;
         }
 
         .debug-entry.warning {
-            border-left-color: #f59e0b;
+            border-left-color: #e60065;
         }
 
         .debug-timestamp {
@@ -795,6 +795,8 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="site.css">
+    <script>if (/[?&]debug\b/.test(location.search)) document.documentElement.classList.add("show-debug")</script>
 </head>
 <body>
     <navigation-wrapper class="navigation-wrapper">
@@ -1010,7 +1012,7 @@
                     </div>
                     <div class="footer-bottom">
                         <div class="footer-bottom-content">
-                            <p class="footer-copyright section-content">© 2025 baloneys. All rights reserved</p>
+                            <p class="footer-copyright section-content">© <span data-year>2025</span> baloneys. All rights reserved</p>
                         </div>
                     </div>
                 </div>
@@ -1141,7 +1143,7 @@
         async function loadPresets() {
             try {
                 window.debugLog('🔄 Fetching presets from index.json...', 'info');
-                const response = await fetch('https://kanaris-beans.com/dynabackend/presets/index.json', {
+                const response = await fetch('presets/index.json', {
                     cache: 'no-store'
                 });
                 const data = await response.json();
@@ -1171,7 +1173,7 @@
                 tbody.innerHTML = `
                     <tr><td colspan="3" class="empty-state">
                         <p>No presets found matching your search.</p>
-                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Try adjusting your filters or <a href="submissions.html" style="color: #6366f1;">submit a new preset</a>.</p>
+                        <p style="font-size: 0.9rem; margin-top: 0.5rem;">Try adjusting your filters or <a href="submissions.html" style="color: #9d00ff;">submit a new preset</a>.</p>
                     </td></tr>
                 `;
                 return;
@@ -1305,5 +1307,6 @@
 
         loadPresets();
     </script>
+<script>document.querySelectorAll("[data-year]").forEach(function(e){e.textContent=new Date().getFullYear()})</script>
 </body>
 </html>
